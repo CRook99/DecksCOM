@@ -43,7 +43,6 @@ public class GridMovement : MonoBehaviour
     {
         foreach (GameObject tile in _tiles)
         {
-            Debug.Log(tile);
             Tile t = tile.GetComponent<Tile>();
             t.FindNeighbours();
         }

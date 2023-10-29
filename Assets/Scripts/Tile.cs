@@ -9,7 +9,11 @@ public class Tile : MonoBehaviour
     public bool Current = false;
     public bool Selectable = false;
 
+    // Rendering (colours to be removed)
     private Renderer _renderer;
+    public Material Debug_Default;
+    public Material Debug_Selectable;
+    public Material Debug_Current;
 
     // BFS
     public List<Tile> OrthAdjacencyList = new List<Tile>();
@@ -68,9 +72,9 @@ public class Tile : MonoBehaviour
 
     private void UpdateColour()
     {
-        if (Current) _renderer.material.color = Color.magenta;
-        else if (Selectable) _renderer.material.color = Color.blue;
-        else _renderer.material.color = Color.white;
+        if (Current) _renderer.material = Debug_Current;
+        else if (Selectable) _renderer.material = Debug_Selectable;
+        else _renderer.material = Debug_Default;
     }
 
     private void Reset()
