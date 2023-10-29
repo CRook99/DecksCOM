@@ -26,10 +26,10 @@ public class TacticsCamera : MonoBehaviour
         camera.transform.eulerAngles = new Vector3(45f, 45f, 0f);
         _position = transform.position;
         _rotation = transform.rotation;
-        _movementSpeed = 0.01f;
+        _movementSpeed = 0.05f;
         _movementSpeedModifier = 1f;
         _movementTime = 10f;
-        _rotationSpeed = 0.2f;
+        _rotationSpeed = 0.5f;
 
         _zoomSpeed = 1f;
     }

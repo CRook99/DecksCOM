@@ -1,14 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private List<Tile> neighbours;
-    
-    public Tile()
-    {
-        neighbours = new List<Tile>();
+    private bool _walkable = true;
+    public bool Current = false;
+    public bool Selectable = false;
 
+    private Renderer _renderer;
+
+    // BFS
+    public List<Tile> OrthAdjacencyList = new List<Tile>();
+    public List<Tile> DiagAdjacencyList = new List<Tile>();
+    public bool Visited = false;
+    public Tile Parent = null;
+    public float Distance = 0.0f;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C)) UpdateColour();
+    }
+
+    private void Start()
+    {
+        OrthAdjacencyList = new List<Tile>();
+        DiagAdjacencyList = new List<Tile>();
+
+        _renderer = GetComponent<Renderer>();
+    }
+
+    public bool Occupied()
+    {
+        return Physics.Raycast(transform.position, Vector3.up, out _, 1);
+    }
+
+    public void FindNeighbours()
+    {
+        Reset();
+
+        CheckNeighbour(Vector3.forward, OrthAdjacencyList);
+        CheckNeighbour(-Vector3.forward, OrthAdjacencyList);
+        CheckNeighbour(Vector3.right, OrthAdjacencyList);
+        CheckNeighbour(-Vector3.right, OrthAdjacencyList);
+
+        CheckNeighbour(Vector3.forward + Vector3.right, DiagAdjacencyList);
+        CheckNeighbour(Vector3.forward - Vector3.right, DiagAdjacencyList);
+        CheckNeighbour(-Vector3.forward + Vector3.right, DiagAdjacencyList);
+        CheckNeighbour(-Vector3.forward - Vector3.right, DiagAdjacencyList);
+    }
+
+    private void CheckNeighbour(Vector3 direction, List<Tile> list)
+    {
+        Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
+
+        foreach (Collider c in colliders)
+        {
+            Tile tile = c.GetComponent<Tile>();
+            if (tile != null && tile._walkable)
+            {
+                list.Add(tile);
+            }
+        }
+    }
+
+    private void UpdateColour()
+    {
+        if (Current) _renderer.material.color = Color.magenta;
+        else if (Selectable) _renderer.material.color = Color.blue;
+        else _renderer.material.color = Color.white;
+    }
+
+    private void Reset()
+    {
+        Visited = false;
+        Parent = null;
+        Distance = 0.0f;
     }
 }

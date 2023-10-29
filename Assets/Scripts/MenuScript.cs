@@ -16,5 +16,16 @@ public class MenuScript
             tile.GetComponent<Renderer>().material = material;
         }
     }
+
+    [MenuItem("Tools/Assign Tile Script")]
+    public static void AssignTileScript()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+
+        foreach (GameObject tile in tiles)
+        {
+            tile.AddComponent<Tile>();
+        }
+    }
 }
 
