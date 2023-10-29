@@ -40,6 +40,12 @@ public class Tile : MonoBehaviour
         return Physics.Raycast(transform.position, Vector3.up, out _, 1);
     }
 
+    [ContextMenu("Log Occupied")]
+    public void LogOccupied()
+    {
+        Debug.Log(Occupied());
+    }
+
     public void FindNeighbours()
     {
         Reset();

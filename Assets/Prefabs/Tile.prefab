@@ -120,9 +120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Current: 0
   Selectable: 0
+  Target: 1
   Debug_Default: {fileID: 2100000, guid: 61340b25ce9102b4887676fec9817b3d, type: 2}
   Debug_Selectable: {fileID: 2100000, guid: d80b7fd200781b0498c4ed2e961e1d58, type: 2}
   Debug_Current: {fileID: 2100000, guid: d64d7dc07286f2340843c78d5dd11f01, type: 2}
+  Debug_Target: {fileID: 2100000, guid: 8c4655a04dc582a4694c08ec3812734d, type: 2}
   OrthAdjacencyList: []
   DiagAdjacencyList: []
   Visited: 0

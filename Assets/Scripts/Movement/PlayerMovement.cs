@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : GridMovement
 {
+    private bool isMoving;
     void Start()
     {
         Initialize();
@@ -15,7 +16,9 @@ public class PlayerMovement : GridMovement
         if (Input.GetKeyDown(KeyCode.U)) FindSelectableTiles();
     }
 
+    private void CheckMouse()
+    {
 
-
+    }
 
 }
