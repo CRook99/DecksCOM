@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private bool _walkable = true;
     public bool Current = false;
     public bool Selectable = false;
 
@@ -35,10 +34,13 @@ public class Tile : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
+    // Can describe a map tile occupied by an entity or environment block
     public bool Occupied()
     {
+        Debug.DrawRay(transform.position, Vector3.up, Color.yellow, 5f);
         return Physics.Raycast(transform.position, Vector3.up, out _, 1);
     }
+
 
     [ContextMenu("Log Occupied")]
     public void LogOccupied()
@@ -69,7 +71,7 @@ public class Tile : MonoBehaviour
         foreach (Collider c in colliders)
         {
             Tile tile = c.GetComponent<Tile>();
-            if (tile != null && tile._walkable)
+            if (tile != null && !tile.Occupied())
             {
                 list.Add(tile);
             }
