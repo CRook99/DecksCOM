@@ -25,31 +25,23 @@ public class TargetCursor : MonoBehaviour
 
     private void Update()
     {
-        CheckMouse();
+        ProcessSelection(TileSelection.instance.current);
         CheckLockInput();
     }
 
-    void CheckMouse()
+    void ProcessSelection(GameObject target)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (target.tag == "Tile" && !locked)
         {
-            targetObject = hit.collider.gameObject;
-
-            if (targetObject.tag == "Tile" && !locked)
+            transform.position = target.transform.position + offset;
+            if (target.GetComponent<Tile>().Occupied())
             {
-                transform.position = targetObject.transform.position + offset;
-                if (targetObject.GetComponent<Tile>().Occupied())
-                {
-                    UpdateColour(invalidMaterial);
-                }
-                else
-                {
-                    UpdateColour(validMaterial);
-                }
+                UpdateColour(invalidMaterial);
             }
-            
+            else
+            {
+                UpdateColour(validMaterial);
+            }
         }
     }
 
