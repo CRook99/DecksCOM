@@ -4,21 +4,13 @@ using UnityEngine;
 
 public class PlayerMovement : GridMovement
 {
-    private bool isMoving;
     void Start()
     {
         Initialize();
-        SetMovement(8);
+        SetMovementRange(8);
+        SetMovementSpeed(4);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U)) FindSelectableTiles();
-    }
-
-    private void CheckMouse()
-    {
-
-    }
+    
 
 }

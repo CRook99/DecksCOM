@@ -37,7 +37,7 @@ public class Tile : MonoBehaviour
     // Can describe a map tile occupied by an entity or environment block
     public bool Occupied()
     {
-        Debug.DrawRay(transform.position, Vector3.up, Color.yellow, 5f);
+        //Debug.DrawRay(transform.position, Vector3.up, Color.yellow, 5f);
         return Physics.Raycast(transform.position, Vector3.up, out _, 1);
     }
 
@@ -78,17 +78,20 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void UpdateColour()
+    public void UpdateColour()
     {
         if (Current) _renderer.material = Debug_Current;
         else if (Selectable) _renderer.material = Debug_Selectable;
         else _renderer.material = Debug_Default;
     }
 
-    private void Reset()
+    public void Reset()
     {
         Visited = false;
         Parent = null;
         Distance = 0.0f;
+
+        Current = false;
+        Selectable = false;
     }
 }

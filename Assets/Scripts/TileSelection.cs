@@ -6,10 +6,12 @@ public class TileSelection : MonoBehaviour
 {
     public static TileSelection instance;
     public GameObject current;
+    public GameObject nullTile;
 
     void Awake()
     {
         instance = this;
+        current = gameObject; // Ensures not null on start
     }
 
     // Update is called once per frame
@@ -21,5 +23,10 @@ public class TileSelection : MonoBehaviour
         {
             current = hit.collider.gameObject;
         }
+    }
+
+    public bool MouseOnTile()
+    {
+        return current.tag == "Tile";
     }
 }

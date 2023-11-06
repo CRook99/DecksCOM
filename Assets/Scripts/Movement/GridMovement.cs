@@ -1,31 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using UnityEngine;
 
 public class GridMovement : MonoBehaviour
 {
-    private List<Tile> _selectableTiles = new List<Tile>();
-    public GameObject[] _tiles;
-    private Tile _currentTile;
-    protected int _movement;
+    private List<Tile> selectableTiles = new List<Tile>();
+    public Tile[] tiles;
+    [SerializeField] Tile currentTile;
+    private int movementRange;
+    private int movementSpeed;
+
+    [SerializeField] protected bool isMoving;
+    public Stack<Tile> path;
+    private Tile nextTileInPath;
+    [SerializeField] private Vector3 nextPosition;
+    [SerializeField] private Vector3 directionVector;
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
 
     protected void Initialize()
     {
-        _tiles = GameObject.FindGameObjectsWithTag("Tile");
+        tiles = GameObject.FindGameObjectsWithTag("Tile").Select(o => o.GetComponent<Tile>()).ToArray();
+        ComputeAdjacencyLists();
+        isMoving = false;
+        path = new Stack<Tile>();
     }
 
-    public void SetMovement(int movement)
+    private void Update()
     {
-        _movement = movement;
+        if (isMoving)
+        {
+            Move();
+        }
+        
+    }
+
+    public void SetMovementRange(int range)
+    {
+        movementRange = range;
+    }
+
+    public void SetMovementSpeed(int speed)
+    {
+        movementSpeed = speed;
     }
 
     public void GetCurrentTile()
     {
-        _currentTile = GetTargetTile(gameObject);
-        _currentTile.Current = true;
+        currentTile = GetTargetTile(gameObject);
+        currentTile.Current = true;
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -41,29 +66,29 @@ public class GridMovement : MonoBehaviour
 
     public void ComputeAdjacencyLists()
     {
-        foreach (GameObject tile in _tiles)
+        foreach (Tile tile in tiles)
         {
-            Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbours();
+            tile.FindNeighbours();
         }
     }
 
-    public void FindSelectableTiles()
+    public void CalculateSelectableTiles()
     {
-        ComputeAdjacencyLists();
+        ResetAllTiles();
         GetCurrentTile();
 
         Queue<Tile> queue = new Queue<Tile>();
 
-        queue.Enqueue(_currentTile);
+        queue.Enqueue(currentTile);
 
         while (queue.Count > 0)
         {
             Tile t = queue.Dequeue();
-            _selectableTiles.Add(t);
+            selectableTiles.Add(t);
             t.Selectable = true;
+            
 
-            if (t.Distance >= _movement) continue;
+            if (t.Distance >= movementRange) continue;
 
             foreach (Tile a in t.OrthAdjacencyList)
             {
@@ -86,7 +111,96 @@ public class GridMovement : MonoBehaviour
                 queue.Enqueue(a);
             }
 
-
+            t.Visited = true;
         }
+
+        UpdateTileColours();
+    }
+
+    public void ResetAllTiles()
+    {
+        foreach (Tile tile in selectableTiles)
+        {
+            tile.Reset();
+        }
+        selectableTiles.Clear();
+    }
+
+
+    private void generatePath(Tile destination)
+    {
+        path.Clear();
+        Tile current = destination;
+        while (current.Parent != null)
+        {
+            path.Push(current);
+            current = current.Parent;
+        }
+    }
+
+    public void MoveToDestination(Tile destination)
+    {
+        isMoving = true;
+        CalculateSelectableTiles();
+        generatePath(destination);
+        CalculateNextPositionInPath();
+        CalculateNextDirectionVector();
+        
+    }
+
+    private void Move()
+    {
+        if (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
+        {
+            transform.position += movementSpeed * directionVector * Time.deltaTime;
+        }
+        else
+        {
+            transform.position = nextPosition;
+            CalculateNextPositionInPath();
+            CalculateNextDirectionVector();
+        }
+    }
+
+    private void CalculateNextPositionInPath()
+    {
+        if (path.Count == 0) // End of path reached
+        {
+            isMoving = false;
+            RecomputeOriginAdjacencies();
+            CalculateSelectableTiles();
+            return;
+        }
+
+        Tile t = path.Pop();
+        nextPosition = t.gameObject.transform.position + new Vector3(0f, 0.5f, 0f);
+    }
+
+    private void CalculateNextDirectionVector()
+    {
+        directionVector = (nextPosition - transform.position).normalized;
+    }
+
+    private void UpdateTileColours()
+    {
+        foreach (Tile tile in tiles)
+        {
+            tile.UpdateColour();
+        }
+    }
+
+    private void RecomputeOriginAdjacencies()
+    {
+        foreach (Tile tile in currentTile.OrthAdjacencyList)
+        {
+            tile.FindNeighbours();
+        }
+
+        foreach (Tile tile in currentTile.DiagAdjacencyList)
+        {
+            tile.FindNeighbours();
+        }
+
+        currentTile.FindNeighbours();
     }
 }
