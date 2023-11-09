@@ -12,6 +12,8 @@ public class TargetCursor : MonoBehaviour
     // Will be replaced when actual cursor modelled
     [SerializeField] Material validMaterial;
     [SerializeField] Material invalidMaterial;
+    private Material currentMaterial;
+    private bool targetIsOccupied;
 
     GameObject targetObject;
 
@@ -34,14 +36,8 @@ public class TargetCursor : MonoBehaviour
         if (target.tag == "Tile" && !locked)
         {
             transform.position = target.transform.position + offset;
-            if (target.GetComponent<Tile>().Occupied())
-            {
-                UpdateColour(invalidMaterial);
-            }
-            else
-            {
-                UpdateColour(validMaterial);
-            }
+            targetIsOccupied = target.GetComponent<Tile>().Occupied();
+            UpdateAppearance();
         }
     }
 
@@ -73,13 +69,16 @@ public class TargetCursor : MonoBehaviour
         locked = false;
     }
 
+    // Updates cursor appearance based on if the target tile is walkable
     // Will be replaced when actual cursor modelled
-    void UpdateColour(Material material)
+    void UpdateAppearance()
     {
-        gizmo.GetComponent<MeshRenderer>().material = material;
+        gizmo.GetComponent<MeshRenderer>().enabled = !targetIsOccupied;
+        currentMaterial = targetIsOccupied ? invalidMaterial : validMaterial;
+
         foreach (Transform child in marker.transform)
         {
-            child.GetComponent<MeshRenderer>().material = material;
+            child.GetComponent<MeshRenderer>().material = currentMaterial;
         }
     }
 }

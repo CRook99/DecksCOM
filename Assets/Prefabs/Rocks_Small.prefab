@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7399783466723343088}
   - component: {fileID: 7975863248053765182}
   - component: {fileID: 5869821822062507772}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 8247526222517684032}
   - component: {fileID: 1764333261959575713}
   - component: {fileID: 6513665207189584693}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 8666894046612017554}
   - component: {fileID: 8060956450715006438}
   - component: {fileID: 3294973356744610219}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 152496490302520725}
   - component: {fileID: 3537269498353295117}
   - component: {fileID: 8712225615799719060}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 8441089922630571089}
   - component: {fileID: 788990496940419203}
   - component: {fileID: 7928940205594948695}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5513871956066795901}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rocks_Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3962125422923903455}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Geometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -607,7 +607,7 @@ GameObject:
   - component: {fileID: 2853254770504122573}
   - component: {fileID: 5915509972895296366}
   - component: {fileID: 7398727596130057148}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -709,7 +709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1252302860746927831}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Blocking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -744,7 +744,7 @@ GameObject:
   - component: {fileID: 3074119113922083090}
   - component: {fileID: 8721540295156586357}
   - component: {fileID: 8241722779331581060}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

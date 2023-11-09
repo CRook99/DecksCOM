@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9201348883981433176}
   - component: {fileID: 638468627187527480}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Blocking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3742467543545833611}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FullWall_Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8894251796823259956}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 6199013237730914663}
   - component: {fileID: 6970989090154447304}
   - component: {fileID: 3396227331898908745}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
