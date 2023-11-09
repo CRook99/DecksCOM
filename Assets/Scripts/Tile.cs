@@ -52,18 +52,18 @@ public class Tile : MonoBehaviour
     {
         Reset();
 
-        CheckNeighbour(Vector3.forward, OrthAdjacencyList);
-        CheckNeighbour(-Vector3.forward, OrthAdjacencyList);
-        CheckNeighbour(Vector3.right, OrthAdjacencyList);
-        CheckNeighbour(-Vector3.right, OrthAdjacencyList);
+        CheckOrthNeighbour(Vector3.forward);
+        CheckOrthNeighbour(-Vector3.forward);
+        CheckOrthNeighbour(Vector3.right);
+        CheckOrthNeighbour(-Vector3.right);
 
-        CheckNeighbour(Vector3.forward + Vector3.right, DiagAdjacencyList);
-        CheckNeighbour(Vector3.forward - Vector3.right, DiagAdjacencyList);
-        CheckNeighbour(-Vector3.forward + Vector3.right, DiagAdjacencyList);
-        CheckNeighbour(-Vector3.forward - Vector3.right, DiagAdjacencyList);
+        CheckDiagNeighbour(Vector3.forward, Vector3.right);
+        CheckDiagNeighbour(Vector3.forward, -Vector3.right);
+        CheckDiagNeighbour(-Vector3.forward, Vector3.right);
+        CheckDiagNeighbour(-Vector3.forward, -Vector3.right);
     }
 
-    private void CheckNeighbour(Vector3 direction, List<Tile> list)
+    private Tile CheckOrthNeighbour(Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
@@ -71,10 +71,31 @@ public class Tile : MonoBehaviour
         foreach (Collider c in colliders)
         {
             Tile tile = c.GetComponent<Tile>();
-            if (tile != null && !tile.Occupied())
-            {
-                list.Add(tile);
-            }
+            if (tile == null || tile.Occupied()) continue;
+                            
+            OrthAdjacencyList.Add(tile);
+            return tile;
+        }
+
+        return null;
+    }
+
+    private void CheckDiagNeighbour(Vector3 xDirection, Vector3 zDirection)
+    { 
+        Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
+        Collider[] colliders = Physics.OverlapBox(transform.position + (xDirection + zDirection), halfExtents);
+
+        foreach (Collider c in colliders)
+        {
+            Tile tile = c.GetComponent<Tile>();
+            if (tile == null || tile.Occupied()) return;
+
+            Tile xTile = CheckOrthNeighbour(xDirection);
+            Tile zTile = CheckOrthNeighbour(zDirection);
+
+            if (xTile == null || zTile == null) continue;
+
+            DiagAdjacencyList.Add(tile);
         }
     }
 
