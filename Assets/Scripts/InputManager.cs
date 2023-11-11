@@ -15,6 +15,5 @@ public class InputManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.U)) currentPlayer.GetComponent<PlayerMovement>().CalculateSelectableTiles();
-        if (Input.GetKeyDown(KeyCode.R)) currentPlayer.GetComponent<PlayerMovement>().ResetAllTiles();
     }
 }

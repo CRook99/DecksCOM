@@ -8,9 +8,15 @@ public class Cover : MonoBehaviour
 {
     [SerializeField] protected CoverLevel level;
 
-    [ContextMenu("Get Cover")]
-    public float GetCover() 
-    { 
+    [ContextMenu("Get Level")]
+    public CoverLevel GetLevel() 
+    {
+        return level;
+    }
+
+    [ContextMenu("Get Protection")]
+    public float GetProtection()
+    {
         switch (level)
         {
             case CoverLevel.FULL: return 1f;

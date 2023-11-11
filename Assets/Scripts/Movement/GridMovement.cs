@@ -26,6 +26,7 @@ public class GridMovement : MonoBehaviour
         ComputeAdjacencyLists();
         isMoving = false;
         path = new Stack<Tile>();
+
     }
 
     private void Update()
@@ -92,7 +93,7 @@ public class GridMovement : MonoBehaviour
 
             foreach (Tile a in t.OrthAdjacencyList)
             {
-                if (a.Visited) continue;
+                if (a.Visited || !a.Walkable()) continue;
                 
                 a.Parent = t;
                 a.Visited = true;
@@ -103,7 +104,7 @@ public class GridMovement : MonoBehaviour
 
             foreach (Tile a in t.DiagAdjacencyList)
             {
-                if (a.Visited) continue;
+                if (a.Visited || !a.Walkable()) continue;
 
                 a.Parent = t;
                 a.Visited = true;

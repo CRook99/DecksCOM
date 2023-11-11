@@ -128,3 +128,6 @@ MonoBehaviour:
   Visited: 0
   Parent: {fileID: 0}
   Distance: 0
+  cover: {fileID: 0}
+  fullShield: {fileID: 7604222797135231556, guid: bc85fd31c5306ac469a029ed9a2f909f, type: 3}
+  halfShield: {fileID: 2921123592784073364, guid: f907e9dc9455c204e9f206a17eb9e008, type: 3}

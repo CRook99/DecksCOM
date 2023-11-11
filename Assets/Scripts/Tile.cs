@@ -21,6 +21,11 @@ public class Tile : MonoBehaviour
     public Tile Parent = null;
     public float Distance = 0.0f;
 
+    [SerializeField] GameObject cover;
+    [SerializeField] GameObject fullShield;
+    [SerializeField] GameObject halfShield;
+    private Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C)) UpdateColour();
@@ -31,7 +36,14 @@ public class Tile : MonoBehaviour
         OrthAdjacencyList = new List<Tile>();
         DiagAdjacencyList = new List<Tile>();
 
+        SetCover();
+
         _renderer = GetComponent<Renderer>();
+    }
+
+    public bool Walkable()
+    {
+        return !(Occupied() || cover != null);
     }
 
     // Can describe a map tile occupied by an entity or environment block
@@ -41,6 +53,23 @@ public class Tile : MonoBehaviour
         return Physics.Raycast(transform.position, Vector3.up, out _, 1);
     }
 
+    public bool SetCover()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, LayerMask.GetMask("Cover")))
+        {
+            cover = hit.collider.gameObject;
+            return true;
+        }
+
+        return false;
+    }
+
+    public GameObject GetCover()
+    {
+        return cover;
+    }
+
 
     [ContextMenu("Log Occupied")]
     public void LogOccupied()
@@ -48,22 +77,32 @@ public class Tile : MonoBehaviour
         Debug.Log(Occupied());
     }
 
+    [ContextMenu("Log Get Cover")]
+    public void LogGetCover()
+    {
+        Debug.Log(GetCover());
+    }
+
     public void FindNeighbours()
     {
         Reset();
 
-        CheckOrthNeighbour(Vector3.forward);
-        CheckOrthNeighbour(-Vector3.forward);
-        CheckOrthNeighbour(Vector3.right);
-        CheckOrthNeighbour(-Vector3.right);
+        
 
-        CheckDiagNeighbour(Vector3.forward, Vector3.right);
-        CheckDiagNeighbour(Vector3.forward, -Vector3.right);
-        CheckDiagNeighbour(-Vector3.forward, Vector3.right);
-        CheckDiagNeighbour(-Vector3.forward, -Vector3.right);
+        AddOrthNeighbour(GetOrthNeighbour(Vector3.forward));
+        AddOrthNeighbour(GetOrthNeighbour(-Vector3.forward));
+        AddOrthNeighbour(GetOrthNeighbour(Vector3.right));
+        AddOrthNeighbour(GetOrthNeighbour(-Vector3.right));
+
+        AddDiagNeighbour(GetDiagNeighbour(Vector3.forward, Vector3.right));
+        AddDiagNeighbour(GetDiagNeighbour(Vector3.forward, -Vector3.right));
+        AddDiagNeighbour(GetDiagNeighbour(-Vector3.forward, Vector3.right));
+        AddDiagNeighbour(GetDiagNeighbour(-Vector3.forward, -Vector3.right));
+
+        if (GetCover() == null) GenerateCoverShields();
     }
 
-    private Tile CheckOrthNeighbour(Vector3 direction)
+    private Tile GetOrthNeighbour(Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
@@ -71,16 +110,15 @@ public class Tile : MonoBehaviour
         foreach (Collider c in colliders)
         {
             Tile tile = c.GetComponent<Tile>();
-            if (tile == null || tile.Occupied()) continue;
+            if (tile == null) continue;
                             
-            OrthAdjacencyList.Add(tile);
             return tile;
         }
 
         return null;
     }
 
-    private void CheckDiagNeighbour(Vector3 xDirection, Vector3 zDirection)
+    private Tile GetDiagNeighbour(Vector3 xDirection, Vector3 zDirection)
     { 
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(transform.position + (xDirection + zDirection), halfExtents);
@@ -88,14 +126,46 @@ public class Tile : MonoBehaviour
         foreach (Collider c in colliders)
         {
             Tile tile = c.GetComponent<Tile>();
-            if (tile == null || tile.Occupied()) return;
+            if (tile == null) return null;
 
-            Tile xTile = CheckOrthNeighbour(xDirection);
-            Tile zTile = CheckOrthNeighbour(zDirection);
+            Tile xTile = GetOrthNeighbour(xDirection);
+            Tile zTile = GetOrthNeighbour(zDirection);
 
-            if (xTile == null || zTile == null) continue;
+            if ((xTile == null && zTile == null) || !xTile.Walkable() || !zTile.Walkable()) continue;
 
-            DiagAdjacencyList.Add(tile);
+            return tile;
+        }
+
+        return null;
+    }
+
+    private void AddOrthNeighbour(Tile t)
+    {
+        if (t != null) OrthAdjacencyList.Add(t);
+    }
+
+    private void AddDiagNeighbour(Tile t)
+    {
+        if (t != null) DiagAdjacencyList.Add(t);
+    }
+
+    private void GenerateCoverShields()
+    {
+        foreach (Tile tile in OrthAdjacencyList)
+        {
+            if (tile.GetCover() == null) continue;
+
+            Cover cover = tile.GetCover().GetComponent<Cover>();
+            Vector3 diff = tile.gameObject.transform.position - transform.position;
+            switch (cover.GetLevel())
+            {
+                case CoverLevel.FULL:
+                    Instantiate(fullShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform);
+                    break;
+                case CoverLevel.HALF:
+                    Instantiate(halfShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform);
+                    break;
+            }
         }
     }
 
