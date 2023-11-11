@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8399615737000894867}
+  - component: {fileID: 5172004061837895770}
   m_Layer: 0
   m_Name: HalfShield
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 8808035187665603373}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5172004061837895770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921123592784073364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3b77ee4496019489b0d52a2331332f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 8176212532290343319}
 --- !u!1001 &9058660983518424262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89,6 +103,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abdb57ce0be006042ac5ade5fc919bc5, type: 3}
+--- !u!1 &8176212532290343319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: abdb57ce0be006042ac5ade5fc919bc5, type: 3}
+  m_PrefabInstance: {fileID: 9058660983518424262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8808035187665603373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: abdb57ce0be006042ac5ade5fc919bc5, type: 3}

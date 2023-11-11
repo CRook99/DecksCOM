@@ -7,7 +7,6 @@ public class DestructibleCover : Cover
     [SerializeField] Mesh fullMesh;
     [SerializeField] Mesh halfMesh;
     [SerializeField] Mesh noneMesh;
-    [SerializeField] MeshFilter meshFilter;
 
     public void Weaken()
     {
