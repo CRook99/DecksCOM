@@ -6,13 +6,14 @@ public class TileSelection : MonoBehaviour
 {
     public static TileSelection instance;
     public GameObject current;
-    public GameObject nullTile;
+    public GameObject previous;
     private LayerMask TileMask;
 
     void Awake()
     {
         instance = this;
-        current = gameObject; // Ensures not null on start
+        current = gameObject;
+        previous = gameObject;
         TileMask = LayerMask.GetMask("Tile");
     }
 
@@ -24,6 +25,19 @@ public class TileSelection : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, TileMask))
         {
             current = hit.collider.gameObject;
+
+        }
+
+        if (current != previous)
+        {
+            current.GetComponent<Tile>().ShowShields();
+
+            if (previous.tag == "Tile")
+            {
+                previous.GetComponent<Tile>().HideShields();
+            }
+            
+            previous = current;
         }
     }
 

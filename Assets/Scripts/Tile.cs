@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour
     [SerializeField] GameObject halfShield;
     private GameObject cover;
     private Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
+    public List<CoverShield> shields;
 
     public void Initialize()
     {
@@ -81,24 +82,53 @@ public class Tile : MonoBehaviour
             if (tile.GetCover() == null) continue;
 
             Cover cover = tile.GetCover().GetComponent<Cover>();
+            CoverShield shield;
             Vector3 diff = tile.gameObject.transform.position - transform.position;
             switch (cover.GetLevel())
             {
                 case CoverLevel.FULL:
-                    Instantiate(fullShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform);
+                    shield = Instantiate(fullShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform).GetComponent<CoverShield>();
+                    shields.Add(shield);
                     break;
                 case CoverLevel.HALF:
-                    Instantiate(halfShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform);
+                    shield = Instantiate(halfShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform).GetComponent<CoverShield>();
+                    shields.Add(shield);
                     break;
             }
         }
     }
+
+    
 
     public void UpdateColour()
     {
         if (Current) _renderer.material = Debug_Current;
         else if (Selectable) _renderer.material = Debug_Selectable;
         else _renderer.material = Debug_Default;
+    }
+
+    public void ShowShields()
+    {
+        foreach (CoverShield shield in shields)
+        {
+            shield.Show();
+        }
+    }
+
+    public void ShowShields(float scale)
+    {
+        foreach (CoverShield shield in shields)
+        {
+            shield.Show(scale);
+        }
+    }
+
+    public void HideShields()
+    {
+        foreach (CoverShield shield in shields)
+        {
+            shield.Hide();
+        }
     }
 
     public void Reset()
