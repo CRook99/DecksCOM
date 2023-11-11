@@ -14,7 +14,7 @@ public class TileAdjacencyUtil
     /// Freshly computes the adjacency lists of a given tile t
     /// </summary>
     /// <param name="t"></param>
-    public static void ComputeAdjacencies(Tile t)
+    public static void ComputeAdjacencyLists(Tile t)
     {
         tile = t;
         tile.Reset();

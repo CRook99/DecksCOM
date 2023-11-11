@@ -26,14 +26,15 @@ public class Tile : MonoBehaviour
     private GameObject cover;
     private Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
 
-    private void Start()
+    public void Initialize()
     {
         OrthAdjacencyList = new List<Tile>();
         DiagAdjacencyList = new List<Tile>();
-
-        SetCover();
+        TileAdjacencyUtil.ComputeAdjacencyLists(this);
 
         _renderer = GetComponent<Renderer>();
+
+        SetCover();
     }
 
     public bool Walkable()
@@ -65,13 +66,15 @@ public class Tile : MonoBehaviour
     public void SetDiagAdjList(List<Tile> list) { DiagAdjacencyList = list; }
     public List<Tile> GetDiagAdjList() { return DiagAdjacencyList; }
 
+    /*
     public void FindNeighbours()
     {
-        TileAdjacencyUtil.ComputeAdjacencies(this);
+        TileAdjacencyUtil.ComputeAdjacencyLists(this);
         if (GetCover() == null) GenerateCoverShields();
     }
+    */
 
-    private void GenerateCoverShields()
+    public void GenerateCoverShields()
     {
         foreach (Tile tile in OrthAdjacencyList)
         {

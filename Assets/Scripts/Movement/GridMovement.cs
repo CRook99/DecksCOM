@@ -7,7 +7,6 @@ using UnityEngine;
 public class GridMovement : MonoBehaviour
 {
     private List<Tile> selectableTiles;
-    public Tile[] tiles;
     private Tile currentTile;
     private int movementRange;
     private int movementSpeed;
@@ -23,11 +22,8 @@ public class GridMovement : MonoBehaviour
     protected void Initialize()
     {
         selectableTiles = new List<Tile>();
-        tiles = GameObject.FindGameObjectsWithTag("Tile").Select(o => o.GetComponent<Tile>()).ToArray();
-        ComputeAdjacencyLists();
         isMoving = false;
         path = new Stack<Tile>();
-
     }
 
     private void Update()
@@ -36,7 +32,6 @@ public class GridMovement : MonoBehaviour
         {
             Move();
         }
-        
     }
 
     public void SetMovementRange(int range)
@@ -64,14 +59,6 @@ public class GridMovement : MonoBehaviour
             tile = hit.collider.GetComponent<Tile>();
         }
         return tile;
-    }
-
-    public void ComputeAdjacencyLists()
-    {
-        foreach (Tile tile in tiles)
-        {
-            tile.FindNeighbours();
-        }
     }
 
     public void CalculateSelectableTiles()
@@ -185,7 +172,7 @@ public class GridMovement : MonoBehaviour
 
     private void UpdateTileColours()
     {
-        foreach (Tile tile in tiles)
+        foreach (Tile tile in TileManager.Instance.GetAllTiles())
         {
             tile.UpdateColour();
         }
@@ -195,14 +182,14 @@ public class GridMovement : MonoBehaviour
     {
         foreach (Tile tile in currentTile.GetOrthAdjList())
         {
-            TileAdjacencyUtil.ComputeAdjacencies(tile);
+            TileAdjacencyUtil.ComputeAdjacencyLists(tile);
         }
 
         foreach (Tile tile in currentTile.GetDiagAdjList())
         {
-            TileAdjacencyUtil.ComputeAdjacencies(tile);
+            TileAdjacencyUtil.ComputeAdjacencyLists(tile);
         }
 
-        TileAdjacencyUtil.ComputeAdjacencies(currentTile);
+        TileAdjacencyUtil.ComputeAdjacencyLists(currentTile);
     }
 }
