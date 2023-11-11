@@ -6,22 +6,23 @@ using UnityEngine;
 
 public class GridMovement : MonoBehaviour
 {
-    private List<Tile> selectableTiles = new List<Tile>();
+    private List<Tile> selectableTiles;
     public Tile[] tiles;
-    [SerializeField] Tile currentTile;
+    private Tile currentTile;
     private int movementRange;
     private int movementSpeed;
 
     [SerializeField] protected bool isMoving;
     public Stack<Tile> path;
     private Tile nextTileInPath;
-    [SerializeField] private Vector3 nextPosition;
-    [SerializeField] private Vector3 directionVector;
+    private Vector3 nextPosition;
+    private Vector3 directionVector;
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
 
     protected void Initialize()
     {
+        selectableTiles = new List<Tile>();
         tiles = GameObject.FindGameObjectsWithTag("Tile").Select(o => o.GetComponent<Tile>()).ToArray();
         ComputeAdjacencyLists();
         isMoving = false;
@@ -91,7 +92,7 @@ public class GridMovement : MonoBehaviour
 
             if (t.Distance >= movementRange) continue;
 
-            foreach (Tile a in t.OrthAdjacencyList)
+            foreach (Tile a in t.GetOrthAdjList())
             {
                 if (a.Visited || !a.Walkable()) continue;
                 
@@ -102,7 +103,7 @@ public class GridMovement : MonoBehaviour
                 
             }
 
-            foreach (Tile a in t.DiagAdjacencyList)
+            foreach (Tile a in t.GetDiagAdjList())
             {
                 if (a.Visited || !a.Walkable()) continue;
 
@@ -192,16 +193,16 @@ public class GridMovement : MonoBehaviour
 
     private void RecomputeOriginAdjacencies()
     {
-        foreach (Tile tile in currentTile.OrthAdjacencyList)
+        foreach (Tile tile in currentTile.GetOrthAdjList())
         {
-            tile.FindNeighbours();
+            TileAdjacencyUtil.ComputeAdjacencies(tile);
         }
 
-        foreach (Tile tile in currentTile.DiagAdjacencyList)
+        foreach (Tile tile in currentTile.GetDiagAdjList())
         {
-            tile.FindNeighbours();
+            TileAdjacencyUtil.ComputeAdjacencies(tile);
         }
 
-        currentTile.FindNeighbours();
+        TileAdjacencyUtil.ComputeAdjacencies(currentTile);
     }
 }
