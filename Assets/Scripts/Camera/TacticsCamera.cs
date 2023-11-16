@@ -16,7 +16,8 @@ public class TacticsCamera : MonoBehaviour
     private float _rotationSpeed;
 
     private float _zoomSpeed;
-    private Vector3 _maxZoom = new Vector3(4f, 4f, 4f);
+    private float _maxZoom = -4f;
+    private float _minZoom = -11f;
 
 
     
@@ -38,8 +39,9 @@ public class TacticsCamera : MonoBehaviour
     {
         HandlePanInput();
         HandleSpeedInput();
-        HandleRotationInput();
         HandleZoomInput();
+        HandleRotationInput();
+        ClampZoom();
     }
 
     void HandlePanInput()
@@ -69,7 +71,24 @@ public class TacticsCamera : MonoBehaviour
 
     void HandleZoomInput()
     {
-        if (Input.GetAxis("Scroll") > 0) { camera.transform.position += camera.transform.forward * _zoomSpeed; }
-        if (Input.GetAxis("Scroll") < 0) { camera.transform.position += -camera.transform.forward * _zoomSpeed; }
+        if (Input.GetAxis("Scroll") > 0 && !CameraTooClose()) { camera.transform.position -= -camera.transform.forward * _zoomSpeed; }
+        if (Input.GetAxis("Scroll") < 0 && !CameraTooFar()) { camera.transform.position += -camera.transform.forward * _zoomSpeed; }
     }
+
+    void ClampZoom()
+    {
+        if (CameraTooClose())
+        {
+            camera.transform.localPosition = new Vector3(_maxZoom, camera.transform.localPosition.y, _maxZoom);
+        }
+
+        if (CameraTooFar())
+        {
+            camera.transform.localPosition = new Vector3(_minZoom, camera.transform.localPosition.y, _minZoom);
+        }
+    }
+
+    bool CameraTooClose() { return camera.transform.localPosition.x >= _maxZoom; }
+
+    bool CameraTooFar() { return camera.transform.localPosition.x <= _minZoom; }
 }
