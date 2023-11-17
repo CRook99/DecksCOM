@@ -8,8 +8,8 @@ public class GridMovement : MonoBehaviour
 {
     private List<Tile> selectableTiles;
     private Tile currentTile;
-    private int movementRange;
-    private int movementSpeed;
+    [SerializeField] int movementRange;
+    private int movementSpeed = 5;
 
     [SerializeField] protected bool isMoving;
     public Stack<Tile> path;
@@ -19,7 +19,7 @@ public class GridMovement : MonoBehaviour
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
 
-    protected void Initialize()
+    void Start()
     {
         selectableTiles = new List<Tile>();
         isMoving = false;

@@ -18765,7 +18765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   current: {fileID: 0}
-  nullTile: {fileID: 0}
+  previous: {fileID: 0}
 --- !u!1001 &1498421468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27478,8 +27478,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2096160313}
-  - component: {fileID: 2096160314}
   - component: {fileID: 2096160315}
+  - component: {fileID: 2096160316}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -27503,20 +27503,6 @@ Transform:
   - {fileID: 2128446453}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2096160314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096160312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8bf634d1f7b794409a5d7d26ac4af3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tiles: []
-  isMoving: 0
 --- !u!114 &2096160315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27530,6 +27516,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPlayer: {fileID: 2096160312}
+--- !u!114 &2096160316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096160312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7aa8245b79e7a0469b87d8bc009be39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2110607585
 PrefabInstance:
   m_ObjectHideFlags: 0
