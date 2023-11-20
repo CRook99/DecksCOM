@@ -11,4 +11,9 @@ public class PlayerScript : Character
         movementRange = 9;
         SetMovementRange(movementRange);
     }
+
+    public override void Die()
+    {
+        Debug.Log("Player Die");
+    }
 }

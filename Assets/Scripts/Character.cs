@@ -14,4 +14,19 @@ public abstract class Character : MonoBehaviour
         movementRange = range;
         gridMovement.SetMovementRange(movementRange);
     }
+
+    public void TakeDamage(int amount)
+    {
+        if (!healthManager.TakeDamage(amount))
+        {
+            Die();
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        healthManager.Heal(amount);
+    }
+
+    public abstract void Die();
 }
