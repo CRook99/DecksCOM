@@ -15642,6 +15642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinemachineVirtualCamera: {fileID: 2110725959}
+  useEdgePan: 0
 --- !u!4 &1106415529
 Transform:
   m_ObjectHideFlags: 0

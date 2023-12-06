@@ -13,7 +13,7 @@ public class CameraSystem : MonoBehaviour
     private float movementSpeed = 12f;
     private float rotationSpeed = 135f;
     private int edgePanMargin = 50;
-    private bool useEdgePan = true;
+    [SerializeField] bool useEdgePan = true;
     private bool isKeyPanning = false;
 
     private Vector3 followOffset;
