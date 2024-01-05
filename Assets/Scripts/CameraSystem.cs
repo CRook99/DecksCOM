@@ -9,12 +9,16 @@ public class CameraSystem : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
     private CinemachineTransposer cinemachineTransposer;
+    [SerializeField] private AnimationCurve moveCurve;
 
     private float movementSpeed = 12f;
     private float rotationSpeed = 135f;
     private int edgePanMargin = 50;
     [SerializeField] bool useEdgePan = true;
     private bool isKeyPanning = false;
+
+    private bool lockControl = false;
+
 
     private Vector3 followOffset;
     private float zoomMin = 5f;
@@ -29,7 +33,7 @@ public class CameraSystem : MonoBehaviour
 
     private void Update()
     {
-        Handle();
+        if (!lockControl) Handle();
     }
 
     public void Handle()
@@ -97,4 +101,33 @@ public class CameraSystem : MonoBehaviour
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, zoomSpeed * Time.deltaTime);
     }
 
+    IEnumerator MoveToPoint(GameObject obj)
+    {
+        if (lockControl) yield break;
+        
+        lockControl = true;
+
+        Vector3 start = transform.position;
+        Vector3 target = obj.transform.position;
+        float duration = 0.8f;
+        float elapsed = 0f;
+        float factor = 0f;
+
+        while (elapsed < duration)
+        {
+            factor = elapsed / duration;
+            factor = moveCurve.Evaluate(factor);
+            transform.position = Vector3.Lerp(start, target, factor);
+            yield return null;
+            elapsed += Time.deltaTime;
+        }
+
+        transform.position = target;
+        lockControl = false;
+    }
+
+    public void MoveToCharacter(Character character)
+    {
+        StartCoroutine(MoveToPoint(character.gameObject));
+    }
 }
