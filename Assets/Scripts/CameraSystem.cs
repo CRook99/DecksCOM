@@ -29,8 +29,21 @@ public class CameraSystem : MonoBehaviour
 
     private void Update()
     {
-        HandleKeyPanInput();
+        Handle();
+        // HandleKeyPanInput();
+        // HandleRotationInput();
+        // HandleZoomInput();
+        // if (useEdgePan && !isKeyPanning) { HandleEdgePanInput(); }
+        // isKeyPanning = false;
+    }
+
+    public void Handle()
+    {
         HandleRotationInput();
+
+        if (GameState.Instance.Turn == Turn.ENEMY) return;
+
+        HandleKeyPanInput();
         HandleZoomInput();
         if (useEdgePan && !isKeyPanning) { HandleEdgePanInput(); }
         isKeyPanning = false;

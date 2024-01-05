@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour
 {
-    public enum Turn
-    {
-        PLAYER,
-        ENEMY
-    }
-
     private static GameState _instance;
     public static GameState Instance { get { return _instance; } }
 
@@ -31,18 +25,19 @@ public class GameState : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("t")) SwitchTurn();
+        if (Input.GetKeyDown("t")) SwitchTurn(); // DEBUGGING
     }
+
+    public Turn Turn { get { return turn; } }
 
     void SwitchTurn()
     {
         turn = (turn == Turn.PLAYER) ? Turn.ENEMY : Turn.PLAYER;
-        Debug.Log(turn);
     }
 
     void PassTurnToPlayer()
     {
-        turn = Turn.ENEMY;
+        turn = Turn.PLAYER;
     }
 
     void PassTurnToEnemy()
