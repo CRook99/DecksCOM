@@ -14,6 +14,7 @@ public class Player : Character
 
     public override void Die()
     {
+        base.Die();
         Debug.Log("Player Die");
     }
 }

@@ -30,11 +30,6 @@ public class CameraSystem : MonoBehaviour
     private void Update()
     {
         Handle();
-        // HandleKeyPanInput();
-        // HandleRotationInput();
-        // HandleZoomInput();
-        // if (useEdgePan && !isKeyPanning) { HandleEdgePanInput(); }
-        // isKeyPanning = false;
     }
 
     public void Handle()

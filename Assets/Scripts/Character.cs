@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour
     protected HealthManager healthManager;
     protected int movementRange;
     protected int maxHealth;
+    protected bool dead;
 
     public void SetMovementRange(int range)
     {
@@ -28,5 +29,10 @@ public abstract class Character : MonoBehaviour
         healthManager.Heal(amount);
     }
 
-    public abstract void Die();
+    public bool IsDead() { return dead; }
+
+    public virtual void Die()
+    {
+        dead = true;
+    }
 }
