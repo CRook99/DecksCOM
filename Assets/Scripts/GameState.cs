@@ -29,6 +29,17 @@ public class GameState : MonoBehaviour
         PassTurnToPlayer();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("t")) SwitchTurn();
+    }
+
+    void SwitchTurn()
+    {
+        turn = (turn == Turn.PLAYER) ? Turn.ENEMY : Turn.PLAYER;
+        Debug.Log(turn);
+    }
+
     void PassTurnToPlayer()
     {
         turn = Turn.ENEMY;
