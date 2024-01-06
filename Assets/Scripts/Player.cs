@@ -6,10 +6,22 @@ public class Player : Character
 {
     private void Start()
     {
-        gridMovement = gameObject.AddComponent<PlayerMovement>();
+        gridMovement = GetComponent<PlayerMovement>();
         healthManager = new HealthManager(100);
         movementRange = 9;
         SetMovementRange(movementRange);
+    }
+
+    public void SetActive()
+    {
+        gridMovement.CalculateSelectableTiles();
+        gridMovement.ShowRange();
+    }
+
+    public void SetInactive()
+    {
+        gridMovement.HideRange();
+        gridMovement.ResetAllTiles();
     }
 
     public override void Die()

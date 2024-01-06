@@ -38,6 +38,7 @@ public class GameState : MonoBehaviour
     void PassTurnToPlayer()
     {
         turn = Turn.PLAYER;
+        TeamManager.Instance.BeginTurn();
     }
 
     void PassTurnToEnemy()

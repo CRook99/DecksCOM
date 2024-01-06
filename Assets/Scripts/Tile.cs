@@ -17,8 +17,8 @@ public class Tile : MonoBehaviour
     public bool Visited = false;
     public Tile Parent = null;
     public float Distance = 0.0f;
-    public bool Current = false;
-    public bool Selectable = false;
+    //public bool Current = false;
+    //public bool Selectable = false;
 
 
     [SerializeField] GameObject fullShield;
@@ -100,11 +100,26 @@ public class Tile : MonoBehaviour
 
     
 
-    public void UpdateColour()
+    // public void UpdateColour()
+    // {
+    //     if (Current) _renderer.material = Debug_Current;
+    //     else if (Selectable) _renderer.material = Debug_Selectable;
+    //     else _renderer.material = Debug_Default;
+    // }
+
+    public void ShowCurrent()
     {
-        if (Current) _renderer.material = Debug_Current;
-        else if (Selectable) _renderer.material = Debug_Selectable;
-        else _renderer.material = Debug_Default;
+        _renderer.material = Debug_Current;
+    }
+
+    public void ShowSelectable()
+    {
+        _renderer.material = Debug_Selectable;
+    }
+
+    public void HideColour()
+    {
+        _renderer.material = Debug_Default;
     }
 
     public void ShowShields()
@@ -137,7 +152,7 @@ public class Tile : MonoBehaviour
         Parent = null;
         Distance = 0.0f;
 
-        Current = false;
-        Selectable = false;
+        // Current = false;
+        // Selectable = false;
     }
 }

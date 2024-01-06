@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GridMovement : MonoBehaviour
 {
-    private List<Tile> selectableTiles;
-    private Tile currentTile;
+    [SerializeField] protected List<Tile> selectableTiles;
+    protected Tile currentTile;
     [SerializeField] int movementRange;
     private int movementSpeed = 5;
 
@@ -19,7 +19,7 @@ public class GridMovement : MonoBehaviour
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
 
-    void Start()
+    void Awake()
     {
         selectableTiles = new List<Tile>();
         isMoving = false;
@@ -47,7 +47,6 @@ public class GridMovement : MonoBehaviour
     public void GetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
-        currentTile.Current = true;
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -74,8 +73,6 @@ public class GridMovement : MonoBehaviour
         {
             Tile t = queue.Dequeue();
             selectableTiles.Add(t);
-            t.Selectable = true;
-            
 
             if (t.Distance >= movementRange) continue;
 
@@ -102,12 +99,28 @@ public class GridMovement : MonoBehaviour
 
             t.Visited = true;
         }
+    }
 
-        UpdateTileColours();
+    public void ShowRange()
+    {
+        foreach (Tile tile in selectableTiles)
+        {
+            tile.ShowSelectable();
+        }
+        currentTile.ShowCurrent();
+    }
+
+    public void HideRange()
+    {
+        foreach (Tile tile in selectableTiles)
+        {
+            tile.HideColour();
+        }
     }
 
     public void ResetAllTiles()
     {
+        if (selectableTiles == null) return;
         foreach (Tile tile in selectableTiles)
         {
             tile.Reset();
@@ -130,7 +143,8 @@ public class GridMovement : MonoBehaviour
     public void MoveToDestination(Tile destination)
     {
         isMoving = true;
-        CalculateSelectableTiles();
+        HideRange();
+        //CalculateSelectableTiles();
         generatePath(destination);
         CalculateNextPositionInPath();
         CalculateNextDirectionVector();
@@ -170,13 +184,13 @@ public class GridMovement : MonoBehaviour
         directionVector = (nextPosition - transform.position).normalized;
     }
 
-    private void UpdateTileColours()
-    {
-        foreach (Tile tile in TileManager.Instance.GetAllTiles())
-        {
-            tile.UpdateColour();
-        }
-    }
+    // private void UpdateTileColours()
+    // {
+    //     foreach (Tile tile in TileManager.Instance.GetAllTiles())
+    //     {
+    //         tile.UpdateColour();
+    //     }
+    // }
 
     private void RecomputeOriginAdjacencies()
     {
