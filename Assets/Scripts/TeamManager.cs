@@ -9,7 +9,7 @@ public class TeamManager : MonoBehaviour
     public static TeamManager Instance { get { return _instance; } }
 
     [SerializeField] List<Player> _players;
-    private Player _current;
+    [SerializeField] Player _current;
 
     void Awake()
     {
@@ -18,6 +18,12 @@ public class TeamManager : MonoBehaviour
     }
 
     public Player Current { get { return _current; } }
+
+    public void SetCurrent(int index)
+    {
+        if (index < 0 || index > 2) index = 0;
+        _current = _players[index];
+    }
 
     public int GetAllPlayerCount() { return _players.Count; }
 
