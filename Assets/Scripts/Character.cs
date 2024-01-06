@@ -8,7 +8,18 @@ public abstract class Character : MonoBehaviour
     protected HealthManager healthManager;
     protected int movementRange;
     protected int maxHealth;
+    protected bool canMove;
+    public bool CanMove { get { return canMove; } }
     protected bool dead;
+
+    public void BeginTurn()
+    {
+        if (dead) return;
+        canMove = true;
+        // Take tick damage
+    }
+
+    public abstract void Move(Tile destination);
 
     public void SetMovementRange(int range)
     {

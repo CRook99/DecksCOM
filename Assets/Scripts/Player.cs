@@ -12,6 +12,13 @@ public class Player : Character
         SetMovementRange(movementRange);
     }
 
+    public override void Move(Tile destination)
+    {
+        // Tick damage
+        canMove = false;
+        gridMovement.MoveToDestination(destination);
+    }
+
     public void SetActive()
     {
         gridMovement.CalculateSelectableTiles();

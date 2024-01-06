@@ -32,7 +32,10 @@ public class TeamManager : MonoBehaviour
 
     public void BeginTurn()
     {
-        
+        foreach (Player player in _players)
+        {
+            player.BeginTurn();
+        }
     }
 
     public int GetAllPlayerCount() { return _players.Count; }

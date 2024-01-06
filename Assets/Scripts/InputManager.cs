@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && TileSelection.instance.MouseOnTile())
         {
-            TeamManager.Instance.Current.GetComponent<PlayerMovement>().MoveToDestination(TileSelection.instance.current.GetComponent<Tile>());
+            TeamManager.Instance.Current.Move(TileSelection.instance.current.GetComponent<Tile>());
         }
 
         // DEBUG

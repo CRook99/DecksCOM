@@ -32,7 +32,8 @@ public class GameState : MonoBehaviour
 
     void SwitchTurn()
     {
-        turn = (turn == Turn.PLAYER) ? Turn.ENEMY : Turn.PLAYER;
+        if (turn == Turn.PLAYER) PassTurnToEnemy();
+        else PassTurnToPlayer();
     }
 
     void PassTurnToPlayer()
