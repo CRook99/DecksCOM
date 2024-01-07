@@ -8,14 +8,10 @@ public class GridMovement : MonoBehaviour
 {
     [SerializeField] protected List<Tile> selectableTiles;
     protected Tile currentTile;
-    [SerializeField] int movementRange;
+    private int movementRange;
     private int movementSpeed = 5;
 
     [SerializeField] protected bool isMoving;
-    public Stack<Tile> path;
-    private Tile nextTileInPath;
-    private Vector3 nextPosition;
-    private Vector3 directionVector;
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
 
@@ -23,15 +19,11 @@ public class GridMovement : MonoBehaviour
     {
         selectableTiles = new List<Tile>();
         isMoving = false;
-        path = new Stack<Tile>();
     }
 
     private void Update()
     {
-        if (isMoving)
-        {
-            Move();
-        }
+
     }
 
     public void SetMovementRange(int range)
@@ -103,19 +95,13 @@ public class GridMovement : MonoBehaviour
 
     public void ShowRange()
     {
-        foreach (Tile tile in selectableTiles)
-        {
-            tile.ShowSelectable();
-        }
+        foreach (Tile tile in selectableTiles) { tile.ShowSelectable();}
         currentTile.ShowCurrent();
     }
 
     public void HideRange()
     {
-        foreach (Tile tile in selectableTiles)
-        {
-            tile.HideColour();
-        }
+        foreach (Tile tile in selectableTiles) { tile.HideColour(); }
     }
 
     public void ResetAllTiles()
@@ -129,68 +115,46 @@ public class GridMovement : MonoBehaviour
     }
 
 
-    private void generatePath(Tile destination)
+    private Stack<Tile> generatePath(Tile destination)
     {
-        path.Clear();
+        Stack<Tile> path = new Stack<Tile>();
         Tile current = destination;
         while (current.Parent != null)
         {
             path.Push(current);
             current = current.Parent;
         }
+
+        return path;
     }
 
-    public void MoveToDestination(Tile destination)
+    public IEnumerator MoveToDestination(Tile destination)
     {
         isMoving = true;
         HideRange();
-        //CalculateSelectableTiles();
-        generatePath(destination);
-        CalculateNextPositionInPath();
-        CalculateNextDirectionVector();
+        Stack<Tile> path = generatePath(destination);
+        Vector3 startPosition, nextPosition, directionVector;
         
-    }
+        while (path.Count > 0)
+        {
+            startPosition = transform.position;
+            nextPosition = path.Pop().gameObject.transform.position + _offset;
+            directionVector = (nextPosition - startPosition).normalized;
 
-    private void Move()
-    {
-        if (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
-        {
-            transform.position += movementSpeed * directionVector * Time.deltaTime;
-        }
-        else
-        {
+            while (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
+            {
+                transform.position += movementSpeed * directionVector * Time.deltaTime;
+                yield return null;
+            }
+
             transform.position = nextPosition;
-            CalculateNextPositionInPath();
-            CalculateNextDirectionVector();
-        }
-    }
-
-    private void CalculateNextPositionInPath()
-    {
-        if (path.Count == 0) // End of path reached
-        {
-            isMoving = false;
-            RecomputeOriginAdjacencies();
-            CalculateSelectableTiles();
-            return;
         }
 
-        Tile t = path.Pop();
-        nextPosition = t.gameObject.transform.position + new Vector3(0f, 0.5f, 0f);
+        isMoving = false;
+        
+        // extra
+        yield break;
     }
-
-    private void CalculateNextDirectionVector()
-    {
-        directionVector = (nextPosition - transform.position).normalized;
-    }
-
-    // private void UpdateTileColours()
-    // {
-    //     foreach (Tile tile in TileManager.Instance.GetAllTiles())
-    //     {
-    //         tile.UpdateColour();
-    //     }
-    // }
 
     private void RecomputeOriginAdjacencies()
     {

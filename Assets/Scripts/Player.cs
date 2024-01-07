@@ -16,7 +16,7 @@ public class Player : Character
     {
         // Tick damage
         canMove = false;
-        gridMovement.MoveToDestination(destination);
+        StartCoroutine(gridMovement.MoveToDestination(destination));
     }
 
     public void SetActive()
