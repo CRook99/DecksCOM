@@ -22,7 +22,7 @@ public class Player : Character
     public void SetActive()
     {
         gridMovement.CalculateSelectableTiles();
-        gridMovement.ShowRange();
+        if (canMove) gridMovement.ShowRange();
     }
 
     public void SetInactive()

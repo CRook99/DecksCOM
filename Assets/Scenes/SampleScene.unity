@@ -8194,6 +8194,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1856322025127294033, guid: 3d30140ac51040d4189441df737bb7ee, type: 3}
   m_PrefabInstance: {fileID: 557987083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &570751820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 570751822}
+  - component: {fileID: 570751821}
+  m_Layer: 0
+  m_Name: TeamSwitcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &570751821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570751820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd83ccfc35afce746aedbb5043879c1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSystem: {fileID: 1106415528}
+--- !u!4 &570751822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570751820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.2122345, y: -6.25999, z: 5.077487}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &571591638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11160,7 +11205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bf634d1f7b794409a5d7d26ac4af3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementRange: 0
+  selectableTiles: []
   isMoving: 0
 --- !u!1001 &779805798
 PrefabInstance:
@@ -27707,7 +27752,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c0fc4d05d08e541970ae6cd973c79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSystem: {fileID: 1106415528}
 --- !u!4 &2019838594
 Transform:
   m_ObjectHideFlags: 0
@@ -29242,7 +29286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bf634d1f7b794409a5d7d26ac4af3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementRange: 0
+  selectableTiles: []
   isMoving: 0
 --- !u!1001 &2110607585
 PrefabInstance:
@@ -30092,6 +30136,7 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1247285187}
   - {fileID: 2019838594}
+  - {fileID: 570751822}
   - {fileID: 708413493}
   - {fileID: 419825292}
   - {fileID: 1509496610}
