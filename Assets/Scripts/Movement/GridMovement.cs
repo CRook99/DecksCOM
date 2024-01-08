@@ -153,6 +153,7 @@ public class GridMovement : MonoBehaviour
         isMoving = false;
         
         // extra
+        TeamSwitcher.Instance.Enable();
         yield break;
     }
 

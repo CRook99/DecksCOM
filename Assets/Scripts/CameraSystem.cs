@@ -7,9 +7,13 @@ using UnityEngine.UIElements;
 
 public class CameraSystem : MonoBehaviour
 {
+    private static CameraSystem _instance;
+    public static CameraSystem Instance { get { return _instance; } }
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
     private CinemachineTransposer cinemachineTransposer;
     [SerializeField] private AnimationCurve moveCurve;
+
+    public static float MOVE_DURATION = 0.8f;
 
     private float movementSpeed = 12f;
     private float rotationSpeed = 135f;
@@ -27,6 +31,7 @@ public class CameraSystem : MonoBehaviour
 
     private void Awake()
     {
+        _instance = this;
         cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         followOffset = cinemachineTransposer.m_FollowOffset;
     }
@@ -101,7 +106,7 @@ public class CameraSystem : MonoBehaviour
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, zoomSpeed * Time.deltaTime);
     }
 
-    IEnumerator MoveToPoint(GameObject obj)
+    public IEnumerator MoveToPoint(GameObject obj)
     {
         if (lockControl) yield break;
         
@@ -109,13 +114,12 @@ public class CameraSystem : MonoBehaviour
 
         Vector3 start = transform.position;
         Vector3 target = obj.transform.position;
-        float duration = 0.8f;
         float elapsed = 0f;
         float factor = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < MOVE_DURATION)
         {
-            factor = elapsed / duration;
+            factor = elapsed / MOVE_DURATION;
             factor = moveCurve.Evaluate(factor);
             transform.position = Vector3.Lerp(start, target, factor);
             yield return null;
