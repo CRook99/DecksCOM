@@ -154,6 +154,7 @@ public class GridMovement : MonoBehaviour
         
         // extra
         TeamSwitcher.Instance.Enable();
+        CameraSystem.Instance.Unfocus();
         yield break;
     }
 

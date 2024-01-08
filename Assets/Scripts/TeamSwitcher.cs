@@ -19,26 +19,27 @@ public class TeamSwitcher : MonoBehaviour
 
         if (Input.GetKeyDown("1") && !TeamManager.Instance.GetPlayerByIndex(0).IsDead())
         {
-            TeamManager.Instance.Current.SetInactive();
-            TeamManager.Instance.SetCurrent(0);
-            TeamManager.Instance.Current.SetActive();
-            CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
-            
+            StartCoroutine(Switch(0));
         }
         else if (Input.GetKeyDown("2") && !TeamManager.Instance.GetPlayerByIndex(1).IsDead())
         {
-            TeamManager.Instance.Current.SetInactive();
-            TeamManager.Instance.SetCurrent(1);
-            TeamManager.Instance.Current.SetActive();
-            CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
+            StartCoroutine(Switch(1));
         }
         else if (Input.GetKeyDown("3") && !TeamManager.Instance.GetPlayerByIndex(2).IsDead())
         {
-            TeamManager.Instance.Current.SetInactive();
-            TeamManager.Instance.SetCurrent(2);
-            TeamManager.Instance.Current.SetActive();
-            CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
+            StartCoroutine(Switch(2));
         }
+    }
+
+    IEnumerator Switch(int index)
+    {
+        TeamManager.Instance.Current.SetInactive();
+        TeamManager.Instance.SetCurrent(index);
+        TeamManager.Instance.Current.SetActive();
+        Disable();
+        CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
+        yield return new WaitForSeconds(CameraSystem.MOVE_DURATION);
+        Enable();
     }
 
     public void Enable() { canSwitch = true; }

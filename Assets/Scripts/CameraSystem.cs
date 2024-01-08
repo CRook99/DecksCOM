@@ -21,8 +21,8 @@ public class CameraSystem : MonoBehaviour
     [SerializeField] bool useEdgePan = true;
     private bool isKeyPanning = false;
 
-    private bool lockControl = false;
-
+    private bool _canControl = true;
+    private GameObject _focusObject = null;
 
     private Vector3 followOffset;
     private float zoomMin = 5f;
@@ -38,7 +38,8 @@ public class CameraSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!lockControl) Handle();
+        if (_focusObject != null) FollowObject();
+        else if (_canControl) Handle();
     }
 
     public void Handle()
@@ -106,11 +107,18 @@ public class CameraSystem : MonoBehaviour
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, zoomSpeed * Time.deltaTime);
     }
 
+    public IEnumerator FollowCharacterMovement(Character character)
+    {
+        MoveToCharacter(character);
+        yield return new WaitForSeconds(MOVE_DURATION);
+        Focus(character.gameObject);
+    }
+
     public IEnumerator MoveToPoint(GameObject obj)
     {
-        if (lockControl) yield break;
+        if (!_canControl) yield break;
         
-        lockControl = true;
+        DisableControl();
 
         Vector3 start = transform.position;
         Vector3 target = obj.transform.position;
@@ -127,11 +135,31 @@ public class CameraSystem : MonoBehaviour
         }
 
         transform.position = target;
-        lockControl = false;
+        EnableControl();
     }
 
     public void MoveToCharacter(Character character)
     {
         StartCoroutine(MoveToPoint(character.gameObject));
     }
+
+    public void Focus(GameObject obj)
+    {
+        _focusObject = obj;
+        DisableControl();
+    }
+
+    public void Unfocus()
+    {
+        _focusObject = null;
+        EnableControl();
+    }
+
+    void FollowObject()
+    {
+        transform.position = _focusObject.transform.position;
+    }
+
+    public void EnableControl() { _canControl = true; }
+    public void DisableControl() { _canControl = false; }
 }
