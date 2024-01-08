@@ -27,7 +27,7 @@ public class TargetCursor : MonoBehaviour
 
     private void Update()
     {
-        ProcessSelection(TileSelection.instance.current);
+        ProcessSelection(TileSelection.Instance.current);
         CheckLockInput();
     }
 

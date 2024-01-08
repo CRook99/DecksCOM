@@ -6,7 +6,7 @@ public class MovementSelection : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && TileSelection.instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
+        if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
         {
             StartCoroutine(BeginMove());
         }
@@ -16,7 +16,7 @@ public class MovementSelection : MonoBehaviour
     {
         TeamSwitcher.Instance.Disable(); // Re-enabling in MoveToDestination#GridMovement.cs
         StartCoroutine(CameraSystem.Instance.MoveToPoint(TeamManager.Instance.Current.gameObject));
-        Tile destination = TileSelection.instance.current.GetComponent<Tile>();
+        Tile destination = TileSelection.Instance.current.GetComponent<Tile>();
         yield return new WaitForSeconds(CameraSystem.MOVE_DURATION + 0.2f);
         TeamManager.Instance.Current.Move(destination);
     }

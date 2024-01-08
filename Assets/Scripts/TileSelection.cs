@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class TileSelection : MonoBehaviour
 {
-    public static TileSelection instance;
+    private static TileSelection _instance;
+    public static TileSelection Instance { get { return _instance; } }
     public GameObject current;
     public GameObject previous;
     private LayerMask TileMask;
 
     void Awake()
     {
-        instance = this;
+        _instance = this;
         current = gameObject;
         previous = gameObject;
         TileMask = LayerMask.GetMask("Tile");
