@@ -17,9 +17,6 @@ public class Tile : MonoBehaviour
     public bool Visited = false;
     public Tile Parent = null;
     public float Distance = 0.0f;
-    //public bool Current = false;
-    //public bool Selectable = false;
-
 
     [SerializeField] GameObject fullShield;
     [SerializeField] GameObject halfShield;
@@ -67,13 +64,6 @@ public class Tile : MonoBehaviour
     public void SetDiagAdjList(List<Tile> list) { DiagAdjacencyList = list; }
     public List<Tile> GetDiagAdjList() { return DiagAdjacencyList; }
 
-    /*
-    public void FindNeighbours()
-    {
-        TileAdjacencyUtil.ComputeAdjacencyLists(this);
-        if (GetCover() == null) GenerateCoverShields();
-    }
-    */
 
     public void GenerateCoverShields()
     {
@@ -98,29 +88,12 @@ public class Tile : MonoBehaviour
         }
     }
 
-    
 
-    // public void UpdateColour()
-    // {
-    //     if (Current) _renderer.material = Debug_Current;
-    //     else if (Selectable) _renderer.material = Debug_Selectable;
-    //     else _renderer.material = Debug_Default;
-    // }
+    public void ShowCurrent() { _renderer.material = Debug_Current; }
 
-    public void ShowCurrent()
-    {
-        _renderer.material = Debug_Current;
-    }
+    public void ShowSelectable() { _renderer.material = Debug_Selectable; }
 
-    public void ShowSelectable()
-    {
-        _renderer.material = Debug_Selectable;
-    }
-
-    public void HideColour()
-    {
-        _renderer.material = Debug_Default;
-    }
+    public void HideColour() { _renderer.material = Debug_Default; }
 
     public void ShowShields()
     {
@@ -151,8 +124,5 @@ public class Tile : MonoBehaviour
         Visited = false;
         Parent = null;
         Distance = 0.0f;
-
-        // Current = false;
-        // Selectable = false;
     }
 }
