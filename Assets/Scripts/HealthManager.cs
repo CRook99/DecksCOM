@@ -4,30 +4,21 @@ using UnityEngine;
 
 public class HealthManager
 {
-    private int health;
-    private int maxHealth;
+    private int _health;
+    public int Health { get { return _health; } }
+    private int _maxHealth;
 
-    public HealthManager(int pMaxHealth)
+    public HealthManager(int maxHealth)
     {
-        maxHealth = pMaxHealth;
-        health = maxHealth;
+        _maxHealth = maxHealth;
+        _health = _maxHealth;
     }
 
-    /// <summary>
-    /// Applies damage to the character. Returns false if the character dies as a result of the damage.
-    /// </summary>
-    /// <param name="amount">Amount of damage to be applied.</param>
-    /// <returns></returns>
-    public bool TakeDamage(int amount)
-    {
-        health -= amount;
-        if (health <= 0)
-        {
-            health = 0;
-            return false;
-        }
 
-        return true;
+    public void TakeDamage(int amount)
+    {
+        _health -= amount;
+        if (_health <= 0) { _health = 0; }
     }
 
     /// <summary>
@@ -36,11 +27,11 @@ public class HealthManager
     /// <param name="amount">Amount of healing to be applied.</param>
     public void Heal(int amount)
     {
-        health = Mathf.Clamp(health + amount, 0, maxHealth);
+        _health = Mathf.Clamp(_health + amount, 0, _maxHealth);
     }
 
-    public int GetHealth()
+    public float NormalizedHealth()
     {
-        return health;
+        return (float) _health / (float) _maxHealth;
     }
 }

@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class Player : Character
 {
-    private void Start()
+    HealthBarUI _healthBarUI;
+
+    void Awake()
     {
-        gridMovement = GetComponent<PlayerMovement>();
         healthManager = new HealthManager(100);
+        _healthBarUI = TeamUIManager.Instance.CreateHealthBar(healthManager);
+
+        gridMovement = GetComponent<PlayerMovement>();
         movementRange = 9;
         SetMovementRange(movementRange);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown("x")) TakeDamage(10);
+        if (Input.GetKeyDown("h")) Heal(10);
     }
 
     public override void Move(Tile destination)
@@ -17,6 +27,18 @@ public class Player : Character
         // Tick damage
         canMove = false;
         StartCoroutine(gridMovement.MoveToDestination(destination));
+    }
+
+    public override void Heal(int amount)
+    {
+        base.Heal(amount);
+        _healthBarUI.UpdateValues();
+    }
+
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+        _healthBarUI.UpdateValues();
     }
 
     public void SetActive()

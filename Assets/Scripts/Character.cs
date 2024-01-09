@@ -27,15 +27,13 @@ public abstract class Character : MonoBehaviour
         gridMovement.SetMovementRange(movementRange);
     }
 
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
-        if (!healthManager.TakeDamage(amount))
-        {
-            Die();
-        }
+        healthManager.TakeDamage(amount);
+        if (healthManager.Health == 0) Die();
     }
 
-    public void Heal(int amount)
+    public virtual void Heal(int amount)
     {
         healthManager.Heal(amount);
     }
