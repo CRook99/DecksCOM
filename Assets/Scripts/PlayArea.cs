@@ -7,7 +7,7 @@ public class PlayArea : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 {
     public void OnDrop(PointerEventData eventData)
     {
-        eventData.pointerDrag.GetComponent<CardDrag>().Use();
+        eventData.pointerDrag.GetComponent<Card>().Use();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

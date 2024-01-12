@@ -6,7 +6,7 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour
 {
-    public Card card;
+    public CardScriptableObject card;
 
     public Image _artwork;
     public TMP_Text _costText;
