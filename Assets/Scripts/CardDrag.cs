@@ -28,6 +28,10 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-        // Use logic
+    }
+
+    public void Use()
+    {
+        Debug.Log("I got used!");
     }
 }
