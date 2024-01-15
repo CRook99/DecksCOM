@@ -48,10 +48,16 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         foreach (GameObject go in ExtendedStandaloneInputModule.Hovered)
         {
-            if (go.GetComponent<PlayArea>() != null && EnergyManager.Instance.Amount >= _cardData.Cost) // Add mana requirement ( && Mana.Amount >= _cardData.Cost )
+            if (go.GetComponent<PlayArea>() == null) continue;
+
+            if (EnergyManager.Instance.Amount >= _cardData.Cost)
             {
                 Use();
                 return;
+            }
+            else 
+            {
+                StartCoroutine(EnergyManager.Instance.InsufficientAnim());
             }
         }
 

@@ -7,7 +7,8 @@ public class GameState : MonoBehaviour
     private static GameState _instance;
     public static GameState Instance { get { return _instance; } }
 
-    private Turn turn;
+    private Turn _turn;
+    private int _turnCount;
 
     void Awake()
     {
@@ -20,6 +21,7 @@ public class GameState : MonoBehaviour
             _instance = this;
         }
 
+        _turnCount = 0;
         PassTurnToPlayer();
     }
 
@@ -28,23 +30,24 @@ public class GameState : MonoBehaviour
         if (Input.GetKeyDown("t")) SwitchTurn(); // DEBUGGING
     }
 
-    public Turn Turn { get { return turn; } }
+    public Turn Turn { get { return _turn; } }
 
     void SwitchTurn()
     {
-        if (turn == Turn.PLAYER) PassTurnToEnemy();
+        if (_turn == Turn.PLAYER) PassTurnToEnemy();
         else PassTurnToPlayer();
     }
 
     void PassTurnToPlayer()
     {
-        turn = Turn.PLAYER;
+        _turn = Turn.PLAYER;
         TeamManager.Instance.BeginTurn();
     }
 
     void PassTurnToEnemy()
     {
-        turn = Turn.ENEMY;
+        _turn = Turn.ENEMY;
+        _turnCount += 1;
     }
 
 }
