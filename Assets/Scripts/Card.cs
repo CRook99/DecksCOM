@@ -48,7 +48,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         foreach (GameObject go in ExtendedStandaloneInputModule.Hovered)
         {
-            if (go.GetComponent<PlayArea>() != null) // Add mana requirement ( && Mana.Amount >= _cardData.Cost )
+            if (go.GetComponent<PlayArea>() != null && EnergyManager.Instance.Amount >= _cardData.Cost) // Add mana requirement ( && Mana.Amount >= _cardData.Cost )
             {
                 Use();
                 return;
@@ -62,7 +62,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void Use()
     {
+        Debug.Log(EnergyManager.Instance.Amount);
         Debug.Log($"{_cardData.Name} got used for {_cardData.Cost} energy.");
+        EnergyManager.Instance.Decrease(_cardData.Cost);
+        Debug.Log(EnergyManager.Instance.Amount);
         //gameObject.SetActive(false);
         Destroy(_placeholder);
         Destroy(gameObject);
