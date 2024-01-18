@@ -6222,26 +6222,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _easeOutCurve:
+  _easeInCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0
+      outSlope: -0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.07563282
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 3.1430342
+      outSlope: 3.1430342
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.024474144
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -13378,7 +13378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3535535, y: 0.35355276, z: -0.14644632, w: 0.8535537}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644635, w: 0.85355365}
   m_LocalPosition: {x: -10.998231, y: 15.55387, z: -10.998263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -29229,7 +29229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110725958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3535535, y: 0.35355276, z: -0.14644632, w: 0.8535537}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644635, w: 0.85355365}
   m_LocalPosition: {x: -10.998231, y: 15.55387, z: -10.998263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

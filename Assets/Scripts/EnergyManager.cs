@@ -10,7 +10,7 @@ public class EnergyManager : MonoBehaviour
     public static EnergyManager Instance { get { return _instance; } }
 
     private int _amount;
-    private int _maxAmount = 1;
+    private int _maxAmount = 10;
 
     private RectTransform _rectTransform;
     public Image _image;
@@ -18,7 +18,6 @@ public class EnergyManager : MonoBehaviour
     public AnimationCurve _wobbleCurve;
     public AnimationCurve _easeInCurve;
     private float _originalPosX;
-    private bool _animating;
 
     void Awake()
     {
@@ -27,7 +26,6 @@ public class EnergyManager : MonoBehaviour
         _originalPosX = _rectTransform.anchoredPosition.x;
         _amount = _maxAmount;
         _text.text = _amount.ToString();
-        _animating = false;
     }
 
     public int Amount { get { return _amount; } }
@@ -53,8 +51,6 @@ public class EnergyManager : MonoBehaviour
         float factorPos = 0f;
         float factorCol = 0f;
         float duration = 0.5f;
-
-        _animating = true;
 
         while (elapsed < duration)
         {
