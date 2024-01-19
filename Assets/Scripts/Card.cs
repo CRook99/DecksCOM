@@ -68,11 +68,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void Use()
     {
-        Debug.Log(EnergyManager.Instance.Amount);
-        Debug.Log($"{_cardData.Name} got used for {_cardData.Cost} energy.");
         EnergyManager.Instance.Decrease(_cardData.Cost);
-        Debug.Log(EnergyManager.Instance.Amount);
-        //gameObject.SetActive(false);
         Destroy(_placeholder);
         Destroy(gameObject);
     }

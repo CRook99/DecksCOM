@@ -9,8 +9,8 @@ public class EnergyManager : MonoBehaviour
     private static EnergyManager _instance;
     public static EnergyManager Instance { get { return _instance; } }
 
-    private int _amount;
-    private int _maxAmount = 10;
+    public int _amount;
+    public int _maxAmount = 0;
 
     private RectTransform _rectTransform;
     public Image _image;
@@ -24,8 +24,9 @@ public class EnergyManager : MonoBehaviour
         _instance = this;
         _rectTransform = GetComponent<RectTransform>();
         _originalPosX = _rectTransform.anchoredPosition.x;
+
         _amount = _maxAmount;
-        _text.text = _amount.ToString();
+        RefreshUI();
     }
 
     public int Amount { get { return _amount; } }
@@ -34,13 +35,25 @@ public class EnergyManager : MonoBehaviour
     {
         if (increase <= 0) return;
         _amount = Mathf.Clamp(_amount + increase, 0, _maxAmount);
-        _text.text = _amount.ToString();
+        RefreshUI();
     }
 
     public void Decrease(int decrease)
     {
         if (decrease <= 0) return;
         _amount = Mathf.Clamp(_amount - decrease, 0, _maxAmount);
+        RefreshUI();
+    }
+
+    public void TurnIncrease()
+    {
+        _maxAmount += 1;
+        _amount = _maxAmount;
+        RefreshUI();
+    }
+
+    private void RefreshUI()
+    {
         _text.text = _amount.ToString();
     }
 

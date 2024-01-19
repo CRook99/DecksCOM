@@ -42,6 +42,7 @@ public class GameState : MonoBehaviour
     {
         _turn = Turn.PLAYER;
         TeamManager.Instance.BeginTurn();
+        EnergyManager.Instance.TurnIncrease();
     }
 
     void PassTurnToEnemy()
