@@ -8,12 +8,12 @@ public class Player : Character
 
     void Awake()
     {
-        healthManager = new HealthManager(100);
-        _healthBarUI = TeamUIManager.Instance.CreateHealthBar(healthManager);
+        HealthManager = new HealthManager(100);
+        _healthBarUI = TeamUIManager.Instance.CreateHealthBar(HealthManager);
 
-        gridMovement = GetComponent<PlayerMovement>();
-        movementRange = 9;
-        SetMovementRange(movementRange);
+        GridMovement = GetComponent<PlayerMovement>();
+        _movementRange = 9;
+        SetMovementRange(_movementRange);
     }
 
     void Update()
@@ -25,8 +25,8 @@ public class Player : Character
     public override void Move(Tile destination)
     {
         // Tick damage
-        canMove = false;
-        StartCoroutine(gridMovement.MoveToDestination(destination));
+        _canMove = false;
+        StartCoroutine(GridMovement.MoveToDestination(destination));
     }
 
     public override void Heal(int amount)
@@ -43,14 +43,14 @@ public class Player : Character
 
     public void SetActive()
     {
-        gridMovement.CalculateSelectableTiles();
-        if (canMove) gridMovement.ShowRange();
+        GridMovement.CalculateSelectableTiles();
+        if (_canMove) GridMovement.ShowRange();
     }
 
     public void SetInactive()
     {
-        gridMovement.HideRange();
-        gridMovement.ResetAllTiles();
+        GridMovement.HideRange();
+        GridMovement.ResetAllTiles();
     }
 
     public override void Die()
