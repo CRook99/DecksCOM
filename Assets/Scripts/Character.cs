@@ -4,18 +4,25 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    public GridMovement gridMovement;
-    protected HealthManager healthManager;
-    protected int movementRange;
+    public GridMovement GridMovement;
+    protected HealthManager HealthManager;
+
+    // Movement
+    protected int _movementRange;
+    protected bool _canMove;
+    public bool CanMove { get { return _canMove; } }
+
+    // Stats
     protected int maxHealth;
-    protected bool canMove;
-    public bool CanMove { get { return canMove; } }
+    protected int _atkStacks;
+    protected int _defStacks;
+    
     protected bool dead;
 
     public void BeginTurn()
     {
         if (dead) return;
-        canMove = true;
+        _canMove = true;
         // Take tick damage
     }
 
@@ -23,19 +30,19 @@ public abstract class Character : MonoBehaviour
 
     public void SetMovementRange(int range)
     {
-        movementRange = range;
-        gridMovement.SetMovementRange(movementRange);
+        _movementRange = range;
+        GridMovement.SetMovementRange(_movementRange);
     }
 
     public virtual void TakeDamage(int amount)
     {
-        healthManager.TakeDamage(amount);
-        if (healthManager.Health == 0) Die();
+        HealthManager.TakeDamage(amount);
+        if (HealthManager.Health == 0) Die();
     }
 
     public virtual void Heal(int amount)
     {
-        healthManager.Heal(amount);
+        HealthManager.Heal(amount);
     }
 
     public bool IsDead() { return dead; }
