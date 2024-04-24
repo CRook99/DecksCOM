@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameState : MonoBehaviour
@@ -9,6 +10,8 @@ public class GameState : MonoBehaviour
 
     private Turn _turn;
     private int _turnCount;
+
+    public TextMeshProUGUI TurnText;
 
     void Awake()
     {
@@ -43,12 +46,16 @@ public class GameState : MonoBehaviour
         _turn = Turn.PLAYER;
         TeamManager.Instance.BeginTurn();
         EnergyManager.Instance.TurnIncrease();
+
+        TurnText.text = "TURN: PLAYER";
     }
 
     void PassTurnToEnemy()
     {
         _turn = Turn.ENEMY;
         _turnCount += 1;
+        
+        TurnText.text = "TURN: ENEMY";
     }
 
 }
