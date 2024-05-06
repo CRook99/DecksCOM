@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(GridMovement))]
+[RequireComponent(typeof(PlayerDash))]
 public class Player : Character
 {
     HealthBarUI _healthBarUI;
+    public PlayerDash PlayerDash; // IMPROVE - In composition refactor of Character.cs
 
     void Awake()
     {
         HealthManager = new HealthManager(100);
         _healthBarUI = TeamUIManager.Instance.CreateHealthBar(HealthManager);
 
-        GridMovement = GetComponent<PlayerMovement>();
+        GridMovement = GetComponent<GridMovement>();
+        PlayerDash = GetComponent<PlayerDash>();
         _movementRange = 9;
         SetMovementRange(_movementRange);
     }
@@ -20,6 +24,14 @@ public class Player : Character
     {
         if (Input.GetKeyDown("x")) TakeDamage(10);
         if (Input.GetKeyDown("h")) Heal(10);
+    }
+
+    public override void BeginTurn()
+    {
+        base.BeginTurn();
+        PlayerDash.ResetBonus();
+        GridMovement.HideRange();
+        GridMovement.ResetAllTiles();
     }
 
     public override void Move(Tile destination)

@@ -36,6 +36,9 @@ public class TeamManager : MonoBehaviour
         {
             player.BeginTurn();
         }
+        
+        SetCurrent(0);
+        DashButtonUI.Instance.UpdateCostForCurrentPlayer();
     }
 
     public int GetAllPlayerCount() { return _players.Count; }

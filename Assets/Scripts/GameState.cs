@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,7 +24,10 @@ public class GameState : MonoBehaviour
         {
             _instance = this;
         }
+    }
 
+    void Start()
+    {
         _turnCount = 0;
         PassTurnToPlayer();
     }

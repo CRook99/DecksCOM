@@ -19,7 +19,7 @@ public abstract class Character : MonoBehaviour
     
     protected bool dead;
 
-    public void BeginTurn()
+    public virtual void BeginTurn()
     {
         if (dead) return;
         _canMove = true;

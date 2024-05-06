@@ -8,8 +8,9 @@ public class GridMovement : MonoBehaviour
 {
     [SerializeField] protected List<Tile> selectableTiles;
     protected Tile currentTile;
-    private int movementRange;
-    private int movementSpeed = 5;
+    int movementRange;
+    int bonus;
+    int movementSpeed = 5;
 
     [SerializeField] protected bool isMoving;
 
@@ -29,6 +30,16 @@ public class GridMovement : MonoBehaviour
     public void SetMovementRange(int range)
     {
         movementRange = range;
+    }
+
+    public void IncrementBonus()
+    {
+        bonus++;
+    }
+
+    public void ResetBonus()
+    {
+        bonus = 0;
     }
 
     public void SetMovementSpeed(int speed)
@@ -66,7 +77,7 @@ public class GridMovement : MonoBehaviour
             Tile t = queue.Dequeue();
             selectableTiles.Add(t);
 
-            if (t.Distance >= movementRange) continue;
+            if (t.Distance >= movementRange + bonus) continue;
 
             foreach (Tile a in t.GetOrthAdjList())
             {

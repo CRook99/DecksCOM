@@ -36,6 +36,9 @@ public class TeamSwitcher : MonoBehaviour
         TeamManager.Instance.Current.SetInactive();
         TeamManager.Instance.SetCurrent(index);
         TeamManager.Instance.Current.SetActive();
+        
+        DashButtonUI.Instance.UpdateCostForCurrentPlayer(); // IMPROVE - Move to event
+        
         Disable();
         CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
         yield return new WaitForSeconds(CameraSystem.MOVE_DURATION);
