@@ -7,36 +7,36 @@ using UnityEngine.UIElements;
 
 public class CameraSystem : MonoBehaviour
 {
-    private static CameraSystem _instance;
+    static CameraSystem _instance;
     public static CameraSystem Instance { get { return _instance; } }
-    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-    private CinemachineTransposer cinemachineTransposer;
-    [SerializeField] private AnimationCurve moveCurve;
+    [SerializeField] CinemachineVirtualCamera cinemachineVirtualCamera;
+    CinemachineTransposer cinemachineTransposer;
+    [SerializeField] AnimationCurve moveCurve;
 
     public static float MOVE_DURATION = 0.8f;
 
-    private float movementSpeed = 12f;
-    private float rotationSpeed = 135f;
-    private int edgePanMargin = 50;
-    [SerializeField] bool useEdgePan = true;
-    private bool isKeyPanning = false;
+    float movementSpeed = 12f;
+    float rotationSpeed = 135f;
+    int edgePanMargin = 50;
+    bool useEdgePan = false;
+    bool isKeyPanning = false;
 
-    private bool _canControl = true;
+    [SerializeField] bool _canControl = true;
     GameObject _focusObject = null;
 
-    private Vector3 followOffset;
-    private float zoomMin = 5f;
-    private float zoomMax = 25f;
-    private float zoomSpeed = 10f;
+    Vector3 followOffset;
+    float zoomMin = 5f;
+    float zoomMax = 25f;
+    float zoomSpeed = 10f;
 
-    private void Awake()
+    void Awake()
     {
         _instance = this;
         cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         followOffset = cinemachineTransposer.m_FollowOffset;
     }
 
-    private void Update()
+    void Update()
     {
         if (_focusObject != null) FollowObject();
         else if (_canControl) Handle();
@@ -115,14 +115,12 @@ public class CameraSystem : MonoBehaviour
 
     public IEnumerator MoveToPoint(GameObject obj)
     {
-        if (!_canControl) yield break;
-        
         DisableControl();
 
         Vector3 start = transform.position;
         Vector3 target = obj.transform.position;
         float elapsed = 0f;
-        float factor = 0f;
+        float factor;
 
         while (elapsed < MOVE_DURATION)
         {
@@ -141,6 +139,7 @@ public class CameraSystem : MonoBehaviour
 
     public void MoveToObject(GameObject obj)
     {
+        StopAllCoroutines();
         StartCoroutine(MoveToPoint(obj));
     }
 

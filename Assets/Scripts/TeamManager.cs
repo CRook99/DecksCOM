@@ -17,7 +17,6 @@ public class TeamManager : MonoBehaviour
     {
         if (_instance != null && _instance != this) Destroy(gameObject);
         else _instance = this;
-        //_current = _players[0];
     }
 
     public Player Current { get { return _current; } }
@@ -31,6 +30,7 @@ public class TeamManager : MonoBehaviour
 
     public void SetCurrent(int index)
     {
+        if (_current != null) _current.SetInactive();
         if (index < 0 || index > 2) index = 0;
         _previous = _current;
         _current = _players[index];
@@ -45,7 +45,7 @@ public class TeamManager : MonoBehaviour
         }
         
         SetCurrent(0);
-        DashButtonUI.Instance.Refresh();
+        CameraSystem.Instance.MoveToObject(_current.gameObject);
     }
 
     public int GetAllPlayerCount() { return _players.Count; }
