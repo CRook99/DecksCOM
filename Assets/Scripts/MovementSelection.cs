@@ -15,10 +15,9 @@ public class MovementSelection : MonoBehaviour
     IEnumerator BeginMove()
     {
         TeamSwitcher.Instance.Disable(); // Re-enabling in MoveToDestination#GridMovement.cs
-        StartCoroutine(CameraSystem.Instance.FollowCharacterMovement(TeamManager.Instance.Current));
+        StartCoroutine(CameraSystem.Instance.FollowCharacterMovement(TeamManager.Instance.Current.gameObject));
         Tile destination = TileSelection.Instance.current.GetComponent<Tile>();
         yield return new WaitForSeconds(CameraSystem.MOVE_DURATION);
         TeamManager.Instance.Current.Move(destination);
-        yield break;
     }
 }

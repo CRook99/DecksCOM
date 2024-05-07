@@ -29,7 +29,7 @@ public class GameState : MonoBehaviour
     void Start()
     {
         _turnCount = 0;
-        PassTurnToPlayer();
+        PassTurnToEnemy();
     }
 
     void Update()

@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GridMovement : MonoBehaviour
 {
     [SerializeField] protected List<Tile> selectableTiles;
     protected Tile currentTile;
-    int movementRange;
+    
+    [SerializeField] int _movementRange;
+    [SerializeField] int _movementSpeed;
     int bonus;
-    int movementSpeed = 5;
-
+    
     [SerializeField] protected bool isMoving;
 
     private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
@@ -22,14 +24,14 @@ public class GridMovement : MonoBehaviour
         isMoving = false;
     }
 
-    private void Update()
-    {
-
-    }
-
     public void SetMovementRange(int range)
     {
-        movementRange = range;
+        _movementRange = range;
+    }
+    
+    public void SetMovementSpeed(int speed)
+    {
+        _movementSpeed = speed;
     }
 
     public void IncrementBonus()
@@ -41,11 +43,7 @@ public class GridMovement : MonoBehaviour
     {
         bonus = 0;
     }
-
-    public void SetMovementSpeed(int speed)
-    {
-        movementSpeed = speed;
-    }
+    
 
     public void GetCurrentTile()
     {
@@ -77,7 +75,7 @@ public class GridMovement : MonoBehaviour
             Tile t = queue.Dequeue();
             selectableTiles.Add(t);
 
-            if (t.Distance >= movementRange + bonus) continue;
+            if (t.Distance >= _movementRange + bonus) continue;
 
             foreach (Tile a in t.GetOrthAdjList())
             {
@@ -154,7 +152,7 @@ public class GridMovement : MonoBehaviour
 
             while (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
             {
-                transform.position += movementSpeed * directionVector * Time.deltaTime;
+                transform.position += _movementSpeed * directionVector * Time.deltaTime;
                 yield return null;
             }
 

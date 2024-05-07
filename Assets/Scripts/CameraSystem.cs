@@ -22,7 +22,7 @@ public class CameraSystem : MonoBehaviour
     private bool isKeyPanning = false;
 
     private bool _canControl = true;
-    private GameObject _focusObject = null;
+    GameObject _focusObject = null;
 
     private Vector3 followOffset;
     private float zoomMin = 5f;
@@ -107,11 +107,10 @@ public class CameraSystem : MonoBehaviour
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, zoomSpeed * Time.deltaTime);
     }
 
-    public IEnumerator FollowCharacterMovement(Character character)
+    public IEnumerator FollowCharacterMovement(GameObject obj)
     {
-        MoveToCharacter(character);
-        yield return new WaitForSeconds(MOVE_DURATION);
-        Focus(character.gameObject);
+        yield return MoveToPoint(obj);
+        Focus(obj);
     }
 
     public IEnumerator MoveToPoint(GameObject obj)
@@ -136,11 +135,13 @@ public class CameraSystem : MonoBehaviour
 
         transform.position = target;
         EnableControl();
+
+        yield return null;
     }
 
-    public void MoveToCharacter(Character character)
+    public void MoveToObject(GameObject obj)
     {
-        StartCoroutine(MoveToPoint(character.gameObject));
+        StartCoroutine(MoveToPoint(obj));
     }
 
     public void Focus(GameObject obj)

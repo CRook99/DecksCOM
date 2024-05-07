@@ -17,15 +17,15 @@ public class TeamSwitcher : MonoBehaviour
     {
         if (!canSwitch) return;
 
-        if (Input.GetKeyDown("1") && !TeamManager.Instance.GetPlayerByIndex(0).IsDead())
+        if (Input.GetKeyDown("1") && !TeamManager.Instance.GetPlayerByIndex(0).Dead)
         {
             StartCoroutine(Switch(0));
         }
-        else if (Input.GetKeyDown("2") && !TeamManager.Instance.GetPlayerByIndex(1).IsDead())
+        else if (Input.GetKeyDown("2") && !TeamManager.Instance.GetPlayerByIndex(1).Dead)
         {
             StartCoroutine(Switch(1));
         }
-        else if (Input.GetKeyDown("3") && !TeamManager.Instance.GetPlayerByIndex(2).IsDead())
+        else if (Input.GetKeyDown("3") && !TeamManager.Instance.GetPlayerByIndex(2).Dead)
         {
             StartCoroutine(Switch(2));
         }
@@ -40,7 +40,7 @@ public class TeamSwitcher : MonoBehaviour
         DashButtonUI.Instance.UpdateCostForCurrentPlayer(); // IMPROVE - Move to event
         
         Disable();
-        CameraSystem.Instance.MoveToCharacter(TeamManager.Instance.Current);
+        CameraSystem.Instance.MoveToObject(TeamManager.Instance.Current.gameObject);
         yield return new WaitForSeconds(CameraSystem.MOVE_DURATION);
         Enable();
     }

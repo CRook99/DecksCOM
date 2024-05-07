@@ -1,23 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(GridMovement))]
 [RequireComponent(typeof(PlayerDash))]
-public class Player : Character
+[RequireComponent(typeof(HealthManager))]
+public class Player : MonoBehaviour
 {
+    // References
+    HealthManager _healthManager;
+    GridMovement _gridMovement;
     HealthBarUI _healthBarUI;
-    public PlayerDash PlayerDash; // IMPROVE - In composition refactor of Character.cs
+    PlayerDash _playerDash; // IMPROVE - In composition refactor of Character.cs
+    
+    // Stats
+    public bool Dead { get; private set; }
+    public bool CanMove { get; private set; }
 
     void Awake()
     {
-        HealthManager = new HealthManager(100);
-        _healthBarUI = TeamUIManager.Instance.CreateHealthBar(HealthManager);
+        _healthManager = GetComponent<HealthManager>();
+        _gridMovement = GetComponent<GridMovement>();
+        _playerDash = GetComponent<PlayerDash>();
+    }
 
-        GridMovement = GetComponent<GridMovement>();
-        PlayerDash = GetComponent<PlayerDash>();
-        _movementRange = 9;
-        SetMovementRange(_movementRange);
+    void Start()
+    {
+        _healthBarUI = TeamUIManager.Instance.CreateHealthBar(_healthManager);
+        TeamManager.Instance.AddPlayer(this);
     }
 
     void Update()
@@ -26,48 +37,52 @@ public class Player : Character
         if (Input.GetKeyDown("h")) Heal(10);
     }
 
-    public override void BeginTurn()
+    public void BeginTurn()
     {
-        base.BeginTurn();
-        PlayerDash.ResetBonus();
-        GridMovement.HideRange();
-        GridMovement.ResetAllTiles();
+        if (Dead) return;
+        CanMove = true;
+        
+        _playerDash.ResetBonus();
+        _gridMovement.HideRange();
+        _gridMovement.ResetAllTiles();
     }
 
-    public override void Move(Tile destination)
+    public void Move(Tile destination)
     {
         // Tick damage
-        _canMove = false;
-        StartCoroutine(GridMovement.MoveToDestination(destination));
+        CanMove = false;
+        StartCoroutine(_gridMovement.MoveToDestination(destination));
     }
 
-    public override void Heal(int amount)
+    public void Heal(int amount)
     {
-        base.Heal(amount);
+        _healthManager.Heal(amount);
         _healthBarUI.UpdateValues();
     }
 
-    public override void TakeDamage(int amount)
+    public void TakeDamage(int amount)
     {
-        base.TakeDamage(amount);
+        _healthManager.TakeDamage(amount);
+        if (_healthManager.Health == 0) Die();
+        
         _healthBarUI.UpdateValues();
     }
 
     public void SetActive()
     {
-        GridMovement.CalculateSelectableTiles();
-        if (_canMove) GridMovement.ShowRange();
+        _gridMovement.CalculateSelectableTiles();
+        if (CanMove) _gridMovement.ShowRange();
     }
 
     public void SetInactive()
     {
-        GridMovement.HideRange();
-        GridMovement.ResetAllTiles();
+        _gridMovement.HideRange();
+        _gridMovement.ResetAllTiles();
     }
 
-    public override void Die()
+    public void Die()
     {
-        base.Die();
+        Dead = true;
         Debug.Log("Player Die");
     }
 }

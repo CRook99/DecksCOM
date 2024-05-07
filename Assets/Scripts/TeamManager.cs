@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,11 +17,17 @@ public class TeamManager : MonoBehaviour
     {
         if (_instance != null && _instance != this) Destroy(gameObject);
         else _instance = this;
-        _current = _players[0];
+        //_current = _players[0];
     }
 
     public Player Current { get { return _current; } }
     public Player Previous { get { return _previous; } }
+
+    public void AddPlayer(Player player)
+    {
+        if (player == null) return;
+        _players.Add(player);
+    }
 
     public void SetCurrent(int index)
     {
@@ -45,7 +52,7 @@ public class TeamManager : MonoBehaviour
 
     public int GetAlivePlayerCount()
     {
-        return _players.Count(p => !p.IsDead());
+        return _players.Count(p => !p.Dead);
     }
 
     public Player GetPlayerByIndex(int index)
