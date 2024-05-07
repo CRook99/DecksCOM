@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -7,6 +8,8 @@ using UnityEngine.Serialization;
 
 public class GridMovement : MonoBehaviour
 {
+    public static event Action OnEndMove;
+    
     [SerializeField] protected List<Tile> selectableTiles;
     protected Tile currentTile;
     
@@ -124,7 +127,7 @@ public class GridMovement : MonoBehaviour
     }
 
 
-    private Stack<Tile> generatePath(Tile destination)
+    Stack<Tile> generatePath(Tile destination)
     {
         Stack<Tile> path = new Stack<Tile>();
         Tile current = destination;
@@ -162,9 +165,9 @@ public class GridMovement : MonoBehaviour
         isMoving = false;
         
         // extra
-        TeamSwitcher.Instance.Enable();
-        CameraSystem.Instance.Unfocus();
-        yield break;
+        OnEndMove?.Invoke();
+        //TeamSwitcher.Instance.Enable();
+        //CameraSystem.Instance.Unfocus();
     }
 
     private void RecomputeOriginAdjacencies()

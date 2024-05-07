@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TeamSwitcher : MonoBehaviour
 {
     static TeamSwitcher _instance;
     public static TeamSwitcher Instance { get { return _instance; } }
-    int _currentIndex;
+    [SerializeField] int _currentIndex;
     bool canSwitch = true;
 
     public static event Action OnSwitch;
@@ -16,6 +17,9 @@ public class TeamSwitcher : MonoBehaviour
     {
         _instance = this;
         _currentIndex = 0;
+
+        MovementSelection.OnBeginMove += Disable;
+        GridMovement.OnEndMove += Enable;
     }
 
     void Update()
@@ -31,7 +35,7 @@ public class TeamSwitcher : MonoBehaviour
             if (TeamManager.Instance.GetPlayerByIndex(number).Dead) return;
             if (_currentIndex == number) // Player already selected
             {
-                CameraSystem.Instance.MoveToObject(TeamManager.Instance.Current.gameObject);
+                StartCoroutine(CameraSystem.Instance.MoveToPoint(TeamManager.Instance.Current.gameObject));
                 return;
             }
             
@@ -46,9 +50,9 @@ public class TeamSwitcher : MonoBehaviour
         
         OnSwitch?.Invoke();
         
-        CameraSystem.Instance.MoveToObject(TeamManager.Instance.Current.gameObject);
+        StartCoroutine(CameraSystem.Instance.MoveToPoint(TeamManager.Instance.Current.gameObject));
     }
 
     public void Enable() { canSwitch = true; }
-    public void Disable() { canSwitch = false; }
+    public void Disable(GameObject o) { canSwitch = false; }
 }

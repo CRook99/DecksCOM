@@ -1,23 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementSelection : MonoBehaviour
 {
+    public static event Action<GameObject> OnBeginMove;
+    Tile destination;
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
         {
-            StartCoroutine(BeginMove());
+            destination = TileSelection.Instance.current.GetComponent<Tile>();
+            BeginMove();
         }
     }
 
-    IEnumerator BeginMove()
+    void BeginMove()
     {
-        TeamSwitcher.Instance.Disable(); // Re-enabling in MoveToDestination#GridMovement.cs
-        StartCoroutine(CameraSystem.Instance.FollowCharacterMovement(TeamManager.Instance.Current.gameObject));
-        Tile destination = TileSelection.Instance.current.GetComponent<Tile>();
-        yield return new WaitForSeconds(CameraSystem.MOVE_DURATION);
-        TeamManager.Instance.Current.Move(destination);
+        Player player = TeamManager.Instance.Current;
+        OnBeginMove?.Invoke(player.gameObject);
+        player.Move(destination);
     }
 }

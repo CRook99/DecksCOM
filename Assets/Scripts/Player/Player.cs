@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     HealthManager _healthManager;
     GridMovement _gridMovement;
     HealthBarUI _healthBarUI;
-    PlayerDash _playerDash; // IMPROVE - In composition refactor of Character.cs
+    PlayerDash _playerDash;
     
     // Stats
     public bool Dead { get; private set; }
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         
         _playerDash.ResetBonus();
         _gridMovement.HideRange();
-        _gridMovement.ResetAllTiles();
+        _gridMovement.CalculateSelectableTiles();
     }
 
     public void Move(Tile destination)

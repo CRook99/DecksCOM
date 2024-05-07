@@ -1526,7 +1526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 10.60659, z: -10.60659}
+  m_FollowOffset: {x: 0, y: 10.60658, z: -10.60658}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2598,7 +2598,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &171608339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14245,8 +14245,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3535535, y: 0.35355276, z: -0.14644633, w: 0.8535537}
-  m_LocalPosition: {x: -7.499981, y: 10.60659, z: -7.5000033}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644632, w: 0.85355365}
+  m_LocalPosition: {x: -7.499974, y: 10.60658, z: -7.4999957}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16824,21 +16824,30 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 6.4987097
-      outSlope: 6.4987097
+      inSlope: 16.803415
+      outSlope: 16.803415
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.04445622
+      outWeight: 0.060105503
     - serializedVersion: 3
-      time: 0.25132123
-      value: 0.79695314
-      inSlope: 0.7740792
-      outSlope: 0.7740792
+      time: 0.06618343
+      value: 0.68970186
+      inSlope: 2.6278048
+      outSlope: 2.6278048
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14111976
+      outWeight: 0.02967202
+    - serializedVersion: 3
+      time: 0.25127435
+      value: 0.91375345
+      inSlope: 0.34694296
+      outSlope: 0.34694296
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.058927312
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -16851,6 +16860,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  movementSpeed: 12
+  rotationSpeed: 135
+  edgePanMargin: 50
+  followSpeed: 8
+  useEdgePan: 0
   _canControl: 1
 --- !u!4 &1106415529
 Transform:
@@ -18122,7 +18136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1213932678
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29260,6 +29274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd83ccfc35afce746aedbb5043879c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentIndex: 0
 --- !u!1001 &2020643734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30980,8 +30995,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110725958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3535535, y: 0.35355276, z: -0.14644633, w: 0.8535537}
-  m_LocalPosition: {x: -7.499981, y: 10.60659, z: -7.5000033}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644632, w: 0.85355365}
+  m_LocalPosition: {x: -7.499974, y: 10.60658, z: -7.4999957}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

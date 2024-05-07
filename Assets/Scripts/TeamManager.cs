@@ -45,7 +45,7 @@ public class TeamManager : MonoBehaviour
         }
         
         SetCurrent(0);
-        CameraSystem.Instance.MoveToObject(_current.gameObject);
+        StartCoroutine(CameraSystem.Instance.MoveToPoint(_current.gameObject));
     }
 
     public int GetAllPlayerCount() { return _players.Count; }

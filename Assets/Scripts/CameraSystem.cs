@@ -13,13 +13,14 @@ public class CameraSystem : MonoBehaviour
     CinemachineTransposer cinemachineTransposer;
     [SerializeField] AnimationCurve moveCurve;
 
-    public static float MOVE_DURATION = 0.8f;
+    static float MOVE_DURATION_FACTOR = 25f; // Distance from target at which travel time is capped
 
-    float movementSpeed = 12f;
-    float rotationSpeed = 135f;
-    int edgePanMargin = 50;
-    bool useEdgePan = false;
-    bool isKeyPanning = false;
+    [SerializeField] float movementSpeed = 12f;
+    [SerializeField] float rotationSpeed = 135f;
+    [SerializeField] int edgePanMargin = 50;
+    [SerializeField] float followSpeed = 8f;
+    [SerializeField] bool useEdgePan;
+    bool isKeyPanning;
 
     [SerializeField] bool _canControl = true;
     GameObject _focusObject = null;
@@ -34,6 +35,9 @@ public class CameraSystem : MonoBehaviour
         _instance = this;
         cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         followOffset = cinemachineTransposer.m_FollowOffset;
+
+        MovementSelection.OnBeginMove += Focus;
+        GridMovement.OnEndMove += Unfocus;
     }
 
     void Update()
@@ -106,25 +110,22 @@ public class CameraSystem : MonoBehaviour
 
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, followOffset, zoomSpeed * Time.deltaTime);
     }
-
-    public IEnumerator FollowCharacterMovement(GameObject obj)
-    {
-        yield return MoveToPoint(obj);
-        Focus(obj);
-    }
+    
 
     public IEnumerator MoveToPoint(GameObject obj)
     {
+        StopAllCoroutines();
         DisableControl();
 
         Vector3 start = transform.position;
         Vector3 target = obj.transform.position;
+        float distance = (target - start).magnitude;
+        float duration = Mathf.Clamp(distance / MOVE_DURATION_FACTOR,0.25f, 1f);
         float elapsed = 0f;
-        float factor;
 
-        while (elapsed < MOVE_DURATION)
+        while (elapsed < duration)
         {
-            factor = elapsed / MOVE_DURATION;
+            float factor = elapsed / duration;
             factor = moveCurve.Evaluate(factor);
             transform.position = Vector3.Lerp(start, target, factor);
             yield return null;
@@ -136,12 +137,7 @@ public class CameraSystem : MonoBehaviour
 
         yield return null;
     }
-
-    public void MoveToObject(GameObject obj)
-    {
-        StopAllCoroutines();
-        StartCoroutine(MoveToPoint(obj));
-    }
+    
 
     public void Focus(GameObject obj)
     {
@@ -157,7 +153,7 @@ public class CameraSystem : MonoBehaviour
 
     void FollowObject()
     {
-        transform.position = _focusObject.transform.position;
+        transform.position = Vector3.Lerp(transform.position, _focusObject.transform.position, followSpeed * Time.deltaTime);
     }
 
     public void EnableControl() { _canControl = true; }
