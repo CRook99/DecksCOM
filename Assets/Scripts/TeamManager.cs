@@ -45,7 +45,7 @@ public class TeamManager : MonoBehaviour
         }
         
         SetCurrent(0);
-        DashButtonUI.Instance.UpdateCostForCurrentPlayer();
+        DashButtonUI.Instance.Refresh();
     }
 
     public int GetAllPlayerCount() { return _players.Count; }

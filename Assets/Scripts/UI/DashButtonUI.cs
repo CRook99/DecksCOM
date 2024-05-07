@@ -26,6 +26,11 @@ public class DashButtonUI : MonoBehaviour
         ResetCost();
     }
 
+    void OnEnable()
+    {
+        TeamSwitcher.OnSwitch += Refresh;
+    }
+
     public void Dash()
     {
         if (cost > EnergyManager.Instance.Amount) return;
@@ -35,7 +40,16 @@ public class DashButtonUI : MonoBehaviour
         UpdateCostForCurrentPlayer();
     }
 
-    public void UpdateCostForCurrentPlayer()
+    public void Refresh()
+    {
+        UpdateCostForCurrentPlayer();
+        if (cost > EnergyManager.Instance.Amount || !TeamManager.Instance.Current.CanMove)
+        {
+            // TODO - Fade logic
+        }
+    }
+
+    void UpdateCostForCurrentPlayer()
     {
         cost = TeamManager.Instance.Current.gameObject.GetComponent<PlayerDash>().GetBonus() + 1;
         _costText.text = cost.ToString();
@@ -46,4 +60,6 @@ public class DashButtonUI : MonoBehaviour
         cost = 1;
         _costText.text = cost.ToString();
     }
+    
+    
 }

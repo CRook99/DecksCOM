@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class TeamSwitcher : MonoBehaviour
     private static TeamSwitcher _instance;
     public static TeamSwitcher Instance { get { return _instance; } }
     bool canSwitch = true;
+
+    public static event Action OnSwitch;
 
     void Awake()
     {
@@ -37,7 +40,9 @@ public class TeamSwitcher : MonoBehaviour
         TeamManager.Instance.SetCurrent(index);
         TeamManager.Instance.Current.SetActive();
         
-        DashButtonUI.Instance.UpdateCostForCurrentPlayer(); // IMPROVE - Move to event
+        OnSwitch?.Invoke();
+        
+        //DashButtonUI.Instance.UpdateCostForCurrentPlayer(); // IMPROVE - Move to event
         
         Disable();
         CameraSystem.Instance.MoveToObject(TeamManager.Instance.Current.gameObject);
