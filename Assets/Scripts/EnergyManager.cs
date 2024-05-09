@@ -28,16 +28,8 @@ public class EnergyManager : MonoBehaviour
 
         Amount = _maxAmount;
         RefreshUI();
-    }
-
-    void OnEnable()
-    {
+        
         GameState.OnBeginPlayerTurn += TurnIncrease;
-    }
-
-    void OnDisable()
-    {
-        GameState.OnBeginEnemyTurn -= TurnIncrease;
     }
 
     
@@ -59,6 +51,7 @@ public class EnergyManager : MonoBehaviour
     
     public void TurnIncrease()
     {
+        Debug.Log("Increase");
         _maxAmount += 1;
         Amount = _maxAmount;
         RefreshUI();

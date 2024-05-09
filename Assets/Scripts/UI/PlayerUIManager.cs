@@ -7,9 +7,16 @@ public class PlayerUIManager : MonoBehaviour
 {
     public List<GameObject> Elements;
 
-    void Awake()
+    void OnEnable()
     {
-        
+        GameState.OnBeginPlayerTurn += Show;
+        GameState.OnBeginEnemyTurn += Hide;
+    }
+    
+    void OnDisable()
+    {
+        GameState.OnBeginPlayerTurn -= Show;
+        GameState.OnBeginEnemyTurn -= Hide;
     }
 
     public void Show()
