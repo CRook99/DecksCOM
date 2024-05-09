@@ -67,7 +67,7 @@ public class CameraSystem : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) { inputDirection -= transform.right; isKeyPanning = true; }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) { inputDirection += transform.right; isKeyPanning = true; }
 
-        transform.position += inputDirection * movementSpeed * GetSpeedModifier() * Time.deltaTime;
+        transform.position += inputDirection * (movementSpeed * GetSpeedModifier() * Time.deltaTime);
     }
 
     void HandleEdgePanInput()
@@ -79,7 +79,7 @@ public class CameraSystem : MonoBehaviour
         if (Input.mousePosition.x < edgePanMargin) { inputDirection -= transform.right; }
         if (Input.mousePosition.x > Screen.width - edgePanMargin) { inputDirection += transform.right; }
 
-        transform.position += inputDirection * movementSpeed * GetSpeedModifier() * Time.deltaTime;
+        transform.position += inputDirection * (movementSpeed * GetSpeedModifier() * Time.deltaTime);
     }
 
     float GetSpeedModifier()

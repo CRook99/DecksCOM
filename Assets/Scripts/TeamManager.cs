@@ -10,8 +10,6 @@ public class TeamManager : MonoBehaviour
     public static TeamManager Instance { get { return _instance; } }
 
     [SerializeField] List<Player> _players;
-    [SerializeField] Player _current;
-    [SerializeField] Player _previous;
 
     void Awake()
     {
@@ -19,8 +17,8 @@ public class TeamManager : MonoBehaviour
         else _instance = this;
     }
 
-    public Player Current { get { return _current; } }
-    public Player Previous { get { return _previous; } }
+    public Player Current { get; private set; }
+    public Player Previous { get; private set; }
 
     public void AddPlayer(Player player)
     {
@@ -30,11 +28,11 @@ public class TeamManager : MonoBehaviour
 
     public void SetCurrent(int index)
     {
-        if (_current != null) _current.SetInactive();
+        if (Current != null) Current.SetInactive();
         if (index < 0 || index > 2) index = 0;
-        _previous = _current;
-        _current = _players[index];
-        _current.SetActive();
+        Previous = Current;
+        Current = _players[index];
+        Current.SetActive();
     }
 
     public void BeginTurn()
@@ -45,7 +43,7 @@ public class TeamManager : MonoBehaviour
         }
         
         SetCurrent(0);
-        StartCoroutine(CameraSystem.Instance.MoveToPoint(_current.gameObject));
+        StartCoroutine(CameraSystem.Instance.MoveToPoint(Current.gameObject));
     }
 
     public int GetAllPlayerCount() { return _players.Count; }

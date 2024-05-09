@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TileAdjacencyUtil
 {
-    private static Tile tile;
-    private static Vector3 fwd = Vector3.forward;
-    private static Vector3 rgt = Vector3.right;
-    private static List<Vector3> orthVectors = new List<Vector3> { fwd, -fwd, rgt, -rgt };
-    private static List<Vector3> diagVectors = new List<Vector3> { fwd + rgt, fwd - rgt, -fwd + rgt, -fwd - rgt };
+    static Tile tile;
+    static Vector3 fwd = Vector3.forward;
+    static Vector3 rgt = Vector3.right;
+    static List<Vector3> orthVectors = new List<Vector3> { fwd, -fwd, rgt, -rgt };
+    static List<Vector3> diagVectors = new List<Vector3> { fwd + rgt, fwd - rgt, -fwd + rgt, -fwd - rgt };
 
     /// <summary>
     /// Freshly computes the adjacency lists of a given tile t
@@ -26,7 +26,7 @@ public class TileAdjacencyUtil
     /// Finds all neighbouring tiles in orthogonal directions
     /// </summary>
     /// <returns>List of orthogonal neighbours</returns>
-    private static List<Tile> FindOrthNeighbours()
+    static List<Tile> FindOrthNeighbours()
     {
         List<Tile> neighbours = new List<Tile>();
 
@@ -43,7 +43,7 @@ public class TileAdjacencyUtil
     /// Finds all neighbouring tiles in diagonal directions
     /// </summary>
     /// <returns>List of diagonal neighbours</returns>
-    private static List<Tile> FindDiagNeighbours()
+    static List<Tile> FindDiagNeighbours()
     {
         List<Tile> neighbours = new List<Tile>();
 
@@ -61,7 +61,7 @@ public class TileAdjacencyUtil
     /// </summary>
     /// <param name="direction">The direction to look for a neighbour</param>
     /// <returns>The detected neighbour (nullable)</returns>
-    private static Tile GetOrthNeighbour(Vector3 direction)
+    static Tile GetOrthNeighbour(Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(tile.transform.position + direction, halfExtents);
@@ -82,7 +82,7 @@ public class TileAdjacencyUtil
     /// </summary>
     /// <param name="direction">The direction to look for a neighbour</param>
     /// <returns>The detected neighbour (nullable)</returns>
-    private static Tile GetDiagNeighbour(Vector3 direction)
+    static Tile GetDiagNeighbour(Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(tile.transform.position + direction, halfExtents);
