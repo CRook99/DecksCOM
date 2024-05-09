@@ -17,9 +17,18 @@ public class TeamSwitcher : MonoBehaviour
     {
         _instance = this;
         _currentIndex = 0;
+    }
 
+    void OnEnable()
+    {
         MovementSelection.OnBeginMove += Disable;
         GridMovement.OnEndMove += Enable;
+    }
+
+    void OnDisable()
+    {
+        MovementSelection.OnBeginMove -= Disable;
+        GridMovement.OnEndMove -= Enable;
     }
 
     void Update()

@@ -30,6 +30,11 @@ public class DashButtonUI : MonoBehaviour
     {
         TeamSwitcher.OnSwitch += Refresh;
     }
+    
+    void OnDisable()
+    {
+        TeamSwitcher.OnSwitch -= Refresh;
+    }
 
     public void Dash()
     {

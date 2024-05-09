@@ -6,11 +6,15 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour
 {
-    private static GameState _instance;
+    static GameState _instance;
     public static GameState Instance { get { return _instance; } }
 
-    private Turn _turn;
-    private int _turnCount;
+    public static event Action OnBeginPlayerTurn;
+    public static event Action OnBeginEnemyTurn;
+    
+    int _turnCount;
+    
+    public Turn CurrentTurn { get; private set; }
 
     public TextMeshProUGUI TurnText;
 
@@ -37,26 +41,24 @@ public class GameState : MonoBehaviour
         if (Input.GetKeyDown("t")) SwitchTurn(); // DEBUGGING
     }
 
-    public Turn Turn { get { return _turn; } }
-
     void SwitchTurn()
     {
-        if (_turn == Turn.PLAYER) PassTurnToEnemy();
+        if (CurrentTurn == Turn.PLAYER) PassTurnToEnemy();
         else PassTurnToPlayer();
     }
 
     void PassTurnToPlayer()
     {
-        _turn = Turn.PLAYER;
-        TeamManager.Instance.BeginTurn();
-        EnergyManager.Instance.TurnIncrease();
+        CurrentTurn = Turn.PLAYER;
+        OnBeginPlayerTurn?.Invoke();
 
         TurnText.text = "TURN: PLAYER";
     }
 
     void PassTurnToEnemy()
     {
-        _turn = Turn.ENEMY;
+        CurrentTurn = Turn.ENEMY;
+        OnBeginEnemyTurn?.Invoke();
         _turnCount += 1;
         
         TurnText.text = "TURN: ENEMY";

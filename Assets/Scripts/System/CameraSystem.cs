@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,9 +36,18 @@ public class CameraSystem : MonoBehaviour
         _instance = this;
         cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         followOffset = cinemachineTransposer.m_FollowOffset;
+    }
 
+    void OnEnable()
+    {
         MovementSelection.OnBeginMove += Focus;
         GridMovement.OnEndMove += Unfocus;
+    }
+
+    void OnDisable()
+    {
+        MovementSelection.OnBeginMove -= Focus;
+        GridMovement.OnEndMove -= Unfocus;
     }
 
     void Update()
@@ -50,7 +60,7 @@ public class CameraSystem : MonoBehaviour
     {
         HandleRotationInput();
 
-        if (GameState.Instance.Turn == Turn.ENEMY) return;
+        if (GameState.Instance.CurrentTurn == Turn.ENEMY) return;
 
         HandleKeyPanInput();
         HandleZoomInput();

@@ -17,6 +17,16 @@ public class TeamManager : MonoBehaviour
         else _instance = this;
     }
 
+    void OnEnable()
+    {
+        GameState.OnBeginPlayerTurn += BeginTurn;
+    }
+
+    void OnDisable()
+    {
+        GameState.OnBeginPlayerTurn -= BeginTurn;
+    }
+
     public Player Current { get; private set; }
     public Player Previous { get; private set; }
 

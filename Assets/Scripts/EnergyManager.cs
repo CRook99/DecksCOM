@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,18 +7,18 @@ using TMPro;
 
 public class EnergyManager : MonoBehaviour
 {
-    private static EnergyManager _instance;
+    static EnergyManager _instance;
     public static EnergyManager Instance { get { return _instance; } }
+    
+    public int Amount { get; private set; }
+    [SerializeField] public int _maxAmount = 0;
 
-    public int _amount;
-    public int _maxAmount = 0;
-
-    private RectTransform _rectTransform;
+    RectTransform _rectTransform;
     public Image _image;
     public TMP_Text _text;
     public AnimationCurve _wobbleCurve;
     public AnimationCurve _easeInCurve;
-    private float _originalPosX;
+    float _originalPosX;
 
     void Awake()
     {
@@ -25,38 +26,51 @@ public class EnergyManager : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
         _originalPosX = _rectTransform.anchoredPosition.x;
 
-        _amount = _maxAmount;
+        Amount = _maxAmount;
         RefreshUI();
     }
 
-    public int Amount { get { return _amount; } }
+    void OnEnable()
+    {
+        GameState.OnBeginPlayerTurn += TurnIncrease;
+    }
 
+    void OnDisable()
+    {
+        GameState.OnBeginEnemyTurn -= TurnIncrease;
+    }
+
+    
     public void Increase(int increase)
     {
         if (increase <= 0) return;
-        _amount = Mathf.Clamp(_amount + increase, 0, _maxAmount);
+        Amount = Mathf.Clamp(Amount + increase, 0, _maxAmount);
         RefreshUI();
     }
 
+    
     public void Decrease(int decrease)
     {
         if (decrease <= 0) return;
-        _amount = Mathf.Clamp(_amount - decrease, 0, _maxAmount);
+        Amount = Mathf.Clamp(Amount - decrease, 0, _maxAmount);
         RefreshUI();
     }
 
+    
     public void TurnIncrease()
     {
         _maxAmount += 1;
-        _amount = _maxAmount;
+        Amount = _maxAmount;
         RefreshUI();
     }
 
-    private void RefreshUI()
+    
+    void RefreshUI()
     {
-        _text.text = _amount.ToString();
+        _text.text = Amount.ToString();
     }
 
+    
     public IEnumerator InsufficientAnim()
     {
         _image.color = new Color32(255, 0, 0, 255);
