@@ -55,10 +55,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
                 Use();
                 return;
             }
-            else 
-            {
-                StartCoroutine(EnergyManager.Instance.InsufficientAnim());
-            }
+            
+            StartCoroutine(EnergyManager.Instance.InsufficientAnim());
+            
         }
 
         transform.SetParent(_handTransform);
@@ -68,6 +67,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void Use()
     {
+        Debug.Log($"Used {_cardData.Name} for {_cardData.Cost} energy");
         EnergyManager.Instance.Decrease(_cardData.Cost);
         Destroy(_placeholder);
         Destroy(gameObject);
