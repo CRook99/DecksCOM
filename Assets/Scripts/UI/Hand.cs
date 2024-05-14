@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -13,7 +14,14 @@ public class Hand : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     void Update()
@@ -29,9 +37,22 @@ public class Hand : MonoBehaviour
         return Cards.Count;
     }
 
+    public void AddCardToHand(Card card)
+    {
+        if (card == null) return;
+        Cards.Add(card);
+        AddTransformToHand(card.gameObject.transform);
+    }
+
+    public void AddTransformToHand(Transform t)
+    {
+        t.SetParent(transform);
+    }
+
     void DebugDrawCard()
     {
-        
+        GameObject o = Instantiate(DefaultCard, transform);
+        Cards.Add(o.GetComponent<Card>());
     }
     
     

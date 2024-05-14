@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6591046298733e2458c00e79bbd7e761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hov: []
+  Data: {fileID: 11400000, guid: 0be0fc3f914db9b47bf3cb1a871e6fc8, type: 2}
 --- !u!114 &5277327541990443668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,11 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4a3167af41eb24d9ed516385f07c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 11400000, guid: 0be0fc3f914db9b47bf3cb1a871e6fc8, type: 2}
-  _artwork: {fileID: 2035178910982178239}
-  _costText: {fileID: 87064339888391307}
-  _nameText: {fileID: 863362811910654695}
-  _descriptionText: {fileID: 1219318945076281484}
+  Artwork: {fileID: 2035178910982178239}
+  CostText: {fileID: 87064339888391307}
+  NameText: {fileID: 863362811910654695}
+  DescriptionText: {fileID: 1219318945076281484}
 --- !u!114 &-849524454759361183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,8 +127,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 512
-  m_PreferredHeight: 768
+  m_PreferredWidth: 256
+  m_PreferredHeight: 384
   m_FlexibleWidth: 0
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
