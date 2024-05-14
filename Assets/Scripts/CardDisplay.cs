@@ -22,6 +22,11 @@ public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         _card = GetComponent<Card>();
         
+        UpdateDisplay();
+    }
+
+    void UpdateDisplay()
+    {
         Artwork.sprite = _card.Data.Artwork;
         CostText.text = _card.Data.Cost.ToString();
         NameText.text = _card.Data.Name;
