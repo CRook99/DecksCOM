@@ -11,7 +11,7 @@ public class Card : MonoBehaviour
 
     void Awake()
     {
-        _display = GetComponentInChildren<CardDisplay>();
+        _display = GetComponent<CardDisplay>();
     }
 
     public void Use()
@@ -20,5 +20,7 @@ public class Card : MonoBehaviour
         EnergyManager.Instance.Decrease(Data.Cost);
         
         _display.Use();
+        Hand.Instance.RemoveCardFromHand(this);
+        DiscardPile.Instance.AddCardToPile(this);
     }
 }

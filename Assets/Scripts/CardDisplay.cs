@@ -8,6 +8,7 @@ using TMPro;
 public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     Card _card;
+    public GameObject VisualsRoot;
 
     public Image Artwork;
     public TMP_Text CostText;
@@ -19,7 +20,7 @@ public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void Start()
     {
-        _card = GetComponentInParent<Card>();
+        _card = GetComponent<Card>();
         
         Artwork.sprite = _card.Data.Artwork;
         CostText.text = _card.Data.Cost.ToString();
@@ -33,12 +34,13 @@ public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _dragOffset = eventData.position - new Vector2(transform.position.x, transform.position.y);
         
         _placeholder = new GameObject();
+        Hand.Instance.AddTransformToHand(_placeholder.transform);
         LayoutElement le = _placeholder.AddComponent<LayoutElement>();
+        
         le.preferredWidth = GetComponent<LayoutElement>().preferredWidth;
         le.preferredHeight = GetComponent<LayoutElement>().preferredHeight;
         le.flexibleWidth = 0;
         le.flexibleHeight = 0;
-        Hand.Instance.AddTransformToHand(_placeholder.transform);
         _placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
         transform.SetParent(transform.parent.parent);
@@ -75,5 +77,6 @@ public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void Use()
     {
         Destroy(_placeholder);
+        VisualsRoot.gameObject.SetActive(false);
     }
 }

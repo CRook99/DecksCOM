@@ -49,6 +49,12 @@ public class Hand : MonoBehaviour
         t.SetParent(transform);
     }
 
+    public void RemoveCardFromHand(Card card)
+    {
+        if (card == null) return;
+        Cards.Remove(card);
+    }
+
     void DebugDrawCard()
     {
         GameObject o = Instantiate(DefaultCard, transform);

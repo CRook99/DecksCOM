@@ -19,6 +19,10 @@ public class DiscardPile : MonoBehaviour
             Instance = this;
         }
     }
-    
-    
+
+    public void AddCardToPile(Card card)
+    {
+        if (card == null) return;
+        Cards.Add(card);
+    }
 }

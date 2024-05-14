@@ -11,5 +11,6 @@ public class CardScriptableObject : ScriptableObject
     public int Cost;
     public string Name;
     public string Description;
+    public Card CardScript;
 }
 
