@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b080e4be4f42f42ba8e46063f7856d, type: 3}
-  m_Name: Bolt
+  m_Script: {fileID: 11500000, guid: 3b4c642fe35bc6642b1259afd5136c04, type: 3}
+  m_Name: DEFAULT
   m_EditorClassIdentifier: 
-  Artwork: {fileID: 21300000, guid: 156e54f5856b8194a8f2dc186af09fa7, type: 3}
-  Cost: 1
-  Name: Bolt
-  Description: Single bolt of magic
-  Hits: 1
-  Targets: 1
-  Range: 9
+  Artwork: {fileID: 21300000, guid: 1ebcfae7f11535f45b8833c8995daaec, type: 3}
+  Cost: 0
+  Name: NULL
+  Description: NULL
