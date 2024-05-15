@@ -5,22 +5,22 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     // Rendering (colours to be removed)
-    private Renderer _renderer;
+    Renderer _renderer;
     public Material Debug_Default;
     public Material Debug_Selectable;
     public Material Debug_Current;
 
     // BFS
-    private List<Tile> OrthAdjacencyList;
-    private List<Tile> DiagAdjacencyList;
-    public bool Visited = false;
-    public Tile Parent = null;
-    public float Distance = 0.0f;
+    List<Tile> OrthAdjacencyList;
+    List<Tile> DiagAdjacencyList;
+    public bool Visited;
+    public Tile Parent;
+    public float Distance;
 
     [SerializeField] GameObject fullShield;
     [SerializeField] GameObject halfShield;
-    private GameObject cover;
-    private Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
+    GameObject cover;
+    Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
     public List<CoverShield> shields;
 
     public void Initialize()

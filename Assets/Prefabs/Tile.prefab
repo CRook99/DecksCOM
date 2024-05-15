@@ -118,16 +118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6553489b6a9634cbbf7039e0b001b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Current: 0
-  Selectable: 0
   Debug_Default: {fileID: 2100000, guid: 61340b25ce9102b4887676fec9817b3d, type: 2}
   Debug_Selectable: {fileID: 2100000, guid: d80b7fd200781b0498c4ed2e961e1d58, type: 2}
   Debug_Current: {fileID: 2100000, guid: d64d7dc07286f2340843c78d5dd11f01, type: 2}
-  OrthAdjacencyList: []
-  DiagAdjacencyList: []
   Visited: 0
   Parent: {fileID: 0}
   Distance: 0
-  cover: {fileID: 0}
   fullShield: {fileID: 7604222797135231556, guid: bc85fd31c5306ac469a029ed9a2f909f, type: 3}
   halfShield: {fileID: 2921123592784073364, guid: f907e9dc9455c204e9f206a17eb9e008, type: 3}
+  shields: []
