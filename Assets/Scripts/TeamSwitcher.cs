@@ -11,7 +11,7 @@ public class TeamSwitcher : MonoBehaviour
     [SerializeField] int _currentIndex;
     bool canSwitch = true;
 
-    public static event Action OnSwitch;
+    public static event Action<int> OnSwitch;
 
     void Awake()
     {
@@ -57,7 +57,7 @@ public class TeamSwitcher : MonoBehaviour
     {
         TeamManager.Instance.SetCurrent(index);
         
-        OnSwitch?.Invoke();
+        OnSwitch?.Invoke(index);
         
         StartCoroutine(CameraSystem.Instance.MoveToPoint(TeamManager.Instance.Current.gameObject));
     }

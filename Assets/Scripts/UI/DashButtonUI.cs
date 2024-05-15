@@ -45,7 +45,7 @@ public class DashButtonUI : MonoBehaviour
         UpdateCostForCurrentPlayer();
     }
 
-    public void Refresh()
+    public void Refresh(int _)
     {
         UpdateCostForCurrentPlayer();
         if (cost > EnergyManager.Instance.Amount || !TeamManager.Instance.Current.CanMove)
