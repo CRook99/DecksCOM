@@ -11,6 +11,7 @@ public class GridMovement : MonoBehaviour
     public static event Action OnEndMove;
     
     [SerializeField] protected List<Tile> selectableTiles;
+    [SerializeField] protected List<Tile> edgeTiles;
     protected Tile currentTile;
     
     [SerializeField] int _movementRange;
@@ -103,11 +104,29 @@ public class GridMovement : MonoBehaviour
 
             t.Visited = true;
         }
+        
+        edgeTiles = selectableTiles.Where(IsEdgeTile).ToList();
+    }
+
+    bool IsEdgeTile(Tile tile)
+    {
+        foreach (Tile t in tile.GetOrthAdjList())
+        {
+            if (!t.Visited) return true;
+        }
+        
+        foreach (Tile t in tile.GetDiagAdjList())
+        {
+            if (!t.Visited) return true;
+        }
+
+        return false;
     }
 
     public void ShowRange()
     {
         foreach (Tile tile in selectableTiles) { tile.ShowSelectable();}
+        foreach (Tile tile in edgeTiles) { tile.ShowEdge(); }
         currentTile.ShowCurrent();
     }
 
@@ -124,6 +143,7 @@ public class GridMovement : MonoBehaviour
             tile.Reset();
         }
         selectableTiles.Clear();
+        edgeTiles.Clear();
     }
 
 

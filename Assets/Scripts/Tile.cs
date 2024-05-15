@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Tile : MonoBehaviour
     public Material Debug_Default;
     public Material Debug_Selectable;
     public Material Debug_Current;
+    public Material Debug_Edge;
 
     // BFS
     List<Tile> OrthAdjacencyList;
@@ -17,12 +19,24 @@ public class Tile : MonoBehaviour
     public Tile Parent;
     public float Distance;
 
+    // Position of corners relative to center of tile
+    Vector3[] _corners =
+    {
+        new (0.4f, 0.6f, 0.4f),
+        new (-0.4f, 0.6f, 0.4f),
+        new (0.4f, 0.6f, -0.4f),
+        new (-0.4f, 0.6f, -0.4f)
+    };
+    
     [SerializeField] GameObject fullShield;
     [SerializeField] GameObject halfShield;
     GameObject cover;
+    public bool HasCover;
+    public bool HasObstacle;
     Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
     public List<CoverShield> shields;
-
+    
+    
     public void Initialize()
     {
         OrthAdjacencyList = new List<Tile>();
@@ -31,12 +45,12 @@ public class Tile : MonoBehaviour
 
         _renderer = GetComponent<Renderer>();
 
-        SetCover();
+        FindEnvironment();
     }
 
     public bool Walkable()
     {
-        return !(Occupied() || GetCover() != null);
+        return !(HasCover || HasObstacle);
     }
 
     public bool Occupied()
@@ -44,16 +58,20 @@ public class Tile : MonoBehaviour
         return Physics.Raycast(transform.position, Vector3.up, out _, 1);
     }
 
-    public bool SetCover()
+    void FindEnvironment()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1, LayerMask.GetMask("Cover")))
+        if (!Physics.Raycast(transform.position, Vector3.up, out var hit, 1,
+                LayerMask.GetMask("Cover", "Env_Static"))) return;
+        
+        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Cover"))
         {
             cover = hit.collider.gameObject;
-            return true;
+            HasCover = true;
         }
-
-        return false;
+        else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Env_Static"))
+        {
+            HasObstacle = true;
+        }
     }
 
     public GameObject GetCover() { return cover; }
@@ -91,6 +109,8 @@ public class Tile : MonoBehaviour
     public void ShowCurrent() { _renderer.material = Debug_Current; }
 
     public void ShowSelectable() { _renderer.material = Debug_Selectable; }
+
+    public void ShowEdge() { _renderer.material = Debug_Edge; }
 
     public void HideColour() { _renderer.material = Debug_Default; }
 

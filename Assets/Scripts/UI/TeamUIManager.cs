@@ -27,7 +27,6 @@ public class TeamUIManager : MonoBehaviour
 
     void UpdateGradients(int index)
     {
-        Debug.Log($"Index: {index}");
         for (int i = 0; i < _healthBars.Count; i++)
         {
             _healthBars[i].UpdateIndicator(i == index);
