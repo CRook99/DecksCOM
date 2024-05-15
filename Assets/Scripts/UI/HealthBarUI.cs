@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -34,6 +35,16 @@ public class HealthBarUI : MonoBehaviour
 
     public void UpdateGradient(bool b)
     {
-        _gradient.enabled = b;
+        if (b)
+        {
+            _gradient.enabled = true;
+            _gradient.rectTransform.anchoredPosition = Vector3.zero;
+            _gradient.rectTransform.DOLocalMoveX(100f, 0.25f).SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _gradient.rectTransform.DOLocalMoveX(-100f, 0.1f);
+            _gradient.enabled = false;
+        }
     }
 }
