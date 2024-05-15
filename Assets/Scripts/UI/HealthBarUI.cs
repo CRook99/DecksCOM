@@ -33,7 +33,7 @@ public class HealthBarUI : MonoBehaviour
         _text.text = _healthManager.Health.ToString();        
     }
 
-    public void UpdateGradient(bool b)
+    public void UpdateIndicator(bool b)
     {
         if (b)
         {

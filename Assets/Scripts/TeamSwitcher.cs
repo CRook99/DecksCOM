@@ -23,6 +23,7 @@ public class TeamSwitcher : MonoBehaviour
     {
         MovementSelection.OnBeginMove += Disable;
         GridMovement.OnEndMove += Enable;
+        GameState.OnBeginPlayerTurn += BeginTurn;
     }
 
     void OnDisable()
@@ -60,6 +61,11 @@ public class TeamSwitcher : MonoBehaviour
         OnSwitch?.Invoke(index);
         
         StartCoroutine(CameraSystem.Instance.MoveToPoint(TeamManager.Instance.Current.gameObject));
+    }
+
+    void BeginTurn()
+    {
+        Switch(0);
     }
 
     public void Enable() { canSwitch = true; }

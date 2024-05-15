@@ -30,7 +30,7 @@ public class TeamUIManager : MonoBehaviour
         Debug.Log($"Index: {index}");
         for (int i = 0; i < _healthBars.Count; i++)
         {
-            _healthBars[i].UpdateGradient(i == index);
+            _healthBars[i].UpdateIndicator(i == index);
         }
     }
 }

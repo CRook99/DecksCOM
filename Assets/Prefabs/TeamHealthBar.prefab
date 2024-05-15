@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 2069670331339000498}
   - component: {fileID: 7944285971587027324}
   m_Layer: 5
-  m_Name: Gradient
+  m_Name: Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
