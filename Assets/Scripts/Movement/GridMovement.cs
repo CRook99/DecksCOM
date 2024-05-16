@@ -145,32 +145,19 @@ public class GridMovement : MonoBehaviour
         selectableTiles.Clear();
         edgeTiles.Clear();
     }
-
-
-    Stack<Tile> generatePath(Tile destination)
-    {
-        Stack<Tile> path = new Stack<Tile>();
-        Tile current = destination;
-        while (current.Parent != null)
-        {
-            path.Push(current);
-            current = current.Parent;
-        }
-
-        return path;
-    }
+    
 
     public IEnumerator MoveToDestination(Tile destination)
     {
         isMoving = true;
         HideRange();
-        Stack<Tile> path = generatePath(destination);
+        List<Tile> path = PathfindingUtil.GetPathToTile(destination);
         Vector3 startPosition, nextPosition, directionVector;
         
-        while (path.Count > 0)
+        for (int i = 0; i < path.Count; i++)
         {
             startPosition = transform.position;
-            nextPosition = path.Pop().gameObject.transform.position + _offset;
+            nextPosition = path[i].gameObject.transform.position + _offset;
             directionVector = (nextPosition - startPosition).normalized;
 
             while (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
@@ -184,10 +171,7 @@ public class GridMovement : MonoBehaviour
 
         isMoving = false;
         
-        // extra
         OnEndMove?.Invoke();
-        //TeamSwitcher.Instance.Enable();
-        //CameraSystem.Instance.Unfocus();
     }
 
     private void RecomputeOriginAdjacencies()
