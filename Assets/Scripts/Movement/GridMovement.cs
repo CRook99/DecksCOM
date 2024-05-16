@@ -10,17 +10,17 @@ public class GridMovement : MonoBehaviour
 {
     public static event Action OnEndMove;
     
-    [SerializeField] protected List<Tile> selectableTiles;
-    [SerializeField] protected List<Tile> edgeTiles;
-    protected Tile currentTile;
-    
+    [SerializeField] List<Tile> selectableTiles;
+    [SerializeField] List<Tile> edgeTiles;
+    Tile currentTile;
+
     [SerializeField] int _movementRange;
     [SerializeField] int _movementSpeed;
     int bonus;
     
-    [SerializeField] protected bool isMoving;
+    [SerializeField] bool isMoving;
 
-    private Vector3 _offset = new Vector3(0f, 0.5f, 0f);
+    Vector3 _offset = new (0f, 0.5f, 0f);
 
     void Awake()
     {
@@ -31,11 +31,6 @@ public class GridMovement : MonoBehaviour
     public void SetMovementRange(int range)
     {
         _movementRange = range;
-    }
-    
-    public void SetMovementSpeed(int speed)
-    {
-        _movementSpeed = speed;
     }
 
     public void IncrementBonus()
@@ -49,12 +44,12 @@ public class GridMovement : MonoBehaviour
     }
     
 
-    public void GetCurrentTile()
+    void GetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
     }
 
-    public Tile GetTargetTile(GameObject target)
+    Tile GetTargetTile(GameObject target)
     {
         RaycastHit hit;
         Tile tile = null;
@@ -70,40 +65,7 @@ public class GridMovement : MonoBehaviour
         ResetAllTiles();
         GetCurrentTile();
 
-        Queue<Tile> queue = new Queue<Tile>();
-
-        queue.Enqueue(currentTile);
-
-        while (queue.Count > 0)
-        {
-            Tile t = queue.Dequeue();
-            selectableTiles.Add(t);
-
-            if (t.Distance >= _movementRange + bonus) continue;
-
-            foreach (Tile a in t.GetOrthAdjList())
-            {
-                if (a.Visited || !a.Walkable()) continue;
-                
-                a.Parent = t;
-                a.Visited = true;
-                a.Distance = 1 + t.Distance;
-                queue.Enqueue(a);
-                
-            }
-
-            foreach (Tile a in t.GetDiagAdjList())
-            {
-                if (a.Visited || !a.Walkable()) continue;
-
-                a.Parent = t;
-                a.Visited = true;
-                a.Distance = Mathf.Sqrt(2) + t.Distance;
-                queue.Enqueue(a);
-            }
-
-            t.Visited = true;
-        }
+        selectableTiles = PathfindingUtil.FindReachableTiles(currentTile, _movementRange + bonus);
         
         edgeTiles = selectableTiles.Where(IsEdgeTile).ToList();
     }
