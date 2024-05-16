@@ -64,6 +64,11 @@ public class Player : MonoBehaviour
         StartCoroutine(_gridMovement.MoveToDestination(destination));
     }
 
+    public List<Tile> GetMovementArea()
+    {
+        return _gridMovement.GetReachableTiles();
+    }
+
     public void Heal(int amount)
     {
         _healthManager.Heal(amount);
