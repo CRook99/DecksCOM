@@ -67,7 +67,7 @@ public class GridMovement : MonoBehaviour
 
         selectableTiles = PathfindingUtil.FindReachableTiles(currentTile, _movementRange + bonus);
         
-        edgeTiles = selectableTiles.Where(IsEdgeTile).ToList();
+        //edgeTiles = selectableTiles.Where(IsEdgeTile).ToList();
     }
 
     bool IsEdgeTile(Tile tile)
@@ -88,8 +88,9 @@ public class GridMovement : MonoBehaviour
     public void ShowRange()
     {
         foreach (Tile tile in selectableTiles) { tile.ShowSelectable();}
-        foreach (Tile tile in edgeTiles) { tile.ShowEdge(); }
+        //foreach (Tile tile in edgeTiles) { tile.ShowEdge(); }
         currentTile.ShowCurrent();
+        TileOutline.Instance.Refresh(selectableTiles);
     }
 
     public void HideRange()

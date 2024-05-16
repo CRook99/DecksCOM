@@ -13,8 +13,8 @@ public class Tile : MonoBehaviour
     public Material Debug_Edge;
 
     // BFS
-    List<Tile> OrthAdjacencyList;
-    List<Tile> DiagAdjacencyList;
+    [SerializeField] List<Tile> OrthAdjacencyList;
+    [SerializeField] List<Tile> DiagAdjacencyList; // Adjacents that can be walked without obstruction
     public bool Visited;
     public Tile Parent;
     public float Distance;
