@@ -147,6 +147,11 @@ public class CameraSystem : MonoBehaviour
 
         yield return null;
     }
+
+    public void MoveToCurrent()
+    {
+        StartCoroutine(MoveToPoint(TeamManager.Instance.Current.gameObject));
+    }
     
 
     public void Focus(GameObject obj)

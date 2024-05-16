@@ -31,6 +31,16 @@ public class Player : MonoBehaviour
         TeamManager.Instance.AddPlayer(this);
     }
 
+    void OnEnable()
+    {
+        GameState.OnBeginPlayerTurn += BeginTurn;
+    }
+
+    void OnDisable()
+    {
+        GameState.OnBeginPlayerTurn -= BeginTurn;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown("x")) TakeDamage(10);
