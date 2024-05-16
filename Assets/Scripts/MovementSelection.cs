@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MovementSelection : MonoBehaviour
 {
+    // IMPROVE - Make this not have GameObject (only use is CameraSystem)
     public static event Action<GameObject> OnBeginMove;
     Tile destination;
     
@@ -12,7 +13,7 @@ public class MovementSelection : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
         {
-            destination = TileSelection.Instance.current.GetComponent<Tile>();
+            destination = TileSelection.Instance.Current.GetComponent<Tile>();
             BeginMove();
         }
     }

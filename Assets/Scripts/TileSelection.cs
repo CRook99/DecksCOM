@@ -6,16 +6,16 @@ public class TileSelection : MonoBehaviour
 {
     private static TileSelection _instance;
     public static TileSelection Instance { get { return _instance; } }
-    public GameObject current;
-    public GameObject previous;
-    private LayerMask TileMask;
+    public GameObject Current { get; private set; }
+    public GameObject Previous { get; private set; }
+    LayerMask _tileMask;
 
     void Awake()
     {
         _instance = this;
-        current = gameObject;
-        previous = gameObject;
-        TileMask = LayerMask.GetMask("Tile");
+        Current = gameObject;
+        Previous = gameObject;
+        _tileMask = LayerMask.GetMask("Tile");
     }
 
     // Update is called once per frame
@@ -23,27 +23,27 @@ public class TileSelection : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, TileMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _tileMask))
         {
-            current = hit.collider.gameObject;
+            Current = hit.collider.gameObject;
 
         }
 
-        if (current != previous)
+        if (Current != Previous)
         {
-            current.GetComponent<Tile>().ShowShields();
+            Current.GetComponent<Tile>().ShowShields();
 
-            if (previous.tag == "Tile")
+            if (Previous.CompareTag("Tile"))
             {
-                previous.GetComponent<Tile>().HideShields();
+                Previous.GetComponent<Tile>().HideShields();
             }
             
-            previous = current;
+            Previous = Current;
         }
     }
 
     public bool MouseOnTile()
     {
-        return current.tag == "Tile";
+        return Current.CompareTag("Tile");
     }
 }
