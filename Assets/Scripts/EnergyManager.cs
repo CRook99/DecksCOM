@@ -51,7 +51,6 @@ public class EnergyManager : MonoBehaviour
     
     public void TurnIncrease()
     {
-        Debug.Log("Increase");
         _maxAmount += 1;
         Amount = _maxAmount;
         RefreshUI();

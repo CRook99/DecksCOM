@@ -2,15 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Character
+public class Enemy : MonoBehaviour
 {
-    public override void Move(Tile destination)
-    {
-        return;
-    }
     
-    public override void Die()
-    {
-        Debug.Log("Enemy Die");
-    }
 }
