@@ -90,13 +90,14 @@ public class GridMovement : MonoBehaviour
         //foreach (Tile tile in selectableTiles) { tile.ShowSelectable();}
         //foreach (Tile tile in edgeTiles) { tile.ShowEdge(); }
         //currentTile.ShowCurrent();
-        TileOutline.Instance.GenerateMoveAreaMesh(selectableTiles);
+        //TileOutline.Instance.GenerateMoveAreaMesh(selectableTiles);
+        TileOutline.Instance.ShowOutline(selectableTiles);
     }
 
     public void HideRange()
     {
         //foreach (Tile tile in selectableTiles) { tile.HideColour(); }
-        TileOutline.Instance.HideMoveArea();
+        //TileOutline.Instance.HideMoveArea();
     }
 
     public List<Tile> GetReachableTiles()

@@ -62,7 +62,7 @@ public class TileAdjacencyUtil
     /// </summary>
     /// <param name="direction">The direction to look for a neighbour</param>
     /// <returns>The detected neighbour (nullable)</returns>
-    static Tile GetOrthNeighbour(Tile origin, Vector3 direction)
+    public static Tile GetOrthNeighbour(Tile origin, Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(origin.transform.position + direction, halfExtents);
@@ -83,7 +83,7 @@ public class TileAdjacencyUtil
     /// </summary>
     /// <param name="direction">The direction to look for a neighbour</param>
     /// <returns>The detected neighbour (nullable)</returns>
-    static Tile GetDiagNeighbour(Tile origin, Vector3 direction)
+    public static Tile GetDiagNeighbour(Tile origin, Vector3 direction)
     {
         Vector3 halfExtents = new Vector3(0.25f, 0f, 0.25f);
         Collider[] colliders = Physics.OverlapBox(origin.transform.position + direction, halfExtents);

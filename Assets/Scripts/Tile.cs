@@ -18,15 +18,6 @@ public class Tile : MonoBehaviour
     public bool Visited;
     public Tile Parent;
     public float Distance;
-
-    // Position of corners relative to center of tile
-    Vector3[] _corners =
-    {
-        new (0.4f, 0.6f, 0.4f),
-        new (-0.4f, 0.6f, 0.4f),
-        new (0.4f, 0.6f, -0.4f),
-        new (-0.4f, 0.6f, -0.4f)
-    };
     
     [SerializeField] GameObject fullShield;
     [SerializeField] GameObject halfShield;
@@ -71,6 +62,37 @@ public class Tile : MonoBehaviour
         else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Env_Static"))
         {
             HasObstacle = true;
+        }
+    }
+
+    // IMPROVE WHAT THE FUCK
+    public void ShowAreaBars()
+    {
+        Tile neighbour;
+
+        neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.right);
+        if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
+        {
+            GameObject bar = TileOutline.Instance.GetBar();
+            bar.transform.SetPositionAndRotation(transform.position + Vector3.right * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 0, 0));
+        }
+        neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.left);
+        if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
+        {
+            GameObject bar = TileOutline.Instance.GetBar();
+            bar.transform.SetPositionAndRotation(transform.position + Vector3.left * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 0, 0));
+        }
+        neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.forward);
+        if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
+        {
+            GameObject bar = TileOutline.Instance.GetBar();
+            bar.transform.SetPositionAndRotation(transform.position + Vector3.forward * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 90, 0));
+        }
+        neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.back);
+        if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
+        {
+            GameObject bar = TileOutline.Instance.GetBar();
+            bar.transform.SetPositionAndRotation(transform.position + Vector3.back * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 90, 0));
         }
     }
 
