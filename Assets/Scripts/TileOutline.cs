@@ -67,7 +67,7 @@ public class TileOutline : MonoBehaviour
 
     GameObject CreateBar()
     {
-        GameObject bar = Instantiate(BarPrefab, Vector3.zero, Quaternion.identity, this.transform);
+        GameObject bar = Instantiate(BarPrefab, Vector3.zero, Quaternion.identity, transform);
         bar.SetActive(false);
         _bars.Add(bar);
         return bar;

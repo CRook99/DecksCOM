@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TileAdjacencyUtil
@@ -16,45 +18,45 @@ public class TileAdjacencyUtil
     /// <param name="tile"></param>
     public static void ComputeAdjacencyLists(Tile tile)
     {
-        //tile = t;
         tile.Reset();
         tile.SetOrthAdjList(FindOrthNeighbours(tile));
         tile.SetDiagAdjList(FindDiagNeighbours(tile));
-        
     }
 
     /// <summary>
     /// Finds all neighbouring tiles in orthogonal directions
     /// </summary>
     /// <returns>List of orthogonal neighbours</returns>
-    static List<Tile> FindOrthNeighbours(Tile tile)
+    static Dictionary<Vector3, Tile> FindOrthNeighbours(Tile tile)
     {
         List<Tile> neighbours = new List<Tile>();
 
         foreach (Vector3 v in orthVectors)
         {
             Tile neighbour = GetOrthNeighbour(tile, v);
-            if (neighbour != null) neighbours.Add(neighbour);
+            neighbours.Add(neighbour);
         }
 
-        return neighbours;
+        return orthVectors.Zip(neighbours, (vector, neighbour) => new { Vector = vector, Neighbour = neighbour })
+            .ToDictionary(pair => pair.Vector, pair => pair.Neighbour);
     }
 
     /// <summary>
     /// Finds all neighbouring tiles in diagonal directions
     /// </summary>
     /// <returns>List of diagonal neighbours</returns>
-    static List<Tile> FindDiagNeighbours(Tile tile)
+    static Dictionary<Vector3, Tile> FindDiagNeighbours(Tile tile)
     {
         List<Tile> neighbours = new List<Tile>();
 
         foreach (Vector3 v in diagVectors)
         {
             Tile neighbour = GetDiagNeighbour(tile, v);
-            if (neighbour != null) neighbours.Add(neighbour);
+            neighbours.Add(neighbour);
         }
-
-        return neighbours;
+        
+        return diagVectors.Zip(neighbours, (vector, neighbour) => new { Vector = vector, Neighbour = neighbour })
+            .ToDictionary(pair => pair.Vector, pair => pair.Neighbour);
     }
 
     /// <summary>

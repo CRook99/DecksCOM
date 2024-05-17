@@ -38,6 +38,8 @@ public class PathfindingUtil
 
             foreach (Tile a in t.GetOrthAdjList())
             {
+                if (a == null) continue;
+                
                 if (a.Visited || !a.Walkable()) continue;
                 
                 a.Parent = t;
@@ -49,6 +51,8 @@ public class PathfindingUtil
 
             foreach (Tile a in t.GetDiagAdjList())
             {
+                if (a == null) continue;
+                
                 if (a.Visited || !a.Walkable()) continue;
 
                 a.Parent = t;
