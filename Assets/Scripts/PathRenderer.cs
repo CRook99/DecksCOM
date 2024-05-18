@@ -62,7 +62,7 @@ public class PathRenderer : MonoBehaviour
         _renderer.enabled = true;
     }
 
-    void Hide(GameObject _)
+    void Hide()
     {
         _renderer.positionCount = 0;
         _renderer.enabled = false;

@@ -22,14 +22,19 @@ public class TeamSwitcher : MonoBehaviour
     void OnEnable()
     {
         MovementSelection.OnBeginMove += Disable;
+        GameState.OnBeginEnemyTurn += Disable;
         GridMovement.OnEndMove += Enable;
+        GameState.OnBeginPlayerTurn += Enable;
         GameState.OnBeginPlayerTurn += BeginTurn;
     }
 
     void OnDisable()
     {
         MovementSelection.OnBeginMove -= Disable;
+        GameState.OnBeginEnemyTurn -= Disable;
         GridMovement.OnEndMove -= Enable;
+        GameState.OnBeginPlayerTurn -= Enable;
+        GameState.OnBeginPlayerTurn -= BeginTurn;
     }
 
     void Update()
@@ -67,7 +72,8 @@ public class TeamSwitcher : MonoBehaviour
     {
         Switch(0);
     }
+    
 
     public void Enable() { canSwitch = true; }
-    public void Disable(GameObject o) { canSwitch = false; }
+    public void Disable() { canSwitch = false; }
 }

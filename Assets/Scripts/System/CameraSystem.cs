@@ -40,13 +40,13 @@ public class CameraSystem : MonoBehaviour
 
     void OnEnable()
     {
-        MovementSelection.OnBeginMove += Focus;
+        MovementSelection.OnBeginMove += FocusOnCurrent;
         GridMovement.OnEndMove += Unfocus;
     }
 
     void OnDisable()
     {
-        MovementSelection.OnBeginMove -= Focus;
+        MovementSelection.OnBeginMove -= FocusOnCurrent;
         GridMovement.OnEndMove -= Unfocus;
     }
 
@@ -158,6 +158,11 @@ public class CameraSystem : MonoBehaviour
     {
         _focusObject = obj;
         DisableControl();
+    }
+
+    public void FocusOnCurrent()
+    {
+        Focus(TeamManager.Instance.Current.gameObject);
     }
 
     public void Unfocus()

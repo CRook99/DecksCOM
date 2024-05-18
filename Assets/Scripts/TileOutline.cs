@@ -24,6 +24,16 @@ public class TileOutline : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        GameState.OnBeginEnemyTurn += HideOutline;
+    }
+
+    void OnDisable()
+    {
+        GameState.OnBeginEnemyTurn -= HideOutline;
+    }
+
     GameObject CreateBar()
     {
         GameObject bar = Instantiate(BarPrefab, Vector3.zero, Quaternion.identity, transform);
@@ -45,6 +55,8 @@ public class TileOutline : MonoBehaviour
 
     public void ShowOutline(List<Tile> tiles)
     {
+        HideOutline();
+        
         foreach (Tile tile in tiles)
         {
             foreach (var (dir, neighbour) in tile.GetOrthAdjDict())

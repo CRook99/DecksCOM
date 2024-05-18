@@ -6,7 +6,7 @@ using UnityEngine;
 public class MovementSelection : MonoBehaviour
 {
     // IMPROVE - Make this not have GameObject (only use is CameraSystem)
-    public static event Action<GameObject> OnBeginMove;
+    public static event Action OnBeginMove;
     Tile destination;
     
     void Update()
@@ -21,7 +21,8 @@ public class MovementSelection : MonoBehaviour
     void BeginMove()
     {
         Player player = TeamManager.Instance.Current;
-        OnBeginMove?.Invoke(player.gameObject);
+        //OnBeginMove?.Invoke(player.gameObject);
+        OnBeginMove?.Invoke();
         player.Move(destination);
     }
 }
