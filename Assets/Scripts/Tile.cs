@@ -67,41 +67,7 @@ public class Tile : MonoBehaviour
     // IMPROVE WHAT THE FUCK
     public void ShowAreaBars()
     {
-        foreach (KeyValuePair<Vector3, Tile> kvp in _orthAdjacencyList)
-        {
-            var neighbour = kvp.Value;
-            if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
-            {
-                GameObject bar = TileOutline.Instance.GetBar();
-                bar.transform.SetPositionAndRotation(transform.position + kvp.Key * 0.45f + Vector3.up * 0.55f,
-                    Quaternion.Euler(0, 90 * (kvp.Key.z != 0 ? 1 : 0), 0)); // Rotate by 90 if z is not 0
-            }
-        }
-
-        // neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.right);
-        // if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
-        // {
-        //     GameObject bar = TileOutline.Instance.GetBar();
-        //     bar.transform.SetPositionAndRotation(transform.position + Vector3.right * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 0, 0));
-        // }
-        // neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.left);
-        // if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
-        // {
-        //     GameObject bar = TileOutline.Instance.GetBar();
-        //     bar.transform.SetPositionAndRotation(transform.position + Vector3.left * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 0, 0));
-        // }
-        // neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.forward);
-        // if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
-        // {
-        //     GameObject bar = TileOutline.Instance.GetBar();
-        //     bar.transform.SetPositionAndRotation(transform.position + Vector3.forward * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 90, 0));
-        // }
-        // neighbour = TileAdjacencyUtil.GetOrthNeighbour(this, Vector3.back);
-        // if (neighbour == null || !neighbour.Walkable() || !neighbour.Visited)
-        // {
-        //     GameObject bar = TileOutline.Instance.GetBar();
-        //     bar.transform.SetPositionAndRotation(transform.position + Vector3.back * 0.5f + Vector3.up * 0.55f, Quaternion.Euler(0, 90, 0));
-        // }
+        
     }
 
     [ContextMenu("Print neighbours")]
@@ -123,9 +89,11 @@ public class Tile : MonoBehaviour
     public GameObject GetCover() { return cover; }
 
     public void SetOrthAdjList(Dictionary<Vector3, Tile> list) { _orthAdjacencyList = list; }
-    public List<Tile> GetOrthAdjList() { return _orthAdjacencyList.Values.ToList(); }
+    public Dictionary<Vector3, Tile> GetOrthAdjDict() { return _orthAdjacencyList; }
+    public List<Tile> GetOrthNeighbours() { return _orthAdjacencyList.Values.ToList(); }
     public void SetDiagAdjList(Dictionary<Vector3, Tile> list) { _diagAdjacencyList = list; }
-    public List<Tile> GetDiagAdjList() { return _diagAdjacencyList.Values.ToList(); }
+    public Dictionary<Vector3, Tile> GetDiagAdjDict() { return _orthAdjacencyList; }
+    public List<Tile> GetDiagNeighbours() { return _diagAdjacencyList.Values.ToList(); }
 
 
     public void GenerateCoverShields()

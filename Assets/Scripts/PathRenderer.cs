@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
-    [SerializeField] float _offset = 0.6f;
     LineRenderer _renderer;
-    [SerializeField] Vector3[] _points;
+    Vector3[] _points;
 
     void Awake()
     {
@@ -40,7 +39,7 @@ public class PathRenderer : MonoBehaviour
 
         Tile destination = TileSelection.Instance.Current.GetComponent<Tile>();
         _points = PathfindingUtil.GetPathToTile(destination)
-            .Select(x => x.gameObject.transform.position + Vector3.up * _offset)
+            .Select(x => x.gameObject.transform.position + Vector3.up * TileOutline.VER_OFFSET)
             .ToArray();
 
         if (_points.Length > 2)

@@ -17,15 +17,12 @@ public class GridMovement : MonoBehaviour
     [SerializeField] int _movementRange;
     [SerializeField] int _movementSpeed;
     int bonus;
-    
-    [SerializeField] bool isMoving;
 
     Vector3 _offset = new (0f, 0.5f, 0f);
 
     void Awake()
     {
         selectableTiles = new List<Tile>();
-        isMoving = false;
     }
 
     public void SetMovementRange(int range)
@@ -66,18 +63,16 @@ public class GridMovement : MonoBehaviour
         GetCurrentTile();
 
         selectableTiles = PathfindingUtil.FindReachableTiles(currentTile, _movementRange + bonus);
-        
-        //edgeTiles = selectableTiles.Where(IsEdgeTile).ToList();
     }
 
     bool IsEdgeTile(Tile tile)
     {
-        foreach (Tile t in tile.GetOrthAdjList())
+        foreach (Tile t in tile.GetOrthNeighbours())
         {
             if (!t.Visited) return true;
         }
         
-        foreach (Tile t in tile.GetDiagAdjList())
+        foreach (Tile t in tile.GetDiagNeighbours())
         {
             if (!t.Visited) return true;
         }
@@ -87,17 +82,12 @@ public class GridMovement : MonoBehaviour
 
     public void ShowRange()
     {
-        //foreach (Tile tile in selectableTiles) { tile.ShowSelectable();}
-        //foreach (Tile tile in edgeTiles) { tile.ShowEdge(); }
-        //currentTile.ShowCurrent();
-        //TileOutline.Instance.GenerateMoveAreaMesh(selectableTiles);
         TileOutline.Instance.ShowOutline(selectableTiles);
     }
 
     public void HideRange()
     {
-        //foreach (Tile tile in selectableTiles) { tile.HideColour(); }
-        //TileOutline.Instance.HideMoveArea();
+        TileOutline.Instance.HideOutline();
     }
 
     public List<Tile> GetReachableTiles()
@@ -119,7 +109,6 @@ public class GridMovement : MonoBehaviour
 
     public IEnumerator MoveToDestination(Tile destination)
     {
-        isMoving = true;
         HideRange();
         List<Tile> path = PathfindingUtil.GetPathToTile(destination);
         Vector3 startPosition, nextPosition, directionVector;
@@ -132,26 +121,24 @@ public class GridMovement : MonoBehaviour
 
             while (Vector3.Distance(transform.position, nextPosition) >= 0.05f)
             {
-                transform.position += _movementSpeed * directionVector * Time.deltaTime;
+                transform.position += directionVector * (_movementSpeed * Time.deltaTime);
                 yield return null;
             }
 
             transform.position = nextPosition;
         }
-
-        isMoving = false;
         
         OnEndMove?.Invoke();
     }
 
     private void RecomputeOriginAdjacencies()
     {
-        foreach (Tile tile in currentTile.GetOrthAdjList())
+        foreach (Tile tile in currentTile.GetOrthNeighbours())
         {
             TileAdjacencyUtil.ComputeAdjacencyLists(tile);
         }
 
-        foreach (Tile tile in currentTile.GetDiagAdjList())
+        foreach (Tile tile in currentTile.GetDiagNeighbours())
         {
             TileAdjacencyUtil.ComputeAdjacencyLists(tile);
         }

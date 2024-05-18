@@ -36,7 +36,7 @@ public class PathfindingUtil
 
             if (t.Distance >= range) continue;
 
-            foreach (Tile a in t.GetOrthAdjList())
+            foreach (Tile a in t.GetOrthNeighbours())
             {
                 if (a == null) continue;
                 
@@ -49,7 +49,7 @@ public class PathfindingUtil
                 
             }
 
-            foreach (Tile a in t.GetDiagAdjList())
+            foreach (Tile a in t.GetDiagNeighbours())
             {
                 if (a == null) continue;
                 
