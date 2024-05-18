@@ -1,31 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class TargetCursor : MonoBehaviour
 {
     public GameObject marker;
     public GameObject gizmo;
-    private Vector3 gizmoRotation = new Vector3(0f, 1f, 0f);
-    private Vector3 offset = new Vector3(0f, 0.5f, 0f);
+    Vector3 offset = new (0f, 0.5f, 0f);
+    [SerializeField] float _cycleLength;
+    [SerializeField] float _height;
+    [SerializeField] float _rotationDuration;
+    
 
     // Will be replaced when actual cursor modelled
     [SerializeField] Material validMaterial;
     [SerializeField] Material invalidMaterial;
-    private Material currentMaterial;
-    private bool targetIsOccupied;
+    Material currentMaterial;
+    bool targetIsOccupied;
 
     GameObject targetObject;
 
-    private bool locked = false;
+    bool locked;
 
-    private void FixedUpdate()
+    void Start()
     {
-        gizmo.transform.position = new Vector3(transform.localPosition.x, (0.25f * Mathf.Sin(Time.time * 2)) + transform.localPosition.y + 1f, transform.localPosition.z);
-        gizmo.transform.Rotate(gizmoRotation);
+        gizmo.transform.DOLocalMoveY(_height, _cycleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+        gizmo.transform.DORotate(new Vector3(0, 360, 0), _rotationDuration, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
     }
 
-    private void Update()
+    void Update()
     {
         ProcessSelection(TileSelection.Instance.Current);
         //CheckLockInput();
@@ -33,7 +38,7 @@ public class TargetCursor : MonoBehaviour
 
     void ProcessSelection(GameObject target)
     {
-        if (target.tag == "Tile" && !locked)
+        if (target.CompareTag("Tile") && !locked)
         {
             transform.position = target.transform.position + offset;
             targetIsOccupied = target.GetComponent<Tile>().Occupied();

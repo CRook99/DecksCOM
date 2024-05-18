@@ -38,7 +38,9 @@ public class PathRenderer : MonoBehaviour
 
     void Refresh()
     {
-        if (!TileSelection.Instance.MouseOnTile() || !TeamManager.Instance.Current.CanMove) return;
+        if (!TileSelection.Instance.MouseOnTile() || 
+            TeamManager.Instance.Current == null ||
+            !TeamManager.Instance.Current.CanMove) return;
 
         Tile destination = TileSelection.Instance.Current.GetComponent<Tile>();
         _points = PathfindingUtil.GetPathToTile(destination)
