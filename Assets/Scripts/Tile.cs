@@ -6,16 +6,9 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Rendering (colours to be removed)
-    Renderer _renderer;
-    public Material Debug_Default;
-    public Material Debug_Selectable;
-    public Material Debug_Current;
-    public Material Debug_Edge;
-
     // BFS
     Dictionary<Vector3, Tile> _orthAdjacencyList = new ();
-    Dictionary<Vector3, Tile> _diagAdjacencyList = new (); // Adjacents that can be walked without obstruction
+    Dictionary<Vector3, Tile> _diagAdjacencyList = new ();
     public bool Visited;
     public Tile Parent;
     public float Distance;
@@ -25,16 +18,12 @@ public class Tile : MonoBehaviour
     GameObject cover;
     public bool HasCover;
     public bool HasObstacle;
-    Vector3 yOffset = new Vector3(0f, 1.1f, 0f);
-    public List<CoverShield> shields;
-    
+    Vector3 _shieldYOffset = new Vector3(0f, 1.1f, 0f);
+    List<CoverShield> _shields = new();
     
     public void Initialize()
     {
         TileAdjacencyUtil.ComputeAdjacencyLists(this);
-
-        _renderer = GetComponent<Renderer>();
-
         FindEnvironment();
     }
 
@@ -52,7 +41,7 @@ public class Tile : MonoBehaviour
     {
         if (!Physics.Raycast(transform.position, Vector3.up, out var hit, 1,
                 LayerMask.GetMask("Cover", "Env_Static"))) return;
-        
+
         if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Cover"))
         {
             cover = hit.collider.gameObject;
@@ -63,12 +52,7 @@ public class Tile : MonoBehaviour
             HasObstacle = true;
         }
     }
-
-    // IMPROVE WHAT THE FUCK
-    public void ShowAreaBars()
-    {
-        
-    }
+    
 
     [ContextMenu("Print neighbours")]
     void PrintNeighbours()
@@ -98,41 +82,34 @@ public class Tile : MonoBehaviour
 
     public void GenerateCoverShields()
     {
-        foreach (Tile tile in _orthAdjacencyList.Values)
+        foreach (KeyValuePair<Vector3, Tile> kvp in _orthAdjacencyList)
         {
+            Tile tile = kvp.Value;
+            
             if (tile == null) continue;
             
             if (tile.GetCover() == null) continue;
 
             Cover cover = tile.GetCover().GetComponent<Cover>();
             CoverShield shield;
-            Vector3 diff = tile.gameObject.transform.position - transform.position;
             switch (cover.GetLevel())
             {
                 case CoverLevel.FULL:
-                    shield = Instantiate(fullShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform).GetComponent<CoverShield>();
-                    shields.Add(shield);
+                    shield = Instantiate(fullShield, transform.position + (0.4f * kvp.Key) + _shieldYOffset, Quaternion.LookRotation(kvp.Key, Vector3.up), transform).GetComponent<CoverShield>();
+                    _shields.Add(shield);
                     break;
                 case CoverLevel.HALF:
-                    shield = Instantiate(halfShield, transform.position + (0.4f * diff) + yOffset, Quaternion.LookRotation(diff, Vector3.up), transform).GetComponent<CoverShield>();
-                    shields.Add(shield);
+                    shield = Instantiate(halfShield, transform.position + (0.4f * kvp.Key) + _shieldYOffset, Quaternion.LookRotation(kvp.Key, Vector3.up), transform).GetComponent<CoverShield>();
+                    _shields.Add(shield);
                     break;
             }
         }
     }
-
-
-    public void ShowCurrent() { _renderer.material = Debug_Current; }
-
-    public void ShowSelectable() { _renderer.material = Debug_Selectable; }
-
-    public void ShowEdge() { _renderer.material = Debug_Edge; }
-
-    public void HideColour() { _renderer.material = Debug_Default; }
+    
 
     public void ShowShields()
     {
-        foreach (CoverShield shield in shields)
+        foreach (CoverShield shield in _shields)
         {
             shield.Show();
         }
@@ -140,7 +117,7 @@ public class Tile : MonoBehaviour
 
     public void ShowShields(float scale)
     {
-        foreach (CoverShield shield in shields)
+        foreach (CoverShield shield in _shields)
         {
             shield.Show(scale);
         }
@@ -148,7 +125,7 @@ public class Tile : MonoBehaviour
 
     public void HideShields()
     {
-        foreach (CoverShield shield in shields)
+        foreach (CoverShield shield in _shields)
         {
             shield.Hide();
         }
