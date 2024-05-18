@@ -28,7 +28,7 @@ public class TargetCursor : MonoBehaviour
     private void Update()
     {
         ProcessSelection(TileSelection.Instance.Current);
-        CheckLockInput();
+        //CheckLockInput();
     }
 
     void ProcessSelection(GameObject target)

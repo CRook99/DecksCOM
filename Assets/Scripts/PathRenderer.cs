@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
     LineRenderer _renderer;
     Vector3[] _points;
+    [Tooltip("Distance between second-last and last position for line to stretch")]
+    [SerializeField] float _extent;
 
     void Awake()
     {
@@ -44,17 +47,12 @@ public class PathRenderer : MonoBehaviour
 
         if (_points.Length > 2)
         {
-            _points[^1].x = Median(_points[^1].x, _points[^2].x);
-            _points[^1].z = Median(_points[^1].z, _points[^2].z);
+            _points[^1].x = Mathf.Lerp(_points[^2].x, _points[^1].x, _extent);
+            _points[^1].z = Mathf.Lerp(_points[^2].z, _points[^1].z, _extent);
         }
         
         _renderer.positionCount = _points.Length;
         _renderer.SetPositions(_points);
-    }
-
-    float Median(float a, float b)
-    {
-        return (a + b) / 2;
     }
 
     void Show()
