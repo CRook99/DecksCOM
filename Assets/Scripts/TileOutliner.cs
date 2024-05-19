@@ -14,7 +14,7 @@ public class TileOutliner : MonoBehaviour
     List<GameObject> _objects = new();
     
     public Material BaseMaterial;
-    Mesh _moveArea;
+    Mesh _area;
     MeshFilter _filter;
     MeshRenderer _renderer;
     List<Vector3> _vertexBuffer;
@@ -30,9 +30,9 @@ public class TileOutliner : MonoBehaviour
             CreateObject();
         }
 
-        _moveArea = new Mesh();
+        _area = new Mesh();
         _filter = GetComponent<MeshFilter>();
-        _filter.mesh = _moveArea;
+        _filter.mesh = _area;
         _renderer = GetComponent<MeshRenderer>();
         _renderer.sharedMaterial = BaseMaterial;
     }
@@ -79,7 +79,7 @@ public class TileOutliner : MonoBehaviour
             }
         }
         
-        GenerateMoveAreaMesh(tiles);
+        GenerateAreaMesh(tiles);
     }
 
     public void HideOutline()
@@ -90,7 +90,7 @@ public class TileOutliner : MonoBehaviour
         }
     }
     
-    void GenerateMoveAreaMesh(List<Tile> tiles)
+    void GenerateAreaMesh(List<Tile> tiles)
     {
         _renderer.enabled = true;
 
@@ -119,9 +119,9 @@ public class TileOutliner : MonoBehaviour
             _triBuffer.Add(i * 4 + 2);
         }
 
-        _moveArea.Clear();
-        _moveArea.vertices = _vertexBuffer.ToArray();
-        _moveArea.SetTriangles(_triBuffer, 0);
-        _moveArea.RecalculateNormals();
+        _area.Clear();
+        _area.vertices = _vertexBuffer.ToArray();
+        _area.SetTriangles(_triBuffer, 0);
+        _area.RecalculateNormals();
     }
 }
