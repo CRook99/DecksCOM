@@ -69,6 +69,11 @@ public class Player : MonoBehaviour
         return _gridMovement.GetReachableTiles();
     }
 
+    public Tile GetCurrentTile()
+    {
+        return _gridMovement.GetCurrentTile();
+    }
+
     public void Heal(int amount)
     {
         _healthManager.Heal(amount);

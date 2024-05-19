@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8508457391406093387}
   - component: {fileID: 1738912116177879462}
   m_Layer: 0
-  m_Name: OutlineBar
+  m_Name: TargetingOutlineBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 34f227853db5f1646b6a54ac21e81e97, type: 2}
+  - {fileID: 2100000, guid: 30d5d64015e78b24a9ca337ccc1b27aa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

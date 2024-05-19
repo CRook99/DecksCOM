@@ -44,7 +44,7 @@ public class PathRenderer : MonoBehaviour
 
         Tile destination = TileSelection.Instance.Current.GetComponent<Tile>();
         _points = PathfindingUtil.GetPathToTile(destination)
-            .Select(x => x.gameObject.transform.position + Vector3.up * TileOutline.VER_OFFSET)
+            .Select(x => x.gameObject.transform.position + Vector3.up * TileOutliner.VER_OFFSET)
             .ToArray();
 
         if (_points.Length > 2)

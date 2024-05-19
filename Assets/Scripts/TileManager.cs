@@ -6,19 +6,18 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    private static Tile[] tiles;
-    private static TileManager _instance;
-    public static TileManager Instance { get { return _instance; } }
+    static Tile[] tiles;
+    public static TileManager Instance { get; private set; }
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            _instance = this;
+            Instance = this;
         }
 
         tiles = GameObject.FindGameObjectsWithTag("Tile").Select(o => o.GetComponent<Tile>()).ToArray();
@@ -36,5 +35,13 @@ public class TileManager : MonoBehaviour
     public Tile[] GetAllTiles()
     {
         return tiles;
+    }
+
+    public void ResetAllTiles()
+    {
+        foreach (Tile tile in tiles)
+        {
+            tile.Reset();
+        }
     }
 }

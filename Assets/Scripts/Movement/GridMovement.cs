@@ -30,6 +30,11 @@ public class GridMovement : MonoBehaviour
         _movementRange = range;
     }
 
+    public int GetMovementRange()
+    {
+        return _movementRange;
+    }
+
     public void IncrementBonus()
     {
         bonus++;
@@ -41,9 +46,10 @@ public class GridMovement : MonoBehaviour
     }
     
 
-    void GetCurrentTile()
+    public Tile GetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
+        return currentTile;
     }
 
     Tile GetTargetTile(GameObject target)
@@ -82,12 +88,12 @@ public class GridMovement : MonoBehaviour
 
     public void ShowRange()
     {
-        TileOutline.Instance.ShowOutline(selectableTiles);
+        MovementOutline.Instance.ShowOutline(selectableTiles);
     }
 
     public void HideRange()
     {
-        TileOutline.Instance.HideOutline();
+        MovementOutline.Instance.HideOutline();
     }
 
     public List<Tile> GetReachableTiles()
@@ -97,13 +103,9 @@ public class GridMovement : MonoBehaviour
 
     public void ResetAllTiles()
     {
-        if (selectableTiles == null) return;
-        foreach (Tile tile in selectableTiles)
-        {
-            tile.Reset();
-        }
         selectableTiles.Clear();
         edgeTiles.Clear();
+        TileManager.Instance.ResetAllTiles();
     }
     
 
