@@ -30,7 +30,7 @@ public class MovementOutline : MonoBehaviour
 
     public void ShowOutline(List<Tile> tiles)
     {
-        _outliner.ShowOutline(tiles);
+        _outliner.ShowArea(tiles);
     }
 
     public void HideOutline()
@@ -40,7 +40,7 @@ public class MovementOutline : MonoBehaviour
             Debug.LogWarning("MovementOutline._outliner is null");
             return;
         }
-        _outliner.HideOutline();
+        _outliner.HideArea();
     }
 
     

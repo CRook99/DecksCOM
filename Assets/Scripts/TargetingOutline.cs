@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(TileOutliner))]
 public class TargetingOutline : MonoBehaviour
 {
-    public static TargetingOutline Instance { get; private set; }
+    //public static TargetingOutline Instance { get; private set; }
     
     TileOutliner _outliner;
     
     void Awake()
     {
-        Instance = this;
+        //Instance = this;
         _outliner = GetComponent<TileOutliner>();
         _outliner.SetDecisionStrategy(new TargetingStrategy());
     }
@@ -27,11 +27,11 @@ public class TargetingOutline : MonoBehaviour
 
     public void ShowOutline(Tile origin, int range)
     {
-        _outliner.ShowOutline(PathfindingUtil.FindTargetableTiles(origin, range));
+        _outliner.ShowArea(PathfindingUtil.FindTargetableTiles(origin, range));
     }
 
     public void HideOutline()
     {
-        _outliner.HideOutline();
+        _outliner.HideArea();
     }
 }

@@ -13,6 +13,8 @@ public class TileOutliner : MonoBehaviour
 
     public bool DrawOutline;
     public bool DrawArea;
+
+    List<Tile> tiles;
     
     public GameObject Prefab;
     int _poolSize = 200;
@@ -76,13 +78,13 @@ public class TileOutliner : MonoBehaviour
         return obj;
     }
     
-    public void ShowOutline(List<Tile> tiles)
+    public void ShowArea(List<Tile> tiles)
     {
         if (DrawArea) GenerateAreaMesh(tiles);
 
         if (!DrawOutline) return;
         
-        HideOutline();
+        HideArea();
         foreach (Tile tile in tiles)
         {
             foreach (var (dir, neighbour) in tile.GetOrthAdjDict())
@@ -96,7 +98,7 @@ public class TileOutliner : MonoBehaviour
         }
     }
 
-    public void HideOutline()
+    public void HideArea()
     {
         foreach (GameObject obj in _objects)
         {
