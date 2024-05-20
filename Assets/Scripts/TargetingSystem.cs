@@ -10,9 +10,10 @@ public class TargetingSystem : MonoBehaviour
     [SerializeField] List<Enemy> _targets;
     public Enemy CurrentTarget;
     TileOutliner _outliner;
-    [SerializeField] TargetingUI _targetingUI;
     bool _active;
 
+    public static event Action OnEnterTargeting;
+    public static event Action OnExitTargeting;
     public static event Action OnTargetSwitch;
 
     public float ExtraBuffer = 0.9f; // Additional distance to search for targets (will change if we go tile-based)
@@ -40,15 +41,11 @@ public class TargetingSystem : MonoBehaviour
 
     public void ActivateTargeting(Tile origin, int range)
     {
-        _active = true;
-        _targetingUI.gameObject.SetActive(true);
         _targets.Clear();
         CurrentTarget = null;
         
-        MovementOutline.Instance.HideOutline();
-        
         List<Tile> targetableTiles = PathfindingUtil.FindTargetableTiles(origin, range);
-        _outliner.ShowArea(targetableTiles);
+        _outliner.SetArea(targetableTiles);
 
         float min = Mathf.Infinity;
         foreach (Enemy e in EnemyManager.Instance.GetEnemies())
@@ -65,14 +62,26 @@ public class TargetingSystem : MonoBehaviour
             }
         }
 
+        if (CurrentTarget == null) 
+        {
+            DeactivateTargeting();
+            return; // TODO Add 'No targets!' logic
+        }
+        
+        // There is at least one enemy in range
+        _active = true;
+
+        OnEnterTargeting?.Invoke();
         OnTargetSwitch?.Invoke();
+        TeamManager.Instance.Current.SetInactive();
     }
 
     public void DeactivateTargeting()
     {
         _active = false;
-        _targetingUI.gameObject.SetActive(false);
         _targets.Clear();
         _outliner.HideArea();
+        OnExitTargeting?.Invoke();
+        TeamManager.Instance.Current.SetActive();
     }
 }

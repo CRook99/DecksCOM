@@ -11,6 +11,9 @@ public class TargetingUI : MonoBehaviour
     void Awake()
     {
         main = Camera.main;
+
+        TargetingSystem.OnEnterTargeting += OnEnterTargetingHandler;
+        TargetingSystem.OnExitTargeting += OnExitTargetingHandler;
         TargetingSystem.OnTargetSwitch += OnSwitchHandler;
     }
 
@@ -23,6 +26,16 @@ public class TargetingUI : MonoBehaviour
     {
         Vector3 screenPos = main.WorldToScreenPoint(TargetingSystem.Instance.CurrentTarget.transform.position);
         _indicator.transform.position = screenPos;
+    }
+
+    void OnEnterTargetingHandler()
+    {
+        gameObject.SetActive(true);
+    }
+
+    void OnExitTargetingHandler()
+    {
+        gameObject.SetActive(false);
     }
 
     void OnSwitchHandler()

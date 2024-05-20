@@ -88,7 +88,7 @@ public class GridMovement : MonoBehaviour
 
     public void ShowRange()
     {
-        MovementOutline.Instance.ShowOutline(selectableTiles);
+        MovementOutline.Instance.SetArea(selectableTiles);
     }
 
     public void HideRange()

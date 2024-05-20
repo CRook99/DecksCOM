@@ -21,16 +21,28 @@ public class MovementOutline : MonoBehaviour
     void OnEnable()
     {
         GameState.OnBeginEnemyTurn += HideOutline;
+        TargetingSystem.OnEnterTargeting += HideOutline;
+        TargetingSystem.OnExitTargeting += ShowOutline;
     }
 
     void OnDisable()
     {
         GameState.OnBeginEnemyTurn -= HideOutline;
+        TargetingSystem.OnEnterTargeting -= HideOutline;
+        TargetingSystem.OnExitTargeting -= ShowOutline;
     }
 
-    public void ShowOutline(List<Tile> tiles)
+    public void SetArea(List<Tile> tiles)
     {
-        _outliner.ShowArea(tiles);
+        _outliner.SetArea(tiles);
+        ShowOutline();
+    }
+
+    public void ShowOutline()
+    {
+        if (!TeamManager.Instance.Current.CanMove) return;
+        
+        _outliner.ShowArea();
     }
 
     public void HideOutline()

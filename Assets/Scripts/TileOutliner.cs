@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,11 +16,12 @@ public class TileOutliner : MonoBehaviour
     public bool DrawOutline;
     public bool DrawArea;
 
-    List<Tile> tiles;
+    List<Tile> _tiles;
     
     public GameObject Prefab;
     int _poolSize = 200;
-    List<GameObject> _objects;
+    //List<GameObject> _objects;
+    HashSet<OutlineObject> _objects;
     
     public Material BaseMaterial;
     Mesh _area;
@@ -35,7 +38,7 @@ public class TileOutliner : MonoBehaviour
     {
         if (DrawOutline)
         {
-            _objects = new List<GameObject>();
+            _objects = new HashSet<OutlineObject>();
             for (int i = 0; i < _poolSize; i++)
             {
                 CreateObject();
@@ -59,50 +62,101 @@ public class TileOutliner : MonoBehaviour
         _strategy = strategy;
     }
     
-    GameObject CreateObject()
+    OutlineObject CreateObject()
     {
-        GameObject obj = Instantiate(Prefab, Vector3.zero, Quaternion.identity, transform);
-        obj.SetActive(false);
+        GameObject go = Instantiate(Prefab, Vector3.zero, Quaternion.identity, transform);
+        OutlineObject obj = new OutlineObject(go);
         _objects.Add(obj);
+        obj.Disable();
         return obj;
     }
     
-    GameObject GetObject()
+    OutlineObject GetObject()
     {
-        GameObject obj = _objects.Find(b => !b.activeInHierarchy);
-        if (obj == null)
-        {
-            obj = CreateObject();
-        }
-        obj.SetActive(true);
+        OutlineObject obj = _objects.FirstOrDefault(o => !o.InUse);
+        if (obj == null) obj = CreateObject();
+        obj.Enable();
         return obj;
+        
+        // GameObject obj = _objects.Find(b => !b.activeInHierarchy);
+        // if (obj == null)
+        // {
+        //     obj = CreateObject();
+        // }
+        // obj.SetActive(true);
+        // return obj;
     }
-    
-    public void ShowArea(List<Tile> tiles)
-    {
-        if (DrawArea) GenerateAreaMesh(tiles);
 
+    [ContextMenu("Print all objects")]
+    void PrintObjects()
+    {
+        int i = 0;
+        foreach (OutlineObject o in _objects)
+        {
+            Debug.Log($"Object {i++}: {o} InUse: {o.InUse}");
+        }
+    }
+
+    public void SetArea(List<Tile> tiles)
+    {
+        if (tiles == null) return;
+        _tiles = tiles;
+        ResetArea();
+        
+        if (DrawArea) GenerateAreaMesh(_tiles);
+        
         if (!DrawOutline) return;
         
-        HideArea();
-        foreach (Tile tile in tiles)
+        //HideArea();
+        foreach (Tile tile in _tiles)
         {
             foreach (var (dir, neighbour) in tile.GetOrthAdjDict())
             {
                 if (!_strategy.ShouldPlaceOnEdge(neighbour)) continue;
                 
-                GameObject obj = GetObject();
-                obj.transform.SetPositionAndRotation(tile.transform.position + dir * HOR_OFFSET + Vector3.up * VER_OFFSET,
+                OutlineObject obj = GetObject();
+                obj.Object.transform.SetPositionAndRotation(tile.transform.position + dir * HOR_OFFSET + Vector3.up * VER_OFFSET,
                     Quaternion.Euler(0, 90 * (dir.z != 0 ? 1 : 0), 0)); // Rotate by 90 if z is not 0
+            }
+        }
+    }
+
+    void ResetArea()
+    {
+        if (DrawArea) _area.Clear();
+
+        if (DrawOutline)
+        {
+            foreach (OutlineObject obj in _objects)
+            {
+                obj.Disable();
+            }
+        }
+    }
+    
+    public void ShowArea()
+    {
+        if (DrawArea) _renderer.enabled = true;
+
+        if (DrawOutline)
+        {
+            foreach (OutlineObject obj in _objects)
+            {
+                if (obj.InUse) obj.Show();
             }
         }
     }
 
     public void HideArea()
     {
-        foreach (GameObject obj in _objects)
+        if (DrawArea) _renderer.enabled = false;
+
+        if (DrawOutline)
         {
-            obj.SetActive(false);
+            foreach (OutlineObject obj in _objects)
+            {
+                obj.Hide();
+            }
         }
     }
     
@@ -151,6 +205,41 @@ public class TileOutliner : MonoBehaviour
         _area.uv = _uvs.ToArray();
         _area.SetTriangles(_triBuffer, 0);
         _area.RecalculateNormals();
+    }
+}
+
+
+class OutlineObject
+{
+    public GameObject Object;
+    public bool InUse;
+
+    public OutlineObject(GameObject obj)
+    {
+        Object = obj;
+        InUse = false;
+    }
+
+    public void Enable()
+    {
+        Object.SetActive(true);
+        InUse = true;
+    }
+
+    public void Disable()
+    {
+        Object.SetActive(false);
+        InUse = false;
+    }
+
+    public void Show()
+    {
+        Object.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        Object.SetActive(false);
     }
 }
 
