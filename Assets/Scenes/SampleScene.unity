@@ -3059,7 +3059,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targets: []
   CurrentTarget: {fileID: 0}
-  _targetingUI: {fileID: 669234874}
   ExtraBuffer: 0
 --- !u!1001 &200188108
 PrefabInstance:
@@ -14678,7 +14677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644635, w: 0.8535537}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644633, w: 0.85355365}
   m_LocalPosition: {x: -6.9999866, y: 9.89949, z: -7.000007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32329,7 +32328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110725958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644635, w: 0.8535537}
+  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644633, w: 0.85355365}
   m_LocalPosition: {x: -6.9999866, y: 9.89949, z: -7.000007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

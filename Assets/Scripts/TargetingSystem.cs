@@ -37,6 +37,27 @@ public class TargetingSystem : MonoBehaviour
     {
         if (Input.GetKeyDown("k")) ActivateTargeting(TeamManager.Instance.Current.GetCurrentTile(), 5);
         if (Input.GetKeyDown("l")) DeactivateTargeting();
+        
+        if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
+        if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
+    }
+
+    void CycleForward()
+    {
+        if (_targets.Count < 2) return;
+
+        int index = _targets.IndexOf(CurrentTarget) + 1;
+        CurrentTarget = _targets[index >= _targets.Count ? 0 : index];
+        OnTargetSwitch?.Invoke();
+    }
+    
+    void CycleBackward()
+    {
+        if (_targets.Count < 2) return;
+
+        int index = _targets.IndexOf(CurrentTarget) - 1;
+        CurrentTarget = _targets[index < 0 ? _targets.Count - 1 : index];
+        OnTargetSwitch?.Invoke();
     }
 
     public void ActivateTargeting(Tile origin, int range)
