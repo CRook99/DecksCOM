@@ -18,4 +18,10 @@ public class CardDisplayConfig
     public float ScaleTransition = 0.15f;
     public Ease ScaleEase = Ease.OutBack;
 
+    [Header("Hand")] 
+    public float ReturnDuration = 0.15f;
+
+    public static int Width = 300;
+    public static int Height = 450;
+
 }

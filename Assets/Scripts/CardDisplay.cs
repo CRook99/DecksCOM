@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -14,6 +15,7 @@ public class CardDisplay : MonoBehaviour
     
     Card _card;
     Transform _cardTransform;
+    Canvas _canvas;
     
     Vector3 _movementDelta;
     Vector3 _rotationDelta;
@@ -22,6 +24,7 @@ public class CardDisplay : MonoBehaviour
     {
         _card = card;
         _cardTransform = _card.transform;
+        _canvas = GetComponent<Canvas>();
 
         _card.BeginDragEvent += BeginDrag;
         _card.EndDragEvent += EndDrag;
@@ -42,6 +45,11 @@ public class CardDisplay : MonoBehaviour
         FollowRotation();
     }
 
+    public void UpdateIndex()
+    {
+        transform.SetSiblingIndex(_cardTransform.parent.GetSiblingIndex());
+    }
+
     void FollowPosition()
     {
         transform.position =
@@ -56,32 +64,34 @@ public class CardDisplay : MonoBehaviour
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, movement);
     }
 
-    void BeginDrag()
+    void BeginDrag(Card _)
+    {
+        transform.DOScale(_config.ScaleOnHover, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        _canvas.overrideSorting = true;
+    }
+
+    void EndDrag(Card _)
+    {
+        transform.DOScale(1, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        _canvas.overrideSorting = false;
+    }
+
+    void PointerEnter(Card _)
+    {
+        transform.DOScale(_config.ScaleOnHover, _config.ScaleTransition).SetEase(_config.ScaleEase);
+    }
+
+    void PointerExit(Card _)
+    {
+        if (!_card.WasDragged) transform.DOScale(1, _config.ScaleTransition).SetEase(_config.ScaleEase);
+    }
+
+    void PointerUp(Card _)
     {
         
     }
 
-    void EndDrag()
-    {
-        
-    }
-
-    void PointerEnter()
-    {
-        
-    }
-
-    void PointerExit()
-    {
-        
-    }
-
-    void PointerUp()
-    {
-        
-    }
-
-    void PointerDown()
+    void PointerDown(Card _)
     {
         
     }

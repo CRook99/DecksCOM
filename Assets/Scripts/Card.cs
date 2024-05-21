@@ -16,18 +16,20 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     Canvas _canvas;
     Image _image;
     RectTransform _rectTransform;
+    DisplayHandler _displayHandler;
 
     Vector3 _offset;
 
-    public bool isHovering;
-    public bool isDragging;
+    public bool IsHovering;
+    public bool IsDragging;
+    public bool WasDragged;
     
-    public event Action BeginDragEvent;
-    public event Action EndDragEvent;
-    public event Action PointerEnterEvent;
-    public event Action PointerExitEvent;
-    public event Action PointerUpEvent;
-    public event Action PointerDownEvent;
+    public event Action<Card> BeginDragEvent;
+    public event Action<Card> EndDragEvent;
+    public event Action<Card> PointerEnterEvent;
+    public event Action<Card> PointerExitEvent;
+    public event Action<Card> PointerUpEvent;
+    public event Action<Card> PointerDownEvent;
 
     
     // void Awake()
@@ -50,14 +52,23 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         _image = GetComponent<Image>();
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
+        
 
-        _display = Instantiate(DisplayPrefab, _canvas.transform).GetComponent<CardDisplay>();
+        _displayHandler = FindObjectOfType<DisplayHandler>();
+        _display = Instantiate(DisplayPrefab, _displayHandler ? _displayHandler.transform : _canvas.transform).GetComponent<CardDisplay>();
         _display.Initialize(this);
     }
 
     void Update()
     {
-        if (!isDragging) return;
+        if (!IsDragging) return;
+        
+        // Cancel with right click
+        if (Input.GetMouseButtonDown(1))
+        {
+            transform.position = Vector3.zero;
+            OnEndDrag(null);
+        }
 
         Vector2 target = Input.mousePosition - _offset;
         Vector2 direction = (target - (Vector2)transform.position).normalized;
@@ -67,31 +78,46 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        BeginDragEvent?.Invoke();
+        BeginDragEvent?.Invoke(this);
         _offset = Input.mousePosition - transform.position; // TODO offset is weird
-        isDragging = true;
+        IsDragging = true;
+        WasDragged = true;
         _image.raycastTarget = false;
         _canvas.GetComponent<GraphicRaycaster>().enabled = false;
+    }
+    
+    public void OnDrag(PointerEventData eventData)
+    {
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        EndDragEvent?.Invoke();
-        isDragging = false;
+        EndDragEvent?.Invoke(this);
+        IsDragging = false;
+        WasDragged = false;
         _image.raycastTarget = true;
         _canvas.GetComponent<GraphicRaycaster>().enabled = true;
+
+        // StartCoroutine(Wait());
+        //
+        // IEnumerator Wait()
+        // {
+        //     yield return null;
+        //     WasDragged = false;
+        // }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        PointerEnterEvent?.Invoke();
-        isHovering = true;
+        PointerEnterEvent?.Invoke(this);
+        IsHovering = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        PointerExitEvent?.Invoke();
-        isHovering = false;
+        PointerExitEvent?.Invoke(this);
+        IsHovering = false;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -104,8 +130,5 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        
-    }
+    
 }
