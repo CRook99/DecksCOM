@@ -20,14 +20,22 @@ public class PathRenderer : MonoBehaviour
     void OnEnable()
     {
         MovementSelection.OnBeginMove += Hide;
+        TargetingSystem.OnEnterTargeting += Hide;
+        
         GridMovement.OnEndMove += Show;
+        TargetingSystem.OnExitTargeting += Show;
+        
         TeamSwitcher.OnSwitch += Reset;
     }
 
     void OnDisable()
     {
         MovementSelection.OnBeginMove -= Hide;
+        TargetingSystem.OnEnterTargeting -= Hide;
+        
         GridMovement.OnEndMove -= Show;
+        TargetingSystem.OnExitTargeting -= Show;
+        
         TeamSwitcher.OnSwitch -= Reset;
     }
 

@@ -24,6 +24,12 @@ public class TargetCursor : MonoBehaviour
 
     bool locked;
 
+    void Awake()
+    {
+        TargetingSystem.OnEnterTargeting += Disable;
+        TargetingSystem.OnExitTargeting += Enable;
+    }
+
     void Start()
     {
         gizmo.transform.DOLocalMoveY(_height, _cycleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
@@ -72,6 +78,16 @@ public class TargetCursor : MonoBehaviour
     void Unlock()
     {
         locked = false;
+    }
+
+    void Enable()
+    {
+        gameObject.SetActive(true);
+    }
+
+    void Disable()
+    {
+        gameObject.SetActive(false);
     }
 
     // Updates cursor appearance based on if the target tile is walkable

@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class MovementSelection : MonoBehaviour
 {
-    // IMPROVE - Make this not have GameObject (only use is CameraSystem)
     public static event Action OnBeginMove;
     Tile destination;
-    
+
+    void Awake()
+    {
+        TargetingSystem.OnEnterTargeting += Disable;
+        TargetingSystem.OnExitTargeting += Enable;
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
@@ -18,10 +23,19 @@ public class MovementSelection : MonoBehaviour
         }
     }
 
+    void Enable()
+    {
+        enabled = true;
+    }
+
+    void Disable()
+    {
+        enabled = false;
+    }
+
     void BeginMove()
     {
         Player player = TeamManager.Instance.Current;
-        //OnBeginMove?.Invoke(player.gameObject);
         OnBeginMove?.Invoke();
         player.Move(destination);
     }

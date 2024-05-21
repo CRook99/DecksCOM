@@ -4,24 +4,36 @@ using UnityEngine;
 
 public class TileSelection : MonoBehaviour
 {
-    private static TileSelection _instance;
-    public static TileSelection Instance { get { return _instance; } }
+    public static TileSelection Instance { get; private set; }
     public GameObject Current { get; private set; }
     public GameObject Previous { get; private set; }
     LayerMask _tileMask;
 
+    Camera main;
+
     void Awake()
     {
-        _instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+        
         Current = gameObject;
         Previous = gameObject;
         _tileMask = LayerMask.GetMask("Tile");
+        main = Camera.main;
+
+        TargetingSystem.OnEnterTargeting += HideCurrentShields;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, _tileMask))
         {
@@ -45,5 +57,10 @@ public class TileSelection : MonoBehaviour
     public bool MouseOnTile()
     {
         return Current.CompareTag("Tile");
+    }
+
+    void HideCurrentShields()
+    {
+        Current.GetComponent<Tile>().HideShields();
     }
 }

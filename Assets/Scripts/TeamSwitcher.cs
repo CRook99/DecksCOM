@@ -26,6 +26,8 @@ public class TeamSwitcher : MonoBehaviour
         GridMovement.OnEndMove += Enable;
         GameState.OnBeginPlayerTurn += Enable;
         GameState.OnBeginPlayerTurn += BeginTurn;
+        TargetingSystem.OnEnterTargeting += Disable;
+        TargetingSystem.OnExitTargeting += Enable;
     }
 
     void OnDisable()
@@ -35,6 +37,8 @@ public class TeamSwitcher : MonoBehaviour
         GridMovement.OnEndMove -= Enable;
         GameState.OnBeginPlayerTurn -= Enable;
         GameState.OnBeginPlayerTurn -= BeginTurn;
+        TargetingSystem.OnEnterTargeting -= Disable;
+        TargetingSystem.OnExitTargeting -= Enable;
     }
 
     void Update()
