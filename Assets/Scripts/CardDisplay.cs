@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,83 +6,84 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardDisplay : MonoBehaviour
 {
+    bool _initialized;
+
+    [SerializeField] CardDisplayConfig _config;
+    
     Card _card;
-    public GameObject VisualsRoot;
+    Transform _cardTransform;
+    
+    Vector3 _movementDelta;
+    Vector3 _rotationDelta;
 
-    public Image Artwork;
-    public TMP_Text CostText;
-    public TMP_Text NameText;
-    public TMP_Text DescriptionText;
-
-    Vector2 _dragOffset;
-    GameObject _placeholder;
-
-    void Start()
+    public void Initialize(Card card)
     {
-        _card = GetComponent<Card>();
+        _card = card;
+        _cardTransform = _card.transform;
+
+        _card.BeginDragEvent += BeginDrag;
+        _card.EndDragEvent += EndDrag;
+        _card.PointerEnterEvent += PointerEnter;
+        _card.PointerExitEvent += PointerExit;
+        _card.PointerUpEvent += PointerUp;
+        _card.PointerDownEvent += PointerDown;
         
-        UpdateDisplay();
+        
+        _initialized = true;
     }
 
-    void UpdateDisplay()
+    void Update()
     {
-        Artwork.sprite = _card.Data.Artwork;
-        CostText.text = _card.Data.Cost.ToString();
-        NameText.text = _card.Data.Name;
-        DescriptionText.text = _card.Data.Description;
+        if (!_initialized || _card == null) return;
+
+        FollowPosition();
+        FollowRotation();
+    }
+
+    void FollowPosition()
+    {
+        transform.position =
+            Vector3.Lerp(transform.position, _cardTransform.position, _config.FollowSpeed * Time.deltaTime);
+    }
+
+    void FollowRotation()
+    {
+        float movement = transform.position.x - _cardTransform.position.x;
+        movement *= _config.RotationAmount * 0.01f; // Magic
+        movement = Mathf.Clamp(movement, -45f, 45f);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, movement);
+    }
+
+    void BeginDrag()
+    {
+        
+    }
+
+    void EndDrag()
+    {
+        
+    }
+
+    void PointerEnter()
+    {
+        
+    }
+
+    void PointerExit()
+    {
+        
+    }
+
+    void PointerUp()
+    {
+        
+    }
+
+    void PointerDown()
+    {
+        
     }
     
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        eventData = ExtendedStandaloneInputModule.GetPointerEventData();
-        _dragOffset = eventData.position - new Vector2(transform.position.x, transform.position.y);
-        
-        _placeholder = new GameObject();
-        Hand.Instance.AddTransformToHand(_placeholder.transform);
-        LayoutElement le = _placeholder.AddComponent<LayoutElement>();
-        
-        le.preferredWidth = GetComponent<LayoutElement>().preferredWidth;
-        le.preferredHeight = GetComponent<LayoutElement>().preferredHeight;
-        le.flexibleWidth = 0;
-        le.flexibleHeight = 0;
-        _placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
-
-        transform.SetParent(transform.parent.parent);
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        eventData = ExtendedStandaloneInputModule.GetPointerEventData();
-        transform.position = eventData.position - _dragOffset;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        foreach (GameObject go in ExtendedStandaloneInputModule.Hovered)
-        {
-            if (go.GetComponent<PlayArea>() == null) continue;
-
-            if (EnergyManager.Instance.Amount >= _card.Data.Cost)
-            {
-                _card.Use();
-                return;
-            }
-            
-            StartCoroutine(EnergyManager.Instance.InsufficientAnim());
-            
-        }
-        
-        Hand.Instance.AddTransformToHand(transform);
-        GetComponent<CanvasGroup>().blocksRaycasts = true;
-        Destroy(_placeholder);
-    }
-
-    public void Use()
-    {
-        Destroy(_placeholder);
-        VisualsRoot.gameObject.SetActive(false);
-    }
 }
