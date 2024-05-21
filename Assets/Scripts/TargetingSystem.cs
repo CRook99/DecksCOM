@@ -10,7 +10,6 @@ public class TargetingSystem : MonoBehaviour
     [SerializeField] List<Enemy> _targets;
     public Enemy CurrentTarget;
     TileOutliner _outliner;
-    bool _active;
 
     public static event Action OnEnterTargeting;
     public static event Action OnExitTargeting;
@@ -90,7 +89,6 @@ public class TargetingSystem : MonoBehaviour
         }
         
         // There is at least one enemy in range
-        _active = true;
 
         OnEnterTargeting?.Invoke();
         OnTargetSwitch?.Invoke();
@@ -99,7 +97,6 @@ public class TargetingSystem : MonoBehaviour
 
     public void DeactivateTargeting()
     {
-        _active = false;
         _targets.Clear();
         _outliner.HideArea();
         OnExitTargeting?.Invoke();
