@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class HandUI : MonoBehaviour
+public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public HandUIConfig _config;
+    
     public GameObject SlotPrefab;
     public GameObject CardPrefab;
     RectTransform _rect;
     float _rectXMax;
+    float _originalY;
 
     public List<Card> Cards;
     [SerializeField] Card _selected;
@@ -19,13 +23,14 @@ public class HandUI : MonoBehaviour
     {
         _rect = GetComponent<RectTransform>();
         _rectXMax = _rect.sizeDelta.x;
+        _originalY = transform.position.y;
     }
 
     void Update()
     {
         if (Input.GetKeyDown("c")) AddDefaultCard();
 
-        _rect.sizeDelta = new Vector2(Mathf.Clamp((Cards.Count + 1) * 100, 100f, _rectXMax), _rect.sizeDelta.y); // Scale based on card count
+        _rect.sizeDelta = new Vector2(Mathf.Clamp((Cards.Count + 1) * _config.SpacingPerCard, 100f, _rectXMax), _rect.sizeDelta.y); // Scale based on card count
     }
 
     void BeginDrag(Card card)
@@ -37,7 +42,7 @@ public class HandUI : MonoBehaviour
     {
         if (_selected == null) return;
 
-        _selected.transform.DOLocalMove(Vector3.zero, 0.15f);
+        _selected.transform.DOLocalMove(Vector3.zero, _config.ReturnTweenDuration);
         _selected = null;
     }
 
@@ -86,5 +91,19 @@ public class HandUI : MonoBehaviour
         card.PointerExitEvent += PointerExit;
         card.PointerUpEvent += PointerUp;
         card.PointerDownEvent += PointerDown;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        transform.DOKill();
+        transform.DOScale(_config.HoverScale, _config.HoverScaleDuration).SetEase(_config.HoverScaleEase);
+        transform.DOMoveY(transform.position.y + _config.HoverOffset, _config.HoverScaleDuration).SetEase(_config.HoverScaleEase);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.DOKill();
+        transform.DOScale(1f, _config.HoverScaleDuration).SetEase(_config.HoverScaleEase);
+        transform.DOMoveY(_originalY, _config.HoverScaleDuration).SetEase(_config.HoverScaleEase);
     }
 }

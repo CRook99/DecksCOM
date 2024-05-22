@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 150}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 1300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5494654401284931955
@@ -75,10 +75,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd5aa6929a4e2a4d8b0693f97d72f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoveredCard: {fileID: 0}
   SlotPrefab: {fileID: 4295320813095240671, guid: 0687301d870a47a439b2b3ba87b136c3, type: 3}
   CardPrefab: {fileID: 394392421055637374, guid: 8be71beffea7d0b48b72befcd0826174, type: 3}
-  _cards: []
+  Cards: []
   _selected: {fileID: 0}
 --- !u!1 &6940003620430116167
 GameObject:
