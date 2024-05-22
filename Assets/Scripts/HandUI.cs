@@ -7,36 +7,25 @@ using UnityEngine;
 
 public class HandUI : MonoBehaviour
 {
-    [SerializeField] Card hoveredCard;
-
     public GameObject SlotPrefab;
     public GameObject CardPrefab;
     RectTransform _rect;
+    float _rectXMax;
 
-    public List<Card> _cards;
+    public List<Card> Cards;
     [SerializeField] Card _selected;
 
     void Start()
     {
         _rect = GetComponent<RectTransform>();
-        //_cards = GetComponentsInChildren<Card>().ToList();
-
-        
-        
-        // foreach (Card card in _cards)
-        // {
-        //     card.BeginDragEvent += BeginDrag;
-        //     card.EndDragEvent += EndDrag;
-        //     card.PointerEnterEvent += PointerEnter;
-        //     card.PointerExitEvent += PointerExit;
-        //     card.PointerUpEvent += PointerUp;
-        //     card.PointerDownEvent += PointerDown;
-        // }
+        _rectXMax = _rect.sizeDelta.x;
     }
 
     void Update()
     {
         if (Input.GetKeyDown("c")) AddDefaultCard();
+
+        _rect.sizeDelta = new Vector2(Mathf.Clamp((Cards.Count + 1) * 100, 100f, _rectXMax), _rect.sizeDelta.y); // Scale based on card count
     }
 
     void BeginDrag(Card card)
@@ -49,8 +38,6 @@ public class HandUI : MonoBehaviour
         if (_selected == null) return;
 
         _selected.transform.DOLocalMove(Vector3.zero, 0.15f);
-        // _rect.sizeDelta += Vector2.right;
-        // _rect.sizeDelta -= Vector2.right;
         _selected = null;
     }
 
@@ -78,9 +65,9 @@ public class HandUI : MonoBehaviour
     void AddDefaultCard()
     {
         GameObject slot = Instantiate(SlotPrefab, transform);
-        Card card = Instantiate(CardPrefab, slot.transform).GetComponent<Card>();
+        Card card = Instantiate(CardPrefab, slot.transform).GetComponent<Card>(); // TODO Make it come from deck
         SubscribeEvents(card);
-        _cards.Add(card);
+        Cards.Add(card);
     }
     
     void AddCard(Card card)
@@ -88,7 +75,7 @@ public class HandUI : MonoBehaviour
         GameObject slot = Instantiate(SlotPrefab, transform);
         card.transform.SetParent(slot.transform);
         SubscribeEvents(card);
-        _cards.Add(card);
+        Cards.Add(card);
     }
 
     void SubscribeEvents(Card card)

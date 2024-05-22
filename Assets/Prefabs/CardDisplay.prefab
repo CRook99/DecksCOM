@@ -114,3 +114,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardDisplayConfig: {fileID: 11400000, guid: c0604c89ef728304ea560a54ec980148, type: 2}
   _handCurveConfig: {fileID: 11400000, guid: 79ff644dd58b9784d93ba1fa26c6007c, type: 2}
+  _curveYOffset: 0
+  _curveRotOffset: 0

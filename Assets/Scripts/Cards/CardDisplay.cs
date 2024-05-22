@@ -16,6 +16,8 @@ public class CardDisplay : MonoBehaviour
     
     Card _card;
     Transform _cardTransform;
+    RectTransform _rect;
+    RectTransform _parentRect;
     Canvas _canvas;
     
     Vector3 _movementDelta;
@@ -28,6 +30,8 @@ public class CardDisplay : MonoBehaviour
     {
         _card = card;
         _cardTransform = _card.transform;
+        _rect = GetComponent<RectTransform>();
+        _parentRect = _card.GetComponent<RectTransform>();
         _canvas = GetComponent<Canvas>();
 
         _card.BeginDragEvent += BeginDrag;
@@ -47,7 +51,8 @@ public class CardDisplay : MonoBehaviour
         //HandPosition();
         FollowPosition();
         FollowRotation();
-        
+        FollowScale();
+
     }
 
     void FollowPosition()
@@ -63,6 +68,11 @@ public class CardDisplay : MonoBehaviour
         movement *= _cardDisplayConfig.RotationAmount * 0.01f; // Magic
         movement = Mathf.Clamp(movement, -45f, 45f);
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, movement);
+    }
+
+    void FollowScale()
+    {
+        _rect.sizeDelta = _parentRect.sizeDelta;
     }
 
     // void HandPosition()

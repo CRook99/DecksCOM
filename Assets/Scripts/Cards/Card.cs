@@ -54,7 +54,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         _canvas = GetComponentInParent<Canvas>();
         
 
-        _displayHandler = FindObjectOfType<DisplayHandler>();
+        _displayHandler = DisplayHandler.Instance;
         _display = Instantiate(DisplayPrefab, _displayHandler ? _displayHandler.transform : _canvas.transform).GetComponent<CardDisplay>();
         _display.Initialize(this);
     }
@@ -112,14 +112,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Enter");
         PointerEnterEvent?.Invoke(this);
         IsHovering = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Exit");
         PointerExitEvent?.Invoke(this);
         IsHovering = false;
     }
