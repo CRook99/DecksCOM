@@ -32,7 +32,7 @@ public class Deck : MonoBehaviour
         if (Cards.Count == 0) return null;
         Card c = Cards[0];
         Cards.RemoveAt(0);
-        Debug.Log($"Drew card {c.Data.Name}");
+        //Debug.Log($"Drew card {c.Data.Name}");
         return c;
     }
 
