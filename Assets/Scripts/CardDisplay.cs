@@ -11,7 +11,8 @@ public class CardDisplay : MonoBehaviour
 {
     bool _initialized;
 
-    [SerializeField] CardDisplayConfig _config;
+    [SerializeField] CardDisplayConfig _cardDisplayConfig;
+    [SerializeField] HandCurveConfig _handCurveConfig;
     
     Card _card;
     Transform _cardTransform;
@@ -19,6 +20,9 @@ public class CardDisplay : MonoBehaviour
     
     Vector3 _movementDelta;
     Vector3 _rotationDelta;
+
+    [SerializeField] float _curveYOffset;
+    [SerializeField] float _curveRotOffset;
 
     public void Initialize(Card card)
     {
@@ -33,7 +37,6 @@ public class CardDisplay : MonoBehaviour
         _card.PointerUpEvent += PointerUp;
         _card.PointerDownEvent += PointerDown;
         
-        
         _initialized = true;
     }
 
@@ -41,49 +44,57 @@ public class CardDisplay : MonoBehaviour
     {
         if (!_initialized || _card == null) return;
 
+        //HandPosition();
         FollowPosition();
         FollowRotation();
-    }
-
-    public void UpdateIndex()
-    {
-        transform.SetSiblingIndex(_cardTransform.parent.GetSiblingIndex());
+        
     }
 
     void FollowPosition()
     {
+        Vector3 verticalOffset = Vector3.up * (_card.IsDragging ? 0 : _curveYOffset); // May be added
         transform.position =
-            Vector3.Lerp(transform.position, _cardTransform.position, _config.FollowSpeed * Time.deltaTime);
+            Vector3.Lerp(transform.position, _cardTransform.position, _cardDisplayConfig.FollowSpeed * Time.deltaTime);
     }
 
     void FollowRotation()
     {
         float movement = transform.position.x - _cardTransform.position.x;
-        movement *= _config.RotationAmount * 0.01f; // Magic
+        movement *= _cardDisplayConfig.RotationAmount * 0.01f; // Magic
         movement = Mathf.Clamp(movement, -45f, 45f);
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, movement);
     }
 
+    // void HandPosition()
+    // {
+    //     _curveYOffset = _card.SiblingAmountIncl() > 4 ? _handCurveConfig.Positioning.Evaluate(_card.NormalizedPosition()) : 0;
+    //     _curveRotOffset = _card.SiblingAmountIncl() > 4 ? _handCurveConfig.Rotation.Evaluate(_card.NormalizedPosition()) : 0;
+    // }
+
     void BeginDrag(Card _)
     {
-        transform.DOScale(_config.ScaleOnHover, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        transform.DOScale(_cardDisplayConfig.ScaleOnHover, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.ScaleEase);
         _canvas.overrideSorting = true;
     }
 
     void EndDrag(Card _)
     {
-        transform.DOScale(1, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        transform.DOScale(1, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.ScaleEase);
         _canvas.overrideSorting = false;
     }
 
     void PointerEnter(Card _)
     {
-        transform.DOScale(_config.ScaleOnHover, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        transform.DOScale(_cardDisplayConfig.ScaleOnHover, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.ScaleEase);
+        //transform.DOMoveY(transform.position.y + _cardDisplayConfig.OffsetOnHover, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.OffsetEase);
+        _canvas.overrideSorting = true;
     }
 
     void PointerExit(Card _)
     {
-        if (!_card.WasDragged) transform.DOScale(1, _config.ScaleTransition).SetEase(_config.ScaleEase);
+        if (!_card.WasDragged) transform.DOScale(1, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.ScaleEase);
+        //transform.DOMoveY(transform.position.y - _cardDisplayConfig.OffsetOnHover, _cardDisplayConfig.Transition).SetEase(_cardDisplayConfig.OffsetEase);
+        _canvas.overrideSorting = false;
     }
 
     void PointerUp(Card _)

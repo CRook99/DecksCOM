@@ -112,10 +112,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4a3167af41eb24d9ed516385f07c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config:
-    FollowSpeed: 15
-    RotationAmount: 50
-    ScaleOnHover: 1.15
-    ScaleTransition: 0.15
-    ScaleEase: 27
-    ReturnDuration: 0.15
+  _cardDisplayConfig: {fileID: 11400000, guid: c0604c89ef728304ea560a54ec980148, type: 2}
+  _handCurveConfig: {fileID: 11400000, guid: 79ff644dd58b9784d93ba1fa26c6007c, type: 2}

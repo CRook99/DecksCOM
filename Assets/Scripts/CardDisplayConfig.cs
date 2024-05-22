@@ -5,7 +5,8 @@ using DG.Tweening;
 using UnityEngine;
 
 [Serializable]
-public class CardDisplayConfig
+[CreateAssetMenu(fileName = "CardDisplayConfig", menuName = "Config/Card Display Config")]
+public class CardDisplayConfig : ScriptableObject
 {
     [Header("Follow")]
     public float FollowSpeed = 5f;
@@ -15,13 +16,11 @@ public class CardDisplayConfig
 
     [Header("Scale")] 
     public float ScaleOnHover = 1.15f;
-    public float ScaleTransition = 0.15f;
     public Ease ScaleEase = Ease.OutBack;
 
-    [Header("Hand")] 
-    public float ReturnDuration = 0.15f;
-
-    public static int Width = 300;
-    public static int Height = 450;
-
+    [Header("Hover")] 
+    public float OffsetOnHover = 1f;
+    public Ease OffsetEase = Ease.OutCubic;
+    
+    public float Transition = 0.15f;
 }

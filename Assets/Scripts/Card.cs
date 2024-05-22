@@ -82,6 +82,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         _offset = Input.mousePosition - transform.position; // TODO offset is weird
         IsDragging = true;
         WasDragged = true;
+        IsHovering = false;
         _image.raycastTarget = false;
         _canvas.GetComponent<GraphicRaycaster>().enabled = false;
     }
@@ -96,6 +97,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         EndDragEvent?.Invoke(this);
         IsDragging = false;
         WasDragged = false;
+        IsHovering = false;
         _image.raycastTarget = true;
         _canvas.GetComponent<GraphicRaycaster>().enabled = true;
 
@@ -110,12 +112,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("Enter");
         PointerEnterEvent?.Invoke(this);
         IsHovering = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("Exit");
         PointerExitEvent?.Invoke(this);
         IsHovering = false;
     }
@@ -129,6 +133,25 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     {
         
     }
+    
+    // public float NormalizedPosition()
+    // {
+    //     if (!transform.parent.CompareTag("Slot")) return -1;
+    //
+    //     int slotIndex = transform.parent.GetSiblingIndex();
+    //     int slotAmount = transform.parent.parent.childCount;
+    //     Debug.Log($"INDEX: {slotIndex} AMOUNT: {slotAmount}");
+    //     return (float)slotIndex / (slotAmount - 1);
+    // }
 
+    // public int SiblingIndex()
+    // {
+    //     return transform.parent.CompareTag("Slot") ? transform.parent.GetSiblingIndex() : 0;
+    // }
+    //
+    // public int SiblingAmountIncl()
+    // {
+    //     return transform.parent.CompareTag("Slot") ? transform.parent.parent.childCount : 1;
+    // }
     
 }

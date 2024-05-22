@@ -49,7 +49,29 @@ public class HandUI : MonoBehaviour
         if (_selected == null) return;
 
         _selected.transform.DOLocalMove(Vector3.zero, 0.15f);
+        // _rect.sizeDelta += Vector2.right;
+        // _rect.sizeDelta -= Vector2.right;
         _selected = null;
+    }
+
+    void PointerEnter(Card _)
+    {
+        
+    }
+    
+    void PointerExit(Card _)
+    {
+        
+    }
+    
+    void PointerUp(Card _)
+    {
+        
+    }
+    
+    void PointerDown(Card _)
+    {
+        
     }
 
     [ContextMenu("Add default card")]
@@ -57,18 +79,25 @@ public class HandUI : MonoBehaviour
     {
         GameObject slot = Instantiate(SlotPrefab, transform);
         Card card = Instantiate(CardPrefab, slot.transform).GetComponent<Card>();
-        card.BeginDragEvent += BeginDrag;
-        card.EndDragEvent += EndDrag;
-        _cards.Add(card.GetComponent<Card>());
+        SubscribeEvents(card);
+        _cards.Add(card);
     }
     
     void AddCard(Card card)
     {
         GameObject slot = Instantiate(SlotPrefab, transform);
-        slot.transform.SetParent(gameObject.transform);
         card.transform.SetParent(slot.transform);
+        SubscribeEvents(card);
+        _cards.Add(card);
+    }
+
+    void SubscribeEvents(Card card)
+    {
         card.BeginDragEvent += BeginDrag;
         card.EndDragEvent += EndDrag;
-        _cards.Add(card);
+        card.PointerEnterEvent += PointerEnter;
+        card.PointerExitEvent += PointerExit;
+        card.PointerUpEvent += PointerUp;
+        card.PointerDownEvent += PointerDown;
     }
 }
