@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _AspectRatio: 9.324178
     - _MaxOpacity: 0.3
-    - _Opacity: 0.392
+    - _Opacity: 0.3
     - _Repetition: 2
     - _Speed: 20
     - _StripeWidthPower: 1
