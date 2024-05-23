@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6591046298733e2458c00e79bbd7e761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Data: {fileID: 11400000, guid: e7026b92764833c4390092868d04cddf, type: 2}
   DisplayPrefab: {fileID: 3936960757602328668, guid: 4c9b63e8d2581b94989d162313666a46, type: 3}
   IsHovering: 0
   IsDragging: 0

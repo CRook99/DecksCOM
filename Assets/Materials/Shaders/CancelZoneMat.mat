@@ -29,8 +29,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AspectRatio: 9.213391
-    - _Opacity: 0.3
+    - _AspectRatio: 9.324178
+    - _MaxOpacity: 0.3
+    - _Opacity: 0.392
     - _Repetition: 2
     - _Speed: 20
     - _StripeWidthPower: 1

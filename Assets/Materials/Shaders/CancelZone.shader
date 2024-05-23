@@ -9,6 +9,7 @@ Shader "Unlit/CancelZone"
         _Speed ("Stripe Speed", float) = 1
         _StripeWidthPower ("Stripe Width Power", Range(0.1, 10)) = 1
         _Opacity ("Opacity", Range(0, 1)) = 0.5
+        _MaxOpacity ("Max Opacity", Range(0, 1)) = 0.5
         _AspectRatio ("Aspect Ratio", float) = 1
     }
     SubShader
@@ -19,7 +20,7 @@ Shader "Unlit/CancelZone"
         {
             Cull Off
             ZWrite Off
-            Blend One One
+            Blend One OneMinusSrcAlpha
             
             CGPROGRAM
             #pragma vertex vert

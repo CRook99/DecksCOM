@@ -19,6 +19,11 @@ public class CardDisplay : MonoBehaviour
     RectTransform _rect;
     RectTransform _parentRect;
     Canvas _canvas;
+
+    public Image Artwork;
+    public TMP_Text CostText;
+    public TMP_Text NameText;
+    public TMP_Text DescriptionText;
     
     Vector3 _movementDelta;
     Vector3 _rotationDelta;
@@ -42,6 +47,14 @@ public class CardDisplay : MonoBehaviour
         _card.PointerDownEvent += PointerDown;
         
         _initialized = true;
+    }
+
+    public void UpdateVisuals(CardScriptableObject data)
+    {
+        Artwork.sprite = data.Artwork;
+        CostText.text = data.Cost.ToString();
+        NameText.text = data.Name;
+        DescriptionText.text = data.Description;
     }
 
     void Update()

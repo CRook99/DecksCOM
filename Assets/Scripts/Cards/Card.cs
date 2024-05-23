@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 {
-    //public CardScriptableObject Data;
+    public CardScriptableObject Data;
     CardDisplay _display;
     public GameObject DisplayPrefab;
 
@@ -23,6 +23,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     public bool IsHovering;
     public bool IsDragging;
     public bool WasDragged;
+    bool _shouldUse; // Prevent usage with cancel OnEndDrag
     
     public event Action<Card> BeginDragEvent;
     public event Action<Card> EndDragEvent;
@@ -30,6 +31,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     public event Action<Card> PointerExitEvent;
     public event Action<Card> PointerUpEvent;
     public event Action<Card> PointerDownEvent;
+    
+    public static event Action StaticBeginDragEvent;
+    public static event Action StaticEndDragEvent;
 
     
     // void Awake()
@@ -37,15 +41,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     //     _display = GetComponent<CardDisplay>();
     // }
 
-    // public void Use()
-    // {
-    //     Debug.Log($"Used {Data.Name} for {Data.Cost} energy");
-    //     EnergyManager.Instance.Decrease(Data.Cost);
-    //     
-    //     _display.Use();
-    //     Hand.Instance.RemoveCardFromHand(this);
-    //     DiscardPile.Instance.AddCardToPile(this);
-    // }
+    public void Use()
+    {
+        Debug.Log($"Used {Data.Name} for {Data.Cost} energy");
+        EnergyManager.Instance.Decrease(Data.Cost);
+        
+        Hand.Instance.RemoveCardFromHand(this);
+        DiscardPile.Instance.AddCardToPile(this);
+    }
 
     void Start()
     {
@@ -57,6 +60,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         _displayHandler = DisplayHandler.Instance;
         _display = Instantiate(DisplayPrefab, _displayHandler ? _displayHandler.transform : _canvas.transform).GetComponent<CardDisplay>();
         _display.Initialize(this);
+        _display.UpdateVisuals(Data);
     }
 
     void Update()
@@ -79,35 +83,42 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     public void OnBeginDrag(PointerEventData eventData)
     {
         BeginDragEvent?.Invoke(this);
+        StaticBeginDragEvent?.Invoke();
         _offset = Input.mousePosition - transform.position; // TODO offset is weird
         IsDragging = true;
         WasDragged = true;
         IsHovering = false;
+        _shouldUse = true;
         _image.raycastTarget = false;
         _canvas.GetComponent<GraphicRaycaster>().enabled = false;
     }
     
     public void OnDrag(PointerEventData eventData)
     {
-        
+        if (Input.mousePosition.y < 25f)
+        {
+            _shouldUse = false;
+            OnEndDrag(eventData);
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         EndDragEvent?.Invoke(this);
+        StaticEndDragEvent?.Invoke();
         IsDragging = false;
         WasDragged = false;
         IsHovering = false;
         _image.raycastTarget = true;
         _canvas.GetComponent<GraphicRaycaster>().enabled = true;
 
-        // StartCoroutine(Wait());
-        //
-        // IEnumerator Wait()
-        // {
-        //     yield return null;
-        //     WasDragged = false;
-        // }
+        if (!_shouldUse) return;
+        
+        if (EnergyManager.Instance.Amount >= Data.Cost)
+        {
+            Use();
+            StaticEndDragEvent?.Invoke();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
