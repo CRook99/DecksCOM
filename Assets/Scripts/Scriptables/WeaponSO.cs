@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Weapon", menuName = "Card/Weapon")]
-public class WeaponSO : CardScriptableObject
+public class WeaponSO : CardData
 {
     public int Hits;
     public int Targets;

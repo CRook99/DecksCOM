@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 {
-    public CardScriptableObject Data;
+    public CardData Data;
     CardDisplay _display;
     public GameObject DisplayPrefab;
 

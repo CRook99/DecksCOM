@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Card", menuName = "Card/DefaultCard")]
-public class CardScriptableObject : ScriptableObject 
+public class CardData : ScriptableObject 
 {
     public Sprite Artwork;
     public int Cost;

@@ -49,7 +49,7 @@ public class CardDisplay : MonoBehaviour
         _initialized = true;
     }
 
-    public void UpdateVisuals(CardScriptableObject data)
+    public void UpdateVisuals(CardData data)
     {
         Artwork.sprite = data.Artwork;
         CostText.text = data.Cost.ToString();
