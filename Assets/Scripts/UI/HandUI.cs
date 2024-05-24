@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    Hand _hand;
     public HandUIConfig _config;
     
     public GameObject SlotPrefab;
@@ -19,17 +20,17 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public List<Card> Cards;
     Card _selected;
 
-    void Start()
+    void Awake()
     {
+        _hand = GetComponent<Hand>();
         _rect = GetComponent<RectTransform>();
         _rectXMax = _rect.sizeDelta.x;
         _originalY = transform.position.y;
     }
 
+
     void Update()
     {
-        //if (Input.GetKeyDown("c")) AddDefaultCard();
-
         _rect.sizeDelta = new Vector2(Mathf.Clamp((Cards.Count + 1) * _config.SpacingPerCard, 100f, _rectXMax), _rect.sizeDelta.y); // Scale based on card count
     }
 

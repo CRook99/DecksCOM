@@ -8,7 +8,8 @@ public class Deck : MonoBehaviour
     public static Deck Instance { get; private set; }
 
     public GameObject CardPrefab;
-    public List<Card> Cards;
+    List<Card> _cards;
+    RectTransform _rect;
 
     void Awake()
     {
@@ -20,6 +21,9 @@ public class Deck : MonoBehaviour
         {
             Instance = this;
         }
+
+        _rect = GetComponent<RectTransform>();
+        _cards = new List<Card>();
     }
 
     public void LoadCards(List<CardData> cardDatas)
@@ -27,28 +31,29 @@ public class Deck : MonoBehaviour
         foreach (CardData data in cardDatas)
         {
             Card card = Instantiate(CardPrefab, transform).GetComponent<Card>();
+            card.transform.localPosition = Vector3.zero;
             card.LoadData(data);
-            Cards.Add(card);
+            _cards.Add(card);
         }
     }
 
     public void AddCardToDeck(Card card)
     {
         if (card == null) return;
-        Cards.Add(card);
+        _cards.Add(card);
     }
 
     public Card Draw()
     {
-        if (Cards.Count == 0) return null;
-        Card c = Cards[0];
-        Cards.RemoveAt(0);
+        if (_cards.Count == 0) return null;
+        Card c = _cards[0];
+        _cards.RemoveAt(0);
         //Debug.Log($"Drew card {c.Data.Name}");
         return c;
     }
 
     public Card GetRandomCard()
     {
-        return Cards.Count > 0 ? Cards[Random.Range(0, Cards.Count)] : null;
+        return _cards.Count > 0 ? _cards[Random.Range(0, _cards.Count)] : null;
     }
 }

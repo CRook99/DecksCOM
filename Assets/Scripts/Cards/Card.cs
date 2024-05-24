@@ -34,25 +34,25 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     
     public static event Action StaticBeginDragEvent;
     public static event Action StaticEndDragEvent;
-
     
-    // void Awake()
-    // {
-    //     _display = GetComponent<CardDisplay>();
-    // }
 
     public void LoadData(CardData data)
     {
         Data = data;
     }
 
-    public void Use()
+    void Use()
     {
         Debug.Log($"Used {Data.Name} for {Data.Cost} energy");
         EnergyManager.Instance.Decrease(Data.Cost);
-        
+        Discard();
+    }
+    
+    void Discard()
+    {
         Hand.Instance.RemoveCardFromHand(this);
         DiscardPile.Instance.AddCardToPile(this);
+        _display.Hide();
     }
 
     void Start()
@@ -63,7 +63,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         
 
         _displayHandler = DisplayHandler.Instance;
-        _display = Instantiate(DisplayPrefab, _displayHandler ? _displayHandler.transform : _canvas.transform).GetComponent<CardDisplay>();
+        _display = Instantiate(DisplayPrefab, transform.position, Quaternion.identity, _displayHandler ? _displayHandler.transform : _canvas.transform).GetComponent<CardDisplay>();
         _display.Initialize(this);
         _display.UpdateVisuals(Data);
     }
@@ -167,5 +167,4 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     // {
     //     return transform.parent.CompareTag("Slot") ? transform.parent.parent.childCount : 1;
     // }
-    
 }

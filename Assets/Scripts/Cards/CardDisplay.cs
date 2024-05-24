@@ -129,5 +129,15 @@ public class CardDisplay : MonoBehaviour
     {
         
     }
+
+    public void Show()
+    {
+        _canvas.enabled = true;
+    }
+
+    public void Hide()
+    {
+        _canvas.enabled = false;
+    }
     
 }

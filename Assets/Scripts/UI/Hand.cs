@@ -9,6 +9,8 @@ public class Hand : MonoBehaviour
     public static Hand Instance { get; private set; } // IMPROVE Remove this
     HandUI _UI;
     public GameObject DefaultCard;
+    
+    public int CardCount => _cards.Count;
 
     List<Card> _cards;
 
@@ -41,11 +43,6 @@ public class Hand : MonoBehaviour
         if (card == null) throw new NullReferenceException("Drew null card");
         _cards.Add(card);
         _UI.AddCard(card);
-    }
-
-    public int Count()
-    {
-        return _cards.Count;
     }
 
     public void AddCardToHand(Card card)
