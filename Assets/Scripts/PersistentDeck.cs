@@ -7,6 +7,11 @@ public class PersistentDeck : MonoBehaviour
 {
     [SerializeField] List<CardData> _cardDatas;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown("l")) Deck.Instance.LoadCards(_cardDatas);

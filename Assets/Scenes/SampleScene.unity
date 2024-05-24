@@ -14442,7 +14442,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644636, w: 0.85355365}
+  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644633, w: 0.8535537}
   m_LocalPosition: {x: -8.500408, y: 12.02141, z: -8.500433}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -30155,7 +30155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardPrefab: {fileID: 394392421055637374, guid: 8be71beffea7d0b48b72befcd0826174, type: 3}
-  Cards: []
 --- !u!1001 &2025850156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31837,7 +31836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110725958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644636, w: 0.85355365}
+  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644633, w: 0.8535537}
   m_LocalPosition: {x: -8.500408, y: 12.02141, z: -8.500433}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

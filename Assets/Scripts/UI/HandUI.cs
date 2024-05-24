@@ -18,6 +18,7 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     float _originalY;
 
     public List<Card> Cards;
+    Dictionary<Card, GameObject> _slotDict = new ();
     Card _selected;
 
     void Awake()
@@ -47,26 +48,6 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _selected = null;
     }
 
-    void PointerEnter(Card _)
-    {
-        
-    }
-    
-    void PointerExit(Card _)
-    {
-        
-    }
-    
-    void PointerUp(Card _)
-    {
-        
-    }
-    
-    void PointerDown(Card _)
-    {
-        
-    }
-
     [ContextMenu("Add default card")]
     void AddDefaultCard()
     {
@@ -80,6 +61,7 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         GameObject slot = Instantiate(SlotPrefab, transform.position, Quaternion.identity);
         card.transform.SetParent(slot.transform);
+        _slotDict.Add(card, slot);
         SubscribeEvents(card);
         StartCoroutine(CardAppear());
         
@@ -92,16 +74,20 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    void UseCard(Card card)
+    {
+        GameObject slot = _slotDict[card];
+        if (slot == null) throw new Exception($"No matching slot found for {card.Data.Name}");
+        _slotDict.Remove(card);
+        Destroy(slot); // TODO also destroys card, figure this out
+    }
     
 
     void SubscribeEvents(Card card)
     {
         card.BeginDragEvent += BeginDrag;
         card.EndDragEvent += EndDrag;
-        card.PointerEnterEvent += PointerEnter;
-        card.PointerExitEvent += PointerExit;
-        card.PointerUpEvent += PointerUp;
-        card.PointerDownEvent += PointerDown;
+        card.UseEvent += UseCard;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

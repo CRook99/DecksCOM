@@ -42,6 +42,7 @@ public class Hand : MonoBehaviour
         Card card = Deck.Instance.Draw();
         if (card == null) throw new NullReferenceException("Drew null card");
         _cards.Add(card);
+        card.UseEvent += RemoveCardFromHand; // IMPROVE Will change if decide to add cancelling
         _UI.AddCard(card);
     }
 
@@ -62,12 +63,4 @@ public class Hand : MonoBehaviour
         if (card == null) return;
         _cards.Remove(card);
     }
-
-    void DebugDrawCard()
-    {
-        GameObject o = Instantiate(DefaultCard, transform);
-        _cards.Add(o.GetComponent<Card>());
-    }
-    
-    
 }

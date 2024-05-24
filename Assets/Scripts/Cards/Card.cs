@@ -31,6 +31,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     public event Action<Card> PointerExitEvent;
     public event Action<Card> PointerUpEvent;
     public event Action<Card> PointerDownEvent;
+    public event Action<Card> UseEvent;
     
     public static event Action StaticBeginDragEvent;
     public static event Action StaticEndDragEvent;
@@ -45,12 +46,13 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     {
         Debug.Log($"Used {Data.Name} for {Data.Cost} energy");
         EnergyManager.Instance.Decrease(Data.Cost);
+        UseEvent?.Invoke(this);
         Discard();
     }
     
     void Discard()
     {
-        Hand.Instance.RemoveCardFromHand(this);
+        //Hand.Instance.RemoveCardFromHand(this);
         DiscardPile.Instance.AddCardToPile(this);
         _display.Hide();
     }
