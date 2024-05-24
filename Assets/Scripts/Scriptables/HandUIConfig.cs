@@ -12,4 +12,8 @@ public class HandUIConfig : ScriptableObject
     public float HoverOffset;
     public float HoverScaleDuration;
     public Ease HoverScaleEase;
+
+    public float AppearHeight;
+    public float AppearDuration;
+    public AnimationCurve AppearCurve;
 }

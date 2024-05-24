@@ -18,3 +18,56 @@ MonoBehaviour:
   HoverOffset: 40
   HoverScaleDuration: 0.15
   HoverScaleEase: 9
+  AppearHeight: 400
+  AppearDuration: 1
+  AppearCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.483162
+      outSlope: 12.483162
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.073535934
+    - serializedVersion: 3
+      time: 0.05535406
+      value: 0.73812425
+      inSlope: 4.360456
+      outSlope: 4.360456
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19824971
+      outWeight: 0.28473502
+    - serializedVersion: 3
+      time: 0.16462785
+      value: 1.0263593
+      inSlope: 0.6069804
+      outSlope: 0.6069804
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.03330665
+    - serializedVersion: 3
+      time: 0.34031606
+      value: 1.0671082
+      inSlope: 0.062537126
+      outSlope: 0.062537126
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0474012
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

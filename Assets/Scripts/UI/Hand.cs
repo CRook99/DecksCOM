@@ -7,10 +7,10 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public static Hand Instance { get; private set; } // IMPROVE Remove this
-    public HandUI UI;
+    HandUI _UI;
     public GameObject DefaultCard;
 
-    public List<Card> Cards;
+    List<Card> _cards;
 
     void Awake()
     {
@@ -22,6 +22,9 @@ public class Hand : MonoBehaviour
         {
             Instance = this;
         }
+
+        _cards = new List<Card>();
+        _UI = GetComponent<HandUI>();
     }
 
     void Update()
@@ -36,19 +39,19 @@ public class Hand : MonoBehaviour
     {
         Card card = Deck.Instance.Draw();
         if (card == null) throw new NullReferenceException("Drew null card");
-        Cards.Add(card);
-        UI.AddCard(card);
+        _cards.Add(card);
+        _UI.AddCard(card);
     }
 
     public int Count()
     {
-        return Cards.Count;
+        return _cards.Count;
     }
 
     public void AddCardToHand(Card card)
     {
         if (card == null) return;
-        Cards.Add(card);
+        _cards.Add(card);
         AddTransformToHand(card.gameObject.transform);
     }
 
@@ -60,13 +63,13 @@ public class Hand : MonoBehaviour
     public void RemoveCardFromHand(Card card)
     {
         if (card == null) return;
-        Cards.Remove(card);
+        _cards.Remove(card);
     }
 
     void DebugDrawCard()
     {
         GameObject o = Instantiate(DefaultCard, transform);
-        Cards.Add(o.GetComponent<Card>());
+        _cards.Add(o.GetComponent<Card>());
     }
     
     

@@ -17,7 +17,7 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     float _originalY;
 
     public List<Card> Cards;
-    [SerializeField] Card _selected;
+    Card _selected;
 
     void Start()
     {
@@ -77,11 +77,21 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     public void AddCard(Card card)
     {
-        GameObject slot = Instantiate(SlotPrefab, transform);
+        GameObject slot = Instantiate(SlotPrefab, transform.position, Quaternion.identity);
         card.transform.SetParent(slot.transform);
         SubscribeEvents(card);
-        Cards.Add(card);
+        StartCoroutine(CardAppear());
+        
+        IEnumerator CardAppear()
+        {
+            yield return slot.transform.DOLocalMoveY(_config.AppearHeight, _config.AppearDuration).SetEase(_config.AppearCurve).WaitForCompletion();
+            slot.transform.SetParent(transform);
+            card.transform.localPosition = Vector3.zero;
+            Cards.Add(card); // Placed here so width of hand rect is updated when it should be
+        }
     }
+
+    
 
     void SubscribeEvents(Card card)
     {
