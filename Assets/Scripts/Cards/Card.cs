@@ -41,6 +41,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     //     _display = GetComponent<CardDisplay>();
     // }
 
+    public void LoadData(CardData data)
+    {
+        Data = data;
+    }
+
     public void Use()
     {
         Debug.Log($"Used {Data.Name} for {Data.Cost} energy");

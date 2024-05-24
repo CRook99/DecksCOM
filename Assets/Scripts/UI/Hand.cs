@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public static Hand Instance { get; private set; }
-
+    public static Hand Instance { get; private set; } // IMPROVE Remove this
+    public HandUI UI;
     public GameObject DefaultCard;
 
     public List<Card> Cards;
@@ -26,10 +26,18 @@ public class Hand : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("c"))
         {
-            DebugDrawCard();
+            DrawCard();
         }
+    }
+
+    void DrawCard()
+    {
+        Card card = Deck.Instance.Draw();
+        if (card == null) throw new NullReferenceException("Drew null card");
+        Cards.Add(card);
+        UI.AddCard(card);
     }
 
     public int Count()

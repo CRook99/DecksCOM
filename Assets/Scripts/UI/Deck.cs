@@ -6,7 +6,8 @@ using UnityEngine;
 public class Deck : MonoBehaviour
 {
     public static Deck Instance { get; private set; }
-    
+
+    public GameObject CardPrefab;
     public List<Card> Cards;
 
     void Awake()
@@ -18,6 +19,16 @@ public class Deck : MonoBehaviour
         else
         {
             Instance = this;
+        }
+    }
+
+    public void LoadCards(List<CardData> cardDatas)
+    {
+        foreach (CardData data in cardDatas)
+        {
+            Card card = Instantiate(CardPrefab, transform).GetComponent<Card>();
+            card.LoadData(data);
+            Cards.Add(card);
         }
     }
 

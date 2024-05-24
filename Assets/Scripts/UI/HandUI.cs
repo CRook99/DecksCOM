@@ -28,7 +28,7 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     void Update()
     {
-        if (Input.GetKeyDown("c")) AddDefaultCard();
+        //if (Input.GetKeyDown("c")) AddDefaultCard();
 
         _rect.sizeDelta = new Vector2(Mathf.Clamp((Cards.Count + 1) * _config.SpacingPerCard, 100f, _rectXMax), _rect.sizeDelta.y); // Scale based on card count
     }
@@ -75,7 +75,7 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         Cards.Add(card);
     }
     
-    void AddCard(Card card)
+    public void AddCard(Card card)
     {
         GameObject slot = Instantiate(SlotPrefab, transform);
         card.transform.SetParent(slot.transform);
