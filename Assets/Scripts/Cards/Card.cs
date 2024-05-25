@@ -77,7 +77,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         // Cancel with right click
         if (Input.GetMouseButtonDown(1))
         {
-            transform.position = Vector3.zero;
+            //transform.position = Vector3.zero;
+            _shouldUse = false;
             OnEndDrag(null);
         }
 
