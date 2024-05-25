@@ -17,6 +17,11 @@ public class TeamManager : MonoBehaviour
         else _instance = this;
     }
 
+    void Start()
+    {
+        SetCurrent(0);
+    }
+
     void OnEnable()
     {
         GameState.OnBeginPlayerTurn += BeginTurn;

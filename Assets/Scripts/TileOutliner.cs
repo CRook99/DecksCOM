@@ -20,7 +20,6 @@ public class TileOutliner : MonoBehaviour
     
     public GameObject Prefab;
     int _poolSize = 200;
-    //List<GameObject> _objects;
     HashSet<OutlineObject> _objects;
     
     public Material BaseMaterial;
@@ -77,14 +76,6 @@ public class TileOutliner : MonoBehaviour
         if (obj == null) obj = CreateObject();
         obj.Enable();
         return obj;
-        
-        // GameObject obj = _objects.Find(b => !b.activeInHierarchy);
-        // if (obj == null)
-        // {
-        //     obj = CreateObject();
-        // }
-        // obj.SetActive(true);
-        // return obj;
     }
 
     [ContextMenu("Print all objects")]
@@ -208,40 +199,6 @@ public class TileOutliner : MonoBehaviour
     }
 }
 
-
-class OutlineObject
-{
-    public GameObject Object;
-    public bool InUse;
-
-    public OutlineObject(GameObject obj)
-    {
-        Object = obj;
-        InUse = false;
-    }
-
-    public void Enable()
-    {
-        Object.SetActive(true);
-        InUse = true;
-    }
-
-    public void Disable()
-    {
-        Object.SetActive(false);
-        InUse = false;
-    }
-
-    public void Show()
-    {
-        Object.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        Object.SetActive(false);
-    }
-}
 
 [CustomEditor(typeof(TileOutliner))]
 public class OutlinerEditor : Editor

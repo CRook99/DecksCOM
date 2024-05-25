@@ -93,7 +93,7 @@ public class GridMovement : MonoBehaviour
 
     public void HideRange()
     {
-        MovementOutline.Instance.HideOutline();
+        MovementOutline.Instance.Disable();
     }
 
     public List<Tile> GetReachableTiles()

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TileOutliner))]
-public class MovementOutline : MonoBehaviour
+public class MovementOutline : MonoBehaviour, IPlayerMovement
 {
     public static MovementOutline Instance { get; private set; }
 
@@ -16,36 +16,23 @@ public class MovementOutline : MonoBehaviour
         Instance = this;
         _outliner = GetComponent<TileOutliner>();
         _outliner.SetDecisionStrategy(new MovementStrategy());
-    }
-
-    void OnEnable()
-    {
-        GameState.OnBeginEnemyTurn += HideOutline;
-        TargetingSystem.OnEnterTargeting += HideOutline;
-        TargetingSystem.OnExitTargeting += ShowOutline;
-    }
-
-    void OnDisable()
-    {
-        GameState.OnBeginEnemyTurn -= HideOutline;
-        TargetingSystem.OnEnterTargeting -= HideOutline;
-        TargetingSystem.OnExitTargeting -= ShowOutline;
+        PlayerMovementManager.Instance.RegisterComponent(this);
     }
 
     public void SetArea(List<Tile> tiles)
     {
         _outliner.SetArea(tiles);
-        ShowOutline();
+        Enable();
     }
 
-    public void ShowOutline()
+    public void Enable()
     {
         if (!TeamManager.Instance.Current.CanMove) return;
         
         _outliner.ShowArea();
     }
 
-    public void HideOutline()
+    public void Disable()
     {
         if (_outliner == null)
         {

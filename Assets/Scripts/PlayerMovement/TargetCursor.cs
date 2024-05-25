@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class TargetCursor : MonoBehaviour
+public class TargetCursor : MonoBehaviour, IPlayerMovement
 {
     public GameObject marker;
     public GameObject gizmo;
@@ -26,8 +26,7 @@ public class TargetCursor : MonoBehaviour
 
     void Awake()
     {
-        TargetingSystem.OnEnterTargeting += Disable;
-        TargetingSystem.OnExitTargeting += Enable;
+        PlayerMovementManager.Instance.RegisterComponent(this);
     }
 
     void Start()
@@ -80,12 +79,12 @@ public class TargetCursor : MonoBehaviour
         locked = false;
     }
 
-    void Enable()
+    public void Enable()
     {
         gameObject.SetActive(true);
     }
 
-    void Disable()
+    public void Disable()
     {
         gameObject.SetActive(false);
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class PathRenderer : MonoBehaviour
+public class PathRenderer : MonoBehaviour, IPlayerMovement
 {
     LineRenderer _renderer;
     Vector3[] _points;
@@ -14,28 +14,21 @@ public class PathRenderer : MonoBehaviour
 
     void Awake()
     {
+        PlayerMovementManager.Instance.RegisterComponent(this);
         _renderer = GetComponent<LineRenderer>();
     }
 
     void OnEnable()
     {
-        MovementSelection.OnBeginMove += Hide;
-        TargetingSystem.OnEnterTargeting += Hide;
-        
-        GridMovement.OnEndMove += Show;
-        TargetingSystem.OnExitTargeting += Show;
-        
+        MovementSelection.OnBeginMove += Disable;
+        GridMovement.OnEndMove += Enable;
         TeamSwitcher.OnSwitch += Reset;
     }
 
     void OnDisable()
     {
-        MovementSelection.OnBeginMove -= Hide;
-        TargetingSystem.OnEnterTargeting -= Hide;
-        
-        GridMovement.OnEndMove -= Show;
-        TargetingSystem.OnExitTargeting -= Show;
-        
+        MovementSelection.OnBeginMove -= Disable;
+        GridMovement.OnEndMove -= Enable;
         TeamSwitcher.OnSwitch -= Reset;
     }
 
@@ -65,12 +58,12 @@ public class PathRenderer : MonoBehaviour
         _renderer.SetPositions(_points);
     }
 
-    void Show()
+    public void Enable()
     {
         _renderer.enabled = true;
     }
 
-    void Hide()
+    public void Disable()
     {
         _renderer.positionCount = 0;
         _renderer.enabled = false;
