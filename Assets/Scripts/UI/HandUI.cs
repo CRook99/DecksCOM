@@ -79,7 +79,9 @@ public class HandUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         GameObject slot = _slotDict[card];
         if (slot == null) throw new Exception($"No matching slot found for {card.Data.Name}");
         _slotDict.Remove(card);
+        Cards.Remove(card);
         Destroy(slot); // TODO also destroys card, figure this out
+        
     }
     
 

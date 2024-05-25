@@ -6,21 +6,20 @@ using UnityEngine;
 
 public class DashButtonUI : MonoBehaviour
 {
-    static DashButtonUI _instance;
-    public static DashButtonUI Instance { get { return _instance; } }
+    public static DashButtonUI Instance { get; private set; }
     
     [SerializeField] TextMeshProUGUI _costText;
     int cost;
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            _instance = this;
+            Instance = this;
         }
         
         ResetCost();
@@ -38,7 +37,12 @@ public class DashButtonUI : MonoBehaviour
 
     public void Dash()
     {
-        if (cost > EnergyManager.Instance.Amount) return;
+        if (cost > EnergyManager.Instance.Amount)
+        {
+            EnergyManager.Instance.PlayInsufficientAnim();
+            return;
+        }
+        
         // IMPROVE - Chain could be better
         cost = TeamManager.Instance.Current.gameObject.GetComponent<PlayerDash>().IncreaseBonus();
         EnergyManager.Instance.Decrease(cost);

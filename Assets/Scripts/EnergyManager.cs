@@ -1,35 +1,42 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class EnergyManager : MonoBehaviour
 {
-    static EnergyManager _instance;
-    public static EnergyManager Instance { get { return _instance; } }
+    public static EnergyManager Instance { get; private set; }
     
     public int Amount { get; private set; }
-    [SerializeField] public int _maxAmount = 0;
+    [SerializeField] int _maxAmount;
 
     RectTransform _rectTransform;
-    public Image _image;
-    public TMP_Text _text;
-    public AnimationCurve _wobbleCurve;
-    public AnimationCurve _easeInCurve;
-    float _originalPosX;
+    public Image Image;
+    public TMP_Text Text;
+    
+    Sequence _sequence;
 
     void Awake()
     {
-        _instance = this;
+        if (Instance != null && Instance != this) { Destroy(gameObject); }
+        else { Instance = this; }
+        
         _rectTransform = GetComponent<RectTransform>();
-        _originalPosX = _rectTransform.anchoredPosition.x;
 
         Amount = _maxAmount;
         RefreshUI();
         
         GameState.OnBeginPlayerTurn += TurnIncrease;
+
+        _sequence = DOTween.Sequence()
+            .Append(Image.DOColor(new Color32(255, 0, 0, 255), 0f))
+            .Append(_rectTransform.DOShakeAnchorPos(0.5f, new Vector2(15f, 0f), 25, 0))
+            .Append(Image.DOColor(new Color32(255, 255, 255, 255), 0.5f))
+            .SetAutoKill(false)
+            .Pause();
     }
 
     
@@ -59,28 +66,12 @@ public class EnergyManager : MonoBehaviour
     
     void RefreshUI()
     {
-        _text.text = Amount.ToString();
+        Text.text = Amount.ToString();
     }
 
     
-    public IEnumerator InsufficientAnim()
+    public void PlayInsufficientAnim()
     {
-        _image.color = new Color32(255, 0, 0, 255);
-        float elapsed = 0f;
-        float factorPos = 0f;
-        float factorCol = 0f;
-        float duration = 0.5f;
-
-        while (elapsed < duration)
-        {
-            factorPos = _wobbleCurve.Evaluate(elapsed / duration);
-            factorCol = _easeInCurve.Evaluate(elapsed / duration);
-            _rectTransform.anchoredPosition = new Vector3(_originalPosX + (factorPos * 10), _rectTransform.anchoredPosition.y, 0f);
-            _image.color = new Color32(255, (byte) (255 * factorCol), (byte) (255 * factorCol), 255);
-            yield return null;
-            elapsed += Time.deltaTime;
-        }
-
-        _image.color = new Color32(255, 255, 255, 255);
+        _sequence.Restart();
     }
 }

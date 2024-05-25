@@ -19,6 +19,8 @@ public class PlayerMovementManager : MonoBehaviour
         TargetingSystem.OnExitTargeting += Enable;
         GameState.OnBeginEnemyTurn += Disable;
         GameState.OnBeginPlayerTurn += Enable;
+        Card.StaticBeginDragEvent += Disable;
+        Card.StaticEndDragEvent += Enable;
     }
 
     public void Enable()

@@ -127,6 +127,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
             Use();
             StaticEndDragEvent?.Invoke();
         }
+        else
+        {
+            EnergyManager.Instance.PlayInsufficientAnim();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
