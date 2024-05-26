@@ -1855,9 +1855,7 @@ MonoBehaviour:
   _cardDatas:
   - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
   - {fileID: 11400000, guid: fe993370cbc4f9d4c8722fbedd87a361, type: 2}
-  - {fileID: 11400000, guid: e7026b92764833c4390092868d04cddf, type: 2}
-  - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
-  - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
+  - {fileID: 11400000, guid: 9e268dc826c01694d9dfaad6f03d3208, type: 2}
   - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
   - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
   - {fileID: 11400000, guid: b6a3e5c97420804499b5228bae6e1c7c, type: 2}
@@ -2993,6 +2991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targets: []
+  _selections: []
   CurrentPlayer: {fileID: 0}
   CurrentTarget: {fileID: 0}
   _splashOutline: {fileID: 2073064331}
@@ -14351,7 +14350,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644633, w: 0.85355365}
+  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644635, w: 0.8535537}
   m_LocalPosition: {x: -9.999982, y: 14.14213, z: -10.0000105}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -31845,7 +31844,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110725958}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355347, y: 0.35355276, z: -0.14644633, w: 0.85355365}
+  m_LocalRotation: {x: 0.35355347, y: 0.3535528, z: -0.14644635, w: 0.8535537}
   m_LocalPosition: {x: -9.999982, y: 14.14213, z: -10.0000105}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

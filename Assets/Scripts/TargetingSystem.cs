@@ -8,11 +8,19 @@ public class TargetingSystem : MonoBehaviour
 {
     public static TargetingSystem Instance { get; private set; }
     [SerializeField] List<Enemy> _targets;
+    [SerializeField] List<Enemy> _selections;
     public Player CurrentPlayer;
     public Enemy CurrentTarget;
     TileOutliner _rangeOutline;
     [SerializeField] TileOutliner _splashOutline;
 
+    int _numTargetsToSelect;
+    int _range;
+    bool _splash;
+    int _splashRadius;
+
+    bool _active;
+    
     public static event Action OnEnterTargeting;
     public static event Action OnExitTargeting;
     public static event Action OnTargetSwitch;
@@ -33,15 +41,26 @@ public class TargetingSystem : MonoBehaviour
         _rangeOutline = GetComponent<TileOutliner>();
         _rangeOutline.SetDecisionStrategy(new TargetingStrategy());
         _splashOutline.SetDecisionStrategy(new TargetingStrategy());
+        _active = false;
     }
 
     void Update()
     {
-        // if (Input.GetKeyDown("k")) GenerateRange(TeamManager.Instance.Current.GetCurrentTile(), 5);
-        // if (Input.GetKeyDown("l")) DeactivateTargeting();
+        // MAY MOVE TO OWN CLASS
+        if (!_active) return;
+        
+        if (_selections.Count == _numTargetsToSelect)
+        {
+            Debug.Log("Fire");
+            ExitTargeting();
+            return;
+        }
         
         if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
         if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
+        
+        if (Input.GetKeyDown("y")) _selections.Add(CurrentTarget);
+        // MAY MOVE TO OWN CLASS
     }
 
     void CycleForward()
@@ -72,7 +91,13 @@ public class TargetingSystem : MonoBehaviour
         {
             ExitTargeting();
         }
-        
+
+        _numTargetsToSelect = data.Targets;
+        _range = data.Range;
+        _splash = data.Splash;
+        _splashRadius = data.SplashRadius;
+
+        _active = true;
         OnEnterTargeting?.Invoke();
         OnTargetSwitch?.Invoke();
         TeamManager.Instance.Current.SetInactive();
@@ -80,6 +105,7 @@ public class TargetingSystem : MonoBehaviour
     
     public void ExitTargeting()
     {
+        _active = false;
         _targets.Clear();
         _rangeOutline.HideArea();
         OnExitTargeting?.Invoke();

@@ -11,12 +11,16 @@ public class PlayerUIManager : MonoBehaviour
     {
         GameState.OnBeginPlayerTurn += Show;
         GameState.OnBeginEnemyTurn += Hide;
+        TargetingSystem.OnEnterTargeting += Hide;
+        TargetingSystem.OnExitTargeting += Show;
     }
     
     void OnDisable()
     {
         GameState.OnBeginPlayerTurn -= Show;
         GameState.OnBeginEnemyTurn -= Hide;
+        TargetingSystem.OnEnterTargeting -= Hide;
+        TargetingSystem.OnExitTargeting -= Show;
     }
 
     public void Show()
