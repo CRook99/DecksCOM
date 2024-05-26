@@ -16,6 +16,10 @@ MonoBehaviour:
   Cost: 2
   Name: Sniper
   Description: Long-range bolt of magic
-  Hits: 1
-  Targets: 1
+  Damage: 10
   Range: 15
+  MultiTarget: 0
+  Targets: 1
+  Splash: 0
+  SplashRadius: 0
+  IgnoreCover: 0
