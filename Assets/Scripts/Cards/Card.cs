@@ -47,6 +47,17 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         Debug.Log($"Used {Data.Name} for {Data.Cost} energy");
         EnergyManager.Instance.Decrease(Data.Cost);
         UseEvent?.Invoke(this);
+
+        switch (Data)
+        {
+            case WeaponData d:
+                TargetingSystem.Instance.EnterTargeting(d);
+                break;
+            default:
+                Debug.Log($"Give {name} a proper fucking Data object!");
+                break;
+        }
+        
         Discard();
     }
     
@@ -120,7 +131,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         _image.raycastTarget = true;
         _canvas.GetComponent<GraphicRaycaster>().enabled = true;
 
-        if (!_shouldUse) return;
+        if (!_shouldUse)
+        {
+            PlayerMovementManager.Instance.Enable();
+            return;
+        }
         
         if (EnergyManager.Instance.Amount >= Data.Cost)
         {

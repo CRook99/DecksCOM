@@ -16,6 +16,10 @@ public class MovementOutline : MonoBehaviour, IPlayerMovement
         Instance = this;
         _outliner = GetComponent<TileOutliner>();
         _outliner.SetDecisionStrategy(new MovementStrategy());
+    }
+
+    void Start()
+    {
         PlayerMovementManager.Instance.RegisterComponent(this);
     }
 

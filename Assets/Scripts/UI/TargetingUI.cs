@@ -40,6 +40,13 @@ public class TargetingUI : MonoBehaviour
 
     void OnSwitchHandler()
     {
-        _indicator.ShrinkAnim();
+        IEnumerator WaitToShrink()
+        {
+            yield return null;
+            _indicator.ShrinkAnim();
+        }
+
+        StartCoroutine(WaitToShrink()); // IMPROVE make it not flash in middle
+
     }
 }

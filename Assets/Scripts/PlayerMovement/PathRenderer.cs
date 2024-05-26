@@ -14,8 +14,12 @@ public class PathRenderer : MonoBehaviour, IPlayerMovement
 
     void Awake()
     {
-        PlayerMovementManager.Instance.RegisterComponent(this);
         _renderer = GetComponent<LineRenderer>();
+    }
+
+    void Start()
+    {
+        PlayerMovementManager.Instance.RegisterComponent(this);
     }
 
     void OnEnable()

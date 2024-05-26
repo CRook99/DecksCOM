@@ -8,8 +8,10 @@ public class TargetingSystem : MonoBehaviour
 {
     public static TargetingSystem Instance { get; private set; }
     [SerializeField] List<Enemy> _targets;
+    public Player CurrentPlayer;
     public Enemy CurrentTarget;
-    TileOutliner _outliner;
+    TileOutliner _rangeOutline;
+    [SerializeField] TileOutliner _splashOutline;
 
     public static event Action OnEnterTargeting;
     public static event Action OnExitTargeting;
@@ -28,14 +30,15 @@ public class TargetingSystem : MonoBehaviour
             Instance = this;
         }
         
-        _outliner = GetComponent<TileOutliner>();
-        _outliner.SetDecisionStrategy(new TargetingStrategy());
+        _rangeOutline = GetComponent<TileOutliner>();
+        _rangeOutline.SetDecisionStrategy(new TargetingStrategy());
+        _splashOutline.SetDecisionStrategy(new TargetingStrategy());
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("k")) ActivateTargeting(TeamManager.Instance.Current.GetCurrentTile(), 5);
-        if (Input.GetKeyDown("l")) DeactivateTargeting();
+        // if (Input.GetKeyDown("k")) GenerateRange(TeamManager.Instance.Current.GetCurrentTile(), 5);
+        // if (Input.GetKeyDown("l")) DeactivateTargeting();
         
         if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
         if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
@@ -59,13 +62,37 @@ public class TargetingSystem : MonoBehaviour
         OnTargetSwitch?.Invoke();
     }
 
-    public void ActivateTargeting(Tile origin, int range)
+    public void EnterTargeting(WeaponData data)
+    {
+        CurrentPlayer = TeamManager.Instance.Current;
+        
+        GenerateRange(CurrentPlayer.GetCurrentTile(), data.Range);
+
+        if (_targets.Count == 0)
+        {
+            ExitTargeting();
+        }
+        
+        OnEnterTargeting?.Invoke();
+        OnTargetSwitch?.Invoke();
+        TeamManager.Instance.Current.SetInactive();
+    }
+    
+    public void ExitTargeting()
+    {
+        _targets.Clear();
+        _rangeOutline.HideArea();
+        OnExitTargeting?.Invoke();
+        TeamManager.Instance.Current.SetActive();
+    }
+
+    public void GenerateRange(Tile origin, int range)
     {
         _targets.Clear();
         CurrentTarget = null;
         
         List<Tile> targetableTiles = PathfindingUtil.FindTargetableTiles(origin, range);
-        _outliner.SetArea(targetableTiles);
+        _rangeOutline.SetArea(targetableTiles);
 
         float min = Mathf.Infinity;
         foreach (Enemy e in EnemyManager.Instance.GetEnemies())
@@ -81,25 +108,7 @@ public class TargetingSystem : MonoBehaviour
                 CurrentTarget = e;
             }
         }
-
-        if (CurrentTarget == null) 
-        {
-            DeactivateTargeting();
-            return; // TODO Add 'No targets!' logic
-        }
-        
-        // There is at least one enemy in range
-
-        OnEnterTargeting?.Invoke();
-        OnTargetSwitch?.Invoke();
-        TeamManager.Instance.Current.SetInactive();
     }
 
-    public void DeactivateTargeting()
-    {
-        _targets.Clear();
-        _outliner.HideArea();
-        OnExitTargeting?.Invoke();
-        TeamManager.Instance.Current.SetActive();
-    }
+    
 }

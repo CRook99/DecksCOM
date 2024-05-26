@@ -20,7 +20,6 @@ public class PlayerMovementManager : MonoBehaviour
         GameState.OnBeginEnemyTurn += Disable;
         GameState.OnBeginPlayerTurn += Enable;
         Card.StaticBeginDragEvent += Disable;
-        Card.StaticEndDragEvent += Enable;
     }
 
     public void Enable()
@@ -38,6 +37,7 @@ public class PlayerMovementManager : MonoBehaviour
             c.Disable();
         }
     }
+    
 
     public void RegisterComponent(IPlayerMovement c)
     {
