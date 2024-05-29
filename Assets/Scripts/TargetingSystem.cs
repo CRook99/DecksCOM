@@ -14,13 +14,13 @@ public class TargetingSystem : MonoBehaviour
     
     public TileOutliner RangeOutliner;
     List<TileOutliner> _splashAreas = new();
-    //List<TargetLineHandler> _lines = Enumerable.Repeat(new TargetLineHandler(), 5).ToList();
     TargetLineHandler _targetLineHandler;
 
     int _numTargetsToSelect;
     int _range;
     bool _splash;
     int _splashRadius;
+    bool _ignoreCover;
 
     bool _active;
     
@@ -62,7 +62,6 @@ public class TargetingSystem : MonoBehaviour
         
         if (_selections.Count == _numTargetsToSelect)
         {
-            Debug.Log("Fire");
             ExitTargeting();
             return;
         }
@@ -70,17 +69,17 @@ public class TargetingSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
         if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
 
-        if (Input.GetKeyDown("y"))
+        if (Input.GetKeyDown("y")) // Replace with UI click
         {
             _selections.Add(CurrentTarget);
-            _targetLineHandler.AddCurrentLine();
+            if (!_ignoreCover) _targetLineHandler.AddCurrentLine();
         }
         // MAY MOVE TO OWN CLASS
     }
 
     void CycleAdditionals()
     {
-        _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
+        if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
         if (_splash) UpdateSplash();
     }
 
@@ -120,33 +119,42 @@ public class TargetingSystem : MonoBehaviour
     {
         CurrentPlayer = TeamManager.Instance.Current;
         
-        GenerateRange(CurrentPlayer.GetCurrentTile(), data.Range);
-
+        FindTargets(data.Range);
         if (_targets.Count == 0)
         {
             ExitTargeting();
+            return;
         }
-
+        
+        // Load data from card scriptable object
         _numTargetsToSelect = data.Targets;
         _range = data.Range;
         _splash = data.Splash;
         _splashRadius = data.SplashRadius;
-        UpdateSplash();
-        _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
-
+        _ignoreCover = data.IgnoreCover;
+        
+        // Visuals
+        RangeOutliner.SetArea(PathfindingUtil.FindTargetableTiles(CurrentPlayer.GetCurrentTile(), data.Range));
+        if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
+        if (_splash) UpdateSplash();
+        
+        // State
         _active = true;
+        _selections.Clear();
+        
         OnEnterTargeting?.Invoke();
         OnTargetSwitch?.Invoke();
         CurrentPlayer.SetInactive();
     }
     
-    public void ExitTargeting()
+    void ExitTargeting()
     {
         _active = false;
         _targets.Clear();
         _selections.Clear();
         RangeOutliner.HideArea();
 
+        // Visuals
         foreach (TileOutliner o in _splashAreas)
         {
             o.HideArea();
@@ -159,14 +167,13 @@ public class TargetingSystem : MonoBehaviour
     }
 
     
-    public void GenerateRange(Tile origin, int range)
+    void FindTargets(int range)
     {
+        // List<Tile> targetableTiles = PathfindingUtil.FindTargetableTiles(origin, range);
+        // RangeOutliner.SetArea(targetableTiles);
+        
         _targets.Clear();
         CurrentTarget = null;
-        
-        List<Tile> targetableTiles = PathfindingUtil.FindTargetableTiles(origin, range);
-        RangeOutliner.SetArea(targetableTiles);
-
         float min = Mathf.Infinity;
         foreach (Enemy e in EnemyManager.Instance.GetEnemies())
         {
@@ -182,6 +189,4 @@ public class TargetingSystem : MonoBehaviour
             }
         }
     }
-
-    
 }
