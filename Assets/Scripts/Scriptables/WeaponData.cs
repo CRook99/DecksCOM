@@ -6,12 +6,10 @@ public class WeaponData : CardData
 {
     [Header("Weapon Stats")]
     public int Damage;
-    public int Range;
-    public bool MultiTarget;
-    public int Targets;
-    public bool Splash;
-    public int SplashRadius;
-    public bool IgnoreCover;
+    public int Range = 9;
+    public int Targets = 1;
+    public int SplashRadius = 0;
+    public bool IgnoreCover = false;
 }
 
 // [CustomEditor(typeof(WeaponData))]

@@ -129,7 +129,7 @@ public class TargetingSystem : MonoBehaviour
         // Load data from card scriptable object
         _numTargetsToSelect = data.Targets;
         _range = data.Range;
-        _splash = data.Splash;
+        _splash = data.SplashRadius > 0;
         _splashRadius = data.SplashRadius;
         _ignoreCover = data.IgnoreCover;
         
