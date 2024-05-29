@@ -11,8 +11,9 @@ public class TargetingSystem : MonoBehaviour
     [SerializeField] List<Enemy> _selections;
     public Player CurrentPlayer;
     public Enemy CurrentTarget;
-    TileOutliner _rangeOutline;
-    [SerializeField] TileOutliner _splashOutline;
+    
+    public TileOutliner RangeOutliner;
+    [SerializeField] List<TileOutliner> _splashAreas;
 
     int _numTargetsToSelect;
     int _range;
@@ -38,9 +39,16 @@ public class TargetingSystem : MonoBehaviour
             Instance = this;
         }
         
-        _rangeOutline = GetComponent<TileOutliner>();
-        _rangeOutline.SetDecisionStrategy(new TargetingStrategy());
-        _splashOutline.SetDecisionStrategy(new TargetingStrategy());
+        RangeOutliner.SetDecisionStrategy(new TargetingStrategy());
+
+        foreach (Transform t in transform)
+        {
+            TileOutliner o = t.GetComponent<TileOutliner>();
+            if (!o) continue;
+            _splashAreas.Add(o);
+            o.SetDecisionStrategy(new TargetingStrategy());
+        }
+        
         _active = false;
     }
 
@@ -58,8 +66,12 @@ public class TargetingSystem : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
         if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
-        
-        if (Input.GetKeyDown("y")) _selections.Add(CurrentTarget);
+
+        if (Input.GetKeyDown("y"))
+        {
+            _selections.Add(CurrentTarget);
+            CycleForward();
+        }
         // MAY MOVE TO OWN CLASS
     }
 
@@ -69,6 +81,9 @@ public class TargetingSystem : MonoBehaviour
 
         int index = _targets.IndexOf(CurrentTarget) + 1;
         CurrentTarget = _targets[index >= _targets.Count ? 0 : index];
+        
+        if (_splash) UpdateSplash();
+        
         OnTargetSwitch?.Invoke();
     }
     
@@ -78,7 +93,17 @@ public class TargetingSystem : MonoBehaviour
 
         int index = _targets.IndexOf(CurrentTarget) - 1;
         CurrentTarget = _targets[index < 0 ? _targets.Count - 1 : index];
+        
+        if (_splash) UpdateSplash();
+        
         OnTargetSwitch?.Invoke();
+    }
+
+    void UpdateSplash()
+    {
+        List<Tile> tiles = PathfindingUtil.FindTargetableTiles(CurrentTarget.GetCurrentTile(), _splashRadius);
+        _splashAreas[_selections.Count].SetArea(tiles);
+        _splashAreas[_selections.Count].ShowArea();
     }
 
     public void EnterTargeting(WeaponData data)
@@ -96,6 +121,7 @@ public class TargetingSystem : MonoBehaviour
         _range = data.Range;
         _splash = data.Splash;
         _splashRadius = data.SplashRadius;
+        UpdateSplash();
 
         _active = true;
         OnEnterTargeting?.Invoke();
@@ -107,7 +133,14 @@ public class TargetingSystem : MonoBehaviour
     {
         _active = false;
         _targets.Clear();
-        _rangeOutline.HideArea();
+        _selections.Clear();
+        RangeOutliner.HideArea();
+
+        foreach (TileOutliner o in _splashAreas)
+        {
+            o.HideArea();
+        }
+        
         OnExitTargeting?.Invoke();
         TeamManager.Instance.Current.SetActive();
     }
@@ -118,7 +151,7 @@ public class TargetingSystem : MonoBehaviour
         CurrentTarget = null;
         
         List<Tile> targetableTiles = PathfindingUtil.FindTargetableTiles(origin, range);
-        _rangeOutline.SetArea(targetableTiles);
+        RangeOutliner.SetArea(targetableTiles);
 
         float min = Mathf.Infinity;
         foreach (Enemy e in EnemyManager.Instance.GetEnemies())
