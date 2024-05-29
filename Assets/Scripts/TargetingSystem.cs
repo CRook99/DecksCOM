@@ -13,7 +13,9 @@ public class TargetingSystem : MonoBehaviour
     public Enemy CurrentTarget;
     
     public TileOutliner RangeOutliner;
-    [SerializeField] List<TileOutliner> _splashAreas;
+    List<TileOutliner> _splashAreas = new();
+    //List<TargetLineHandler> _lines = Enumerable.Repeat(new TargetLineHandler(), 5).ToList();
+    TargetLineHandler _targetLineHandler;
 
     int _numTargetsToSelect;
     int _range;
@@ -48,7 +50,8 @@ public class TargetingSystem : MonoBehaviour
             _splashAreas.Add(o);
             o.SetDecisionStrategy(new TargetingStrategy());
         }
-        
+
+        _targetLineHandler = GetComponent<TargetLineHandler>();
         _active = false;
     }
 
@@ -70,9 +73,15 @@ public class TargetingSystem : MonoBehaviour
         if (Input.GetKeyDown("y"))
         {
             _selections.Add(CurrentTarget);
-            CycleForward();
+            _targetLineHandler.AddCurrentLine();
         }
         // MAY MOVE TO OWN CLASS
+    }
+
+    void CycleAdditionals()
+    {
+        _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
+        if (_splash) UpdateSplash();
     }
 
     void CycleForward()
@@ -82,7 +91,7 @@ public class TargetingSystem : MonoBehaviour
         int index = _targets.IndexOf(CurrentTarget) + 1;
         CurrentTarget = _targets[index >= _targets.Count ? 0 : index];
         
-        if (_splash) UpdateSplash();
+        CycleAdditionals();
         
         OnTargetSwitch?.Invoke();
     }
@@ -94,7 +103,7 @@ public class TargetingSystem : MonoBehaviour
         int index = _targets.IndexOf(CurrentTarget) - 1;
         CurrentTarget = _targets[index < 0 ? _targets.Count - 1 : index];
         
-        if (_splash) UpdateSplash();
+        CycleAdditionals();
         
         OnTargetSwitch?.Invoke();
     }
@@ -105,6 +114,7 @@ public class TargetingSystem : MonoBehaviour
         _splashAreas[_selections.Count].SetArea(tiles);
         _splashAreas[_selections.Count].ShowArea();
     }
+    
 
     public void EnterTargeting(WeaponData data)
     {
@@ -122,11 +132,12 @@ public class TargetingSystem : MonoBehaviour
         _splash = data.Splash;
         _splashRadius = data.SplashRadius;
         UpdateSplash();
+        _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
 
         _active = true;
         OnEnterTargeting?.Invoke();
         OnTargetSwitch?.Invoke();
-        TeamManager.Instance.Current.SetInactive();
+        CurrentPlayer.SetInactive();
     }
     
     public void ExitTargeting()
@@ -141,10 +152,13 @@ public class TargetingSystem : MonoBehaviour
             o.HideArea();
         }
         
+        _targetLineHandler.Clear();
+        
         OnExitTargeting?.Invoke();
-        TeamManager.Instance.Current.SetActive();
+        CurrentPlayer.SetActive();
     }
 
+    
     public void GenerateRange(Tile origin, int range)
     {
         _targets.Clear();
@@ -156,7 +170,7 @@ public class TargetingSystem : MonoBehaviour
         float min = Mathf.Infinity;
         foreach (Enemy e in EnemyManager.Instance.GetEnemies())
         {
-            float distance = Vector3.Distance(e.transform.position, TeamManager.Instance.Current.transform.position);
+            float distance = Vector3.Distance(e.transform.position, CurrentPlayer.transform.position);
 
             if (distance > range + ExtraBuffer) continue;
             

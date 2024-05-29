@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     // Stats
     public bool Dead { get; private set; }
     public bool CanMove { get; private set; }
+    
+    public Vector3 Center => transform.position + Vector3.up * 0.5f;
 
     void Awake()
     {

@@ -7,6 +7,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     GridMovement _gridMovement;
+    
+    public Vector3 Center => transform.position + Vector3.up * 0.5f;
 
     void Awake()
     {

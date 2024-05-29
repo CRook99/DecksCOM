@@ -24,7 +24,7 @@ public class TargetingUI : MonoBehaviour
 
     void Update()
     {
-        Vector3 screenPos = main.WorldToScreenPoint(TargetingSystem.Instance.CurrentTarget.transform.position);
+        Vector3 screenPos = main.WorldToScreenPoint(TargetingSystem.Instance.CurrentTarget.Center);
         _indicator.transform.position = screenPos;
     }
 
