@@ -7,6 +7,7 @@ TagManager:
   - Tile
   - Environment
   - Slot
+  - EnemyUI
   layers:
   - Default
   - TransparentFX

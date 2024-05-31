@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2555184412809408733}
   - component: {fileID: 2723100675017611380}
   - component: {fileID: 7728294285708142425}
+  - component: {fileID: 8318940075313786328}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7514264204974297380}
+  - {fileID: 9185652267321468531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2723100675017611380
@@ -46,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95e8236a198af144b6082b0ec6d49e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthBarPrefab: {fileID: 2250835365862976845, guid: 742d6d571c2920843aa0f4afbb775714, type: 3}
+  HealthBarAnchor: {fileID: 9185652267321468531}
 --- !u!114 &7728294285708142425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +66,50 @@ MonoBehaviour:
   edgeTiles: []
   _movementRange: 7
   _movementSpeed: 5
+--- !u!114 &8318940075313786328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4340491518460099970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c32c4c601cacc42a436732e3e689f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+--- !u!1 &6007459841765824782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9185652267321468531}
+  m_Layer: 0
+  m_Name: HealthBarAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9185652267321468531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007459841765824782}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2555184412809408733}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8939526527241083744
 GameObject:
   m_ObjectHideFlags: 0
