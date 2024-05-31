@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
@@ -15,6 +16,7 @@ public class EnemyHealthBarUI : MonoBehaviour
     bool _maximised;
 
     [SerializeField] Image _fill;
+    [SerializeField] TextMeshProUGUI _amount;
     [SerializeField] List<GameObject> _maximiseElements;
     RectTransform _rect;
     
@@ -53,6 +55,7 @@ public class EnemyHealthBarUI : MonoBehaviour
     void UpdateValues()
     {
         _fill.fillAmount = _health.NormalizedHealth();
+        _amount.text = _health.Health.ToString();
     }
 
     void Maximize()

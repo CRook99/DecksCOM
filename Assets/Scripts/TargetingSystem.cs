@@ -16,6 +16,7 @@ public class TargetingSystem : MonoBehaviour
     List<TileOutliner> _splashAreas = new();
     TargetLineHandler _targetLineHandler;
 
+    int _damage;
     int _numTargetsToSelect;
     int _range;
     bool _splash;
@@ -62,6 +63,10 @@ public class TargetingSystem : MonoBehaviour
         
         if (_selections.Count == _numTargetsToSelect)
         {
+            foreach (Enemy e in _selections)
+            {
+                e.Damage(_damage);
+            }
             ExitTargeting();
             return;
         }
@@ -69,7 +74,7 @@ public class TargetingSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab)) CycleForward();
         if (Input.GetKeyDown(KeyCode.LeftShift)) CycleBackward();
 
-        if (Input.GetKeyDown("y")) // Replace with UI click
+        if (Input.GetKeyDown(KeyCode.Space)) // Replace with UI click
         {
             _selections.Add(CurrentTarget);
             if (!_ignoreCover) _targetLineHandler.AddCurrentLine();
@@ -126,6 +131,7 @@ public class TargetingSystem : MonoBehaviour
         }
         
         // Load data from card scriptable object
+        _damage = data.Damage;
         _numTargetsToSelect = data.Targets;
         _range = data.Range;
         _splash = data.SplashRadius > 0;
