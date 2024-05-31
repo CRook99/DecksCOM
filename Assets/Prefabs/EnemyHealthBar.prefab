@@ -279,6 +279,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fill: {fileID: 3296789096460106611}
+  _maximiseElements:
+  - {fileID: 2185954503727425080}
+  - {fileID: 837331388553351559}
 --- !u!1 &2322223997746697237
 GameObject:
   m_ObjectHideFlags: 0

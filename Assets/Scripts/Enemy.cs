@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     
     public event Action OnHeal;
     public event Action OnDamage;
+    public event Action OnTarget;
+    public event Action OnUntarget;
     
     public Vector3 Center => transform.position + Vector3.up * 0.5f;
 
@@ -50,6 +52,16 @@ public class Enemy : MonoBehaviour
     {
         _healthManager.TakeDamage(amount);
         OnDamage?.Invoke();
+    }
+
+    public void Target()
+    {
+        OnTarget?.Invoke();
+    }
+    
+    public void Untarget()
+    {
+        OnUntarget?.Invoke();
     }
     
     public Tile GetCurrentTile()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
@@ -11,8 +12,11 @@ public class EnemyHealthBarUI : MonoBehaviour
 {
     Camera _mainCamera;
     Transform _anchor;
+    bool _maximised;
 
     [SerializeField] Image _fill;
+    [SerializeField] List<GameObject> _maximiseElements;
+    RectTransform _rect;
     
     Enemy _enemy;
     HealthManager _health;
@@ -20,11 +24,14 @@ public class EnemyHealthBarUI : MonoBehaviour
     void Awake()
     {
         _mainCamera = Camera.main;
+        _rect = GetComponent<RectTransform>();
     }
 
     void Update()
     {
-        transform.position = _mainCamera.WorldToScreenPoint(_anchor.position) + Vector3.up * 10f;
+        transform.position = _mainCamera.WorldToScreenPoint(_anchor.position) + Vector3.up * (_maximised ? 30f : 10f);
+        if (Input.GetKeyDown("7")) Maximize();
+        if (Input.GetKeyDown("8")) Minimize();
     }
 
     public void RegisterEnemy(Enemy e, HealthManager h)
@@ -37,10 +44,36 @@ public class EnemyHealthBarUI : MonoBehaviour
 
         e.OnHeal += UpdateValues;
         e.OnDamage += UpdateValues;
+        e.OnTarget += Maximize;
+        e.OnUntarget += Minimize;
     }
 
     void UpdateValues()
     {
         _fill.fillAmount = _health.NormalizedHealth();
+    }
+
+    void Maximize()
+    {
+        foreach (GameObject element in _maximiseElements)
+        {
+            element.SetActive(true);
+        }
+        
+        _maximised = true;
+        
+        transform.DOScale(2f, 0.1f).SetEase(Ease.OutCubic);
+    }
+
+    void Minimize()
+    {
+        foreach (GameObject element in _maximiseElements)
+        {
+            element.SetActive(false);
+        }
+
+        _maximised = false;
+        
+        transform.DOScale(1f, 0.1f).SetEase(Ease.OutCubic);
     }
 }

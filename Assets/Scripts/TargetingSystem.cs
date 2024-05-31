@@ -86,11 +86,15 @@ public class TargetingSystem : MonoBehaviour
     void CycleForward()
     {
         if (_targets.Count < 2) return;
-
+        
+        CurrentTarget.Untarget();
+        
         int index = _targets.IndexOf(CurrentTarget) + 1;
         CurrentTarget = _targets[index >= _targets.Count ? 0 : index];
         
         CycleAdditionals();
+        
+        CurrentTarget.Target();
         
         OnTargetSwitch?.Invoke();
     }
@@ -98,11 +102,15 @@ public class TargetingSystem : MonoBehaviour
     void CycleBackward()
     {
         if (_targets.Count < 2) return;
+        
+        CurrentTarget.Untarget();
 
         int index = _targets.IndexOf(CurrentTarget) - 1;
         CurrentTarget = _targets[index < 0 ? _targets.Count - 1 : index];
         
         CycleAdditionals();
+        
+        CurrentTarget.Target();
         
         OnTargetSwitch?.Invoke();
     }
