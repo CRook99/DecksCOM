@@ -25,6 +25,8 @@ public class EnemyHealthBarUI : MonoBehaviour
     {
         _mainCamera = Camera.main;
         _rect = GetComponent<RectTransform>();
+        
+        Minimize();
     }
 
     void Update()

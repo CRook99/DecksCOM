@@ -76,24 +76,17 @@ public class TargetingSystem : MonoBehaviour
         }
         // MAY MOVE TO OWN CLASS
     }
-
-    void CycleAdditionals()
-    {
-        if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
-        if (_splash) UpdateSplash();
-    }
+    
 
     void CycleForward()
     {
         if (_targets.Count < 2) return;
         
         CurrentTarget.Untarget();
+        CurrentTarget = _targets[(_targets.IndexOf(CurrentTarget) + 1) % _targets.Count];
         
-        int index = _targets.IndexOf(CurrentTarget) + 1;
-        CurrentTarget = _targets[index >= _targets.Count ? 0 : index];
-        
-        CycleAdditionals();
-        
+        if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
+        if (_splash) UpdateSplash();
         CurrentTarget.Target();
         
         OnTargetSwitch?.Invoke();
@@ -104,12 +97,10 @@ public class TargetingSystem : MonoBehaviour
         if (_targets.Count < 2) return;
         
         CurrentTarget.Untarget();
-
-        int index = _targets.IndexOf(CurrentTarget) - 1;
-        CurrentTarget = _targets[index < 0 ? _targets.Count - 1 : index];
+        CurrentTarget = _targets[(_targets.IndexOf(CurrentTarget) - 1 + _targets.Count) % _targets.Count];
         
-        CycleAdditionals();
-        
+        if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
+        if (_splash) UpdateSplash();
         CurrentTarget.Target();
         
         OnTargetSwitch?.Invoke();
@@ -145,6 +136,7 @@ public class TargetingSystem : MonoBehaviour
         RangeOutliner.SetArea(PathfindingUtil.FindTargetableTiles(CurrentPlayer.GetCurrentTile(), data.Range));
         if (!_ignoreCover) _targetLineHandler.UpdateCurrentLine(CurrentPlayer.Center, CurrentTarget.Center);
         if (_splash) UpdateSplash();
+        CurrentTarget.Target();
         
         // State
         _active = true;
