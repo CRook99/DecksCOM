@@ -11,10 +11,20 @@ public class TargetingUI : MonoBehaviour
     void Awake()
     {
         main = Camera.main;
+    }
 
-        TargetingSystem.OnEnterTargeting += OnEnterTargetingHandler;
-        TargetingSystem.OnExitTargeting += OnExitTargetingHandler;
-        TargetingSystem.OnTargetSwitch += OnSwitchHandler;
+    void OnEnable()
+    {
+        TargetingSystem.Instance.OnEnterTargeting += OnEnterTargetingHandler;
+        TargetingSystem.Instance.OnExitTargeting += OnExitTargetingHandler;
+        TargetingSystem.Instance.OnTargetSwitch += OnSwitchHandler;
+    }
+
+    void OnDisable()
+    {
+        TargetingSystem.Instance.OnEnterTargeting -= OnEnterTargetingHandler;
+        TargetingSystem.Instance.OnExitTargeting -= OnExitTargetingHandler;
+        TargetingSystem.Instance.OnTargetSwitch -= OnSwitchHandler;
     }
 
     void Start()

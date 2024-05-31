@@ -27,7 +27,7 @@ public class TileSelection : MonoBehaviour
         _tileMask = LayerMask.GetMask("Tile");
         main = Camera.main;
 
-        TargetingSystem.OnEnterTargeting += HideCurrentShields;
+        TargetingSystem.Instance.OnEnterTargeting += HideCurrentShields;
     }
 
     // Update is called once per frame

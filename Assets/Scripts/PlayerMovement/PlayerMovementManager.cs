@@ -15,8 +15,8 @@ public class PlayerMovementManager : MonoBehaviour
 
         _components = new List<IPlayerMovement>();
 
-        TargetingSystem.OnEnterTargeting += Disable;
-        TargetingSystem.OnExitTargeting += Enable;
+        TargetingSystem.Instance.OnEnterTargeting += Disable;
+        TargetingSystem.Instance.OnExitTargeting += Enable;
         GameState.OnBeginEnemyTurn += Disable;
         GameState.OnBeginPlayerTurn += Enable;
         Card.StaticBeginDragEvent += Disable;

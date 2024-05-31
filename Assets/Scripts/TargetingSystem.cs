@@ -24,9 +24,9 @@ public class TargetingSystem : MonoBehaviour
 
     bool _active;
     
-    public static event Action OnEnterTargeting;
-    public static event Action OnExitTargeting;
-    public static event Action OnTargetSwitch;
+    public event Action OnEnterTargeting;
+    public event Action OnExitTargeting;
+    public event Action OnTargetSwitch;
 
     public float ExtraBuffer = 0.9f; // Additional distance to search for targets (will change if we go tile-based)
 

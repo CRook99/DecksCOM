@@ -11,21 +11,3 @@ public class WeaponData : CardData
     public int SplashRadius = 0;
     public bool IgnoreCover = false;
 }
-
-// [CustomEditor(typeof(WeaponData))]
-// public class WeaponDataEditor : Editor
-// {
-//     public override void OnInspectorGUI()
-//     {
-//         var script = (WeaponData)target;
-//         script.Damage = EditorGUILayout.IntField("Damage", script.Damage);
-//         script.Range = EditorGUILayout.IntField("Range", script.Range);
-//
-//         script.MultiTarget = EditorGUILayout.Toggle("Multi-target", script.MultiTarget);
-//         script.Targets = script.MultiTarget ? EditorGUILayout.IntField("Targets", script.Targets) : 1;
-//         
-//         
-//         script.Splash = EditorGUILayout.Toggle("Splash", script.Splash);
-//         script.SplashRadius = script.Splash ? EditorGUILayout.IntField("Splash radius", script.SplashRadius) : 0;
-//     }
-// }
