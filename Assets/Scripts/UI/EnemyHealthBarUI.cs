@@ -48,6 +48,7 @@ public class EnemyHealthBarUI : MonoBehaviour
 
         e.OnHeal += UpdateValues;
         e.OnDamage += UpdateValues;
+        e.OnDamage += Minimize; // TODO Will minimize on fire
         e.OnTarget += Maximize;
         e.OnUntarget += Minimize;
     }
