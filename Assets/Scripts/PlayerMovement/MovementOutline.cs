@@ -7,20 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(TileOutliner))]
 public class MovementOutline : MonoBehaviour, IPlayerMovement
 {
-    public static MovementOutline Instance { get; private set; }
-
     TileOutliner _outliner;
     
     void Awake()
     {
-        Instance = this;
         _outliner = GetComponent<TileOutliner>();
         _outliner.SetDecisionStrategy(new MovementStrategy());
-    }
-
-    void Start()
-    {
-        PlayerMovementManager.Instance.RegisterComponent(this);
     }
 
     public void SetArea(List<Tile> tiles)

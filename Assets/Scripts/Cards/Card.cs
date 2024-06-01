@@ -35,6 +35,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     
     public static event Action StaticBeginDragEvent;
     public static event Action StaticEndDragEvent;
+
+    PlayerMovementManager _playerMovementManager;
     
 
     public void LoadData(CardData data)
@@ -66,6 +68,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         //Hand.Instance.RemoveCardFromHand(this);
         DiscardPile.Instance.AddCardToPile(this);
         _display.Hide();
+    }
+
+    void Awake()
+    {
+        _playerMovementManager = FindObjectOfType<PlayerMovementManager>();
     }
 
     void Start()
@@ -133,7 +140,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
         if (!_shouldUse)
         {
-            PlayerMovementManager.Instance.Enable();
+            _playerMovementManager.Enable();
             return;
         }
         
@@ -145,6 +152,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
         else
         {
             EnergyManager.Instance.PlayInsufficientAnim();
+            _playerMovementManager.Enable();
         }
     }
 

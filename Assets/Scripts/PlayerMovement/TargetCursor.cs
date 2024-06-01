@@ -24,11 +24,6 @@ public class TargetCursor : MonoBehaviour, IPlayerMovement
 
     bool locked;
 
-    void Awake()
-    {
-        PlayerMovementManager.Instance.RegisterComponent(this);
-    }
-
     void Start()
     {
         gizmo.transform.DOLocalMoveY(_height, _cycleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);

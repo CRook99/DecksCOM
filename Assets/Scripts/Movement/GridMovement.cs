@@ -18,11 +18,14 @@ public class GridMovement : MonoBehaviour
     [SerializeField] int _movementSpeed;
     int bonus;
 
+    MovementOutline _movementOutline;
+
     Vector3 _offset = new (0f, 0.5f, 0f);
 
     void Awake()
     {
         selectableTiles = new List<Tile>();
+        _movementOutline = FindObjectOfType<MovementOutline>();
     }
 
     public void SetMovementRange(int range)
@@ -88,12 +91,12 @@ public class GridMovement : MonoBehaviour
 
     public void ShowRange()
     {
-        MovementOutline.Instance.SetArea(selectableTiles);
+        _movementOutline.SetArea(selectableTiles);
     }
 
     public void HideRange()
     {
-        MovementOutline.Instance.Disable();
+        _movementOutline.Disable();
     }
 
     public List<Tile> GetReachableTiles()

@@ -17,11 +17,6 @@ public class PathRenderer : MonoBehaviour, IPlayerMovement
         _renderer = GetComponent<LineRenderer>();
     }
 
-    void Start()
-    {
-        PlayerMovementManager.Instance.RegisterComponent(this);
-    }
-
     void OnEnable()
     {
         MovementSelection.OnBeginMove += Disable;

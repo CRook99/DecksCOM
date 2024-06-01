@@ -8,13 +8,10 @@ public class MovementSelection : MonoBehaviour, IPlayerMovement
     public static event Action OnBeginMove;
     Tile destination;
 
-    void Awake()
-    {
-        PlayerMovementManager.Instance.RegisterComponent(this);
-    }
-
     void Update()
     {
+        if (!TeamManager.Instance.Current.CanMove) return;
+        
         if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
         {
             destination = TileSelection.Instance.Current.GetComponent<Tile>();
