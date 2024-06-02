@@ -12,10 +12,13 @@ public class MovementSelection : MonoBehaviour, IPlayerMovement
     {
         if (!TeamManager.Instance.Current.CanMove) return;
         
-        if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile() && TeamManager.Instance.Current.CanMove)
+        if (Input.GetMouseButtonDown(1) && TileSelection.Instance.MouseOnTile())
         {
             destination = TileSelection.Instance.Current.GetComponent<Tile>();
-            BeginMove();
+            if (destination.Walkable() && !destination.Occupied())
+            {
+                BeginMove();
+            }
         }
     }
     
