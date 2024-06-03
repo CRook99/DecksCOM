@@ -3,58 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[RequireComponent(typeof(HealthManager))]
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    GridMovement _gridMovement;
-    HealthManager _healthManager;
-
     public GameObject HealthBarPrefab;
     public Transform HealthBarAnchor;
     EnemyHealthBarUI _healthBar;
     
-    public event Action OnHeal;
-    public event Action OnDamage;
     public event Action OnTarget;
     public event Action OnUntarget;
-    
-    public Vector3 Center => transform.position + Vector3.up * 0.5f;
-    
-    public bool Dead { get; private set; }
-    public bool CanMove { get; private set; }
 
-    void Awake()
+    protected override void Awake()
     {
-        _gridMovement = GetComponent<GridMovement>();
-        _healthManager = GetComponent<HealthManager>();
+        base.Awake();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         EnemyManager.Instance.AddEnemy(this);
         Transform canvas = GameObject.FindGameObjectWithTag("EnemyUI").transform;
         EnemyHealthBarUI bar = Instantiate(HealthBarPrefab, canvas).GetComponent<EnemyHealthBarUI>();
         bar.RegisterEnemy(this, _healthManager);
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (Input.GetKeyDown("9")) Heal(10);
         if (Input.GetKeyDown("0")) Damage(10);
         
     }
 
-    public void Heal(int amount)
+    public override void Heal(int amount)
     {
-        _healthManager.Heal(amount);
-        OnHeal?.Invoke();
+        base.Heal(amount);
     }
 
-    public void Damage(int amount)
+    public override void Damage(int amount)
     {
-        _healthManager.TakeDamage(amount);
-        OnDamage?.Invoke();
+        base.Damage(amount);
     }
 
     public void Target()
@@ -65,10 +52,5 @@ public class Enemy : MonoBehaviour
     public void Untarget()
     {
         OnUntarget?.Invoke();
-    }
-    
-    public Tile GetCurrentTile()
-    {
-        return _gridMovement.GetCurrentTile();
     }
 }
