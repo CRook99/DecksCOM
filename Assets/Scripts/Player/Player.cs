@@ -3,36 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GridMovement))]
 [RequireComponent(typeof(PlayerDash))]
-[RequireComponent(typeof(HealthManager))]
-public class Player : MonoBehaviour
+public class Player : Character
 {
     // References
-    HealthManager _healthManager;
-    GridMovement _gridMovement;
     HealthBarUI _healthBarUI;
     PlayerDash _playerDash;
-    
-    // Stats
-    public bool Dead { get; private set; }
-    public bool CanMove { get; private set; }
-    
-    public Vector3 Center => transform.position + Vector3.up * 0.5f;
 
-    void Awake()
+    protected override void Awake()
     {
-        _healthManager = GetComponent<HealthManager>();
-        _gridMovement = GetComponent<GridMovement>();
+        base.Awake();
         _playerDash = GetComponent<PlayerDash>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         _healthBarUI = TeamUIManager.Instance.CreateHealthBar(_healthManager);
         TeamManager.Instance.AddPlayer(this);
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        if (Input.GetKeyDown("x")) Damage(10);
+        if (Input.GetKeyDown("h")) Heal(10);
+    }
+    
     void OnEnable()
     {
         GameState.OnBeginPlayerTurn += BeginTurn;
@@ -41,12 +38,6 @@ public class Player : MonoBehaviour
     void OnDisable()
     {
         GameState.OnBeginPlayerTurn -= BeginTurn;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("x")) TakeDamage(10);
-        if (Input.GetKeyDown("h")) Heal(10);
     }
 
     public void BeginTurn()
@@ -71,22 +62,15 @@ public class Player : MonoBehaviour
         return _gridMovement.GetReachableTiles();
     }
 
-    public Tile GetCurrentTile()
+    public override void Heal(int amount)
     {
-        return _gridMovement.GetCurrentTile();
-    }
-
-    public void Heal(int amount)
-    {
-        _healthManager.Heal(amount);
+        base.Heal(amount);
         _healthBarUI.UpdateValues();
     }
 
-    public void TakeDamage(int amount)
+    public override void Damage(int amount)
     {
-        _healthManager.TakeDamage(amount);
-        if (_healthManager.Health == 0) Die();
-        
+        base.Damage(amount);
         _healthBarUI.UpdateValues();
     }
 
@@ -102,9 +86,8 @@ public class Player : MonoBehaviour
         _gridMovement.ResetAllTiles();
     }
 
-    public void Die()
+    public override void Die()
     {
-        Dead = true;
         Debug.Log("Player Die");
     }
 }
