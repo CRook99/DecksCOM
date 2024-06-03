@@ -18,6 +18,8 @@ public class EnemyHealthBarUI : MonoBehaviour
     [SerializeField] Image _fill;
     [SerializeField] TextMeshProUGUI _amount;
     [SerializeField] List<GameObject> _maximiseElements;
+    [SerializeField] TextMeshProUGUI _coverPercent;
+    
     RectTransform _rect;
     
     Enemy _enemy;

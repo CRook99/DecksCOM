@@ -20,6 +20,9 @@ public class Enemy : MonoBehaviour
     public event Action OnUntarget;
     
     public Vector3 Center => transform.position + Vector3.up * 0.5f;
+    
+    public bool Dead { get; private set; }
+    public bool CanMove { get; private set; }
 
     void Awake()
     {

@@ -19,7 +19,7 @@ public class Tile : MonoBehaviour
     public bool HasCover;
     public bool HasObstacle;
     Vector3 _shieldYOffset = new Vector3(0f, 1.1f, 0f);
-    List<CoverShield> _shields = new();
+    Dictionary<Vector3, CoverShield> _shields = new();
     
     public void Initialize()
     {
@@ -96,11 +96,11 @@ public class Tile : MonoBehaviour
             {
                 case CoverLevel.FULL:
                     shield = Instantiate(fullShield, transform.position + (0.4f * kvp.Key) + _shieldYOffset, Quaternion.LookRotation(kvp.Key, Vector3.up), transform).GetComponent<CoverShield>();
-                    _shields.Add(shield);
+                    _shields.Add(kvp.Key, shield);
                     break;
                 case CoverLevel.HALF:
                     shield = Instantiate(halfShield, transform.position + (0.4f * kvp.Key) + _shieldYOffset, Quaternion.LookRotation(kvp.Key, Vector3.up), transform).GetComponent<CoverShield>();
-                    _shields.Add(shield);
+                    _shields.Add(kvp.Key, shield);
                     break;
             }
         }
@@ -109,7 +109,7 @@ public class Tile : MonoBehaviour
 
     public void ShowShields()
     {
-        foreach (CoverShield shield in _shields)
+        foreach (CoverShield shield in _shields.Values)
         {
             shield.Show();
         }
@@ -117,7 +117,7 @@ public class Tile : MonoBehaviour
 
     public void ShowShields(float scale)
     {
-        foreach (CoverShield shield in _shields)
+        foreach (CoverShield shield in _shields.Values)
         {
             shield.Show(scale);
         }
@@ -125,7 +125,7 @@ public class Tile : MonoBehaviour
 
     public void HideShields()
     {
-        foreach (CoverShield shield in _shields)
+        foreach (CoverShield shield in _shields.Values)
         {
             shield.Hide();
         }
